@@ -45,18 +45,18 @@ const DashboardPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="container"
-            style={{ paddingTop: '120px', paddingBottom: '6rem' }}
+            style={{ paddingTop: '2.5rem', paddingBottom: '4rem' }}
         >
             <div className="flex justify-between items-end" style={{ marginBottom: '3rem' }}>
                 <div>
                     <motion.h1
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
-                        style={{ fontSize: '2.8rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-1.5px' }}
+                        style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '0.25rem', letterSpacing: '-1px' }}
                     >
                         Sector <span style={{ color: 'var(--primary)' }}>Control</span>
                     </motion.h1>
-                    <p style={{ opacity: 0.5, fontWeight: 600 }}>Operational status for {user?.displayName || 'Authorized User'}</p>
+                    <p style={{ opacity: 0.5, fontWeight: 600, fontSize: '0.9rem' }}>Operational status for {user?.displayName || 'Authorized User'}</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '0.8rem', fontWeight: 800, opacity: 0.4, letterSpacing: '1px' }}>SYSTEM TIME</div>
@@ -74,28 +74,29 @@ const DashboardPage = () => {
                         transition={{ delay: i * 0.1 }}
                         className="card"
                         style={{
-                            padding: '2rem',
+                            padding: '1.25rem',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '1.5rem',
+                            gap: '1rem',
                             background: 'var(--bg-glass)',
                             backdropFilter: 'blur(10px)',
                             border: '1px solid var(--border-color)',
-                            boxShadow: 'var(--shadow)'
+                            boxShadow: 'var(--shadow-sm)',
+                            borderRadius: '24px'
                         }}
                     >
                         <div style={{
-                            padding: '1.2rem',
+                            padding: '0.8rem',
                             background: `rgba(${s.color === 'var(--primary)' ? '37, 99, 235' : s.color === 'var(--secondary)' ? '16, 185, 129' : '245, 158, 11'}, 0.1)`,
                             color: s.color,
-                            borderRadius: '20px',
-                            fontSize: '2rem'
+                            borderRadius: '16px',
+                            fontSize: '1.5rem'
                         }}>
                             {s.icon}
                         </div>
                         <div>
-                            <div style={{ opacity: 0.5, fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>{s.title}</div>
-                            <div style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-1px' }}>{s.value}</div>
+                            <div style={{ opacity: 0.5, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{s.title}</div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.5px' }}>{s.value}</div>
                         </div>
                     </motion.div>
                 ))}
@@ -108,10 +109,10 @@ const DashboardPage = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.4 }}
                     className="card"
-                    style={{ padding: '2.5rem', minHeight: '400px', border: '1px solid var(--border-color)' }}
+                    style={{ padding: '1.5rem', minHeight: '350px', border: '1px solid var(--border-color)' }}
                 >
-                    <div className="flex justify-between items-center" style={{ marginBottom: '3rem' }}>
-                        <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>Market Performance</h3>
+                    <div className="flex justify-between items-center" style={{ marginBottom: '2rem' }}>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Market Performance</h3>
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             <div className="flex items-center gap-2" style={{ fontSize: '0.8rem', opacity: 0.6 }}><div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)' }}></div> Imports</div>
                             <div className="flex items-center gap-2" style={{ fontSize: '0.8rem', opacity: 0.6 }}><div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--secondary)' }}></div> Exports</div>
@@ -176,11 +177,11 @@ const DashboardPage = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
                 className="card"
-                style={{ padding: '2.5rem', overflowX: 'auto', border: '1px solid var(--border-color)' }}
+                style={{ padding: '1.5rem', overflowX: 'auto', border: '1px solid var(--border-color)' }}
             >
-                <div className="flex justify-between items-center" style={{ marginBottom: '2.5rem' }}>
-                    <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>Recent Network Activity</h3>
-                    <button className="btn btn-secondary" style={{ fontSize: '0.85rem' }}>View Global Ledger</button>
+                <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Recent Network Activity</h3>
+                    <button className="btn btn-secondary" style={{ fontSize: '0.8rem' }}>View Global Ledger</button>
                 </div>
                 <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.5rem', textAlign: 'left' }}>
                     <thead>

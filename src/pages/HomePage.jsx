@@ -10,7 +10,7 @@ const SectionHeader = ({ title, highlight, subtitle }) => (
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-2.5px' }}
+            style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.8rem', letterSpacing: '-1.5px' }}
         >
             {title} <span style={{ color: 'var(--primary)' }}>{highlight}</span>
         </motion.h2>
@@ -199,7 +199,7 @@ const HomePage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="container" style={{ paddingTop: '160px' }}>
+            <div className="container" style={{ paddingBottom: '8rem', paddingTop: '1rem' }}>
                 <Hero />
             </div>
             <LatestProducts />
@@ -210,9 +210,9 @@ const HomePage = () => {
             <Newsletter />
 
             <section style={{ background: 'var(--bg-surface)' }}>
-                <div className="container" style={{ textAlign: 'center', padding: '6rem 0' }}>
-                    <h2 style={{ fontSize: '4rem', fontWeight: 900, marginBottom: '1.5rem', letterSpacing: '-3px' }}>Start Your Trade <span style={{ color: 'var(--primary)' }}>Journey</span></h2>
-                    <p style={{ opacity: 0.5, marginBottom: '4rem', fontSize: '1.4rem', fontWeight: 600 }}>Connect with a worldwide network of trusted business partners.</p>
+                <div className="container" style={{ textAlign: 'center', padding: '4rem 0' }}>
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-1.5px' }}>Start Your Trade <span style={{ color: 'var(--primary)' }}>Journey</span></h2>
+                    <p style={{ opacity: 0.5, marginBottom: '3rem', fontSize: '1.1rem', fontWeight: 600 }}>Connect with a worldwide network of trusted business partners.</p>
                     <div className="flex justify-center gap-4">
                         <Link to="/register" className="btn btn-primary" style={{ padding: '1.2rem 3rem' }}>Create Account</Link>
                         <Link to="/about" className="btn" style={{ border: '1px solid var(--border-color)', padding: '1.2rem 3rem' }}>Learn More</Link>

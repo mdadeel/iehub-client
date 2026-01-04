@@ -49,8 +49,8 @@ const RegisterPage = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: '90vh',
-                paddingTop: '160px',
-                paddingBottom: '4rem'
+                paddingTop: '2rem',
+                paddingBottom: '2rem'
             }}
         >
             <motion.div
@@ -59,9 +59,9 @@ const RegisterPage = () => {
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className="card"
                 style={{
-                    maxWidth: '520px',
+                    maxWidth: '460px',
                     width: '100%',
-                    padding: '3.5rem',
+                    padding: '2rem',
                     background: 'var(--bg-glass)',
                     backdropFilter: 'blur(24px)',
                     border: '1px solid var(--border-color)',
@@ -85,11 +85,11 @@ const RegisterPage = () => {
                 }}></div>
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                        <h2 style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-0.5px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '0.4rem', letterSpacing: '-0.5px' }}>
                             Join the <span style={{ color: 'var(--primary)' }}>Network</span>
                         </h2>
-                        <p style={{ opacity: 0.5, fontSize: '0.95rem' }}>Start trading worldwide with IE HUB</p>
+                        <p style={{ opacity: 0.5, fontSize: '0.9rem' }}>Start trading worldwide with IE HUB</p>
                     </div>
 
                     <form onSubmit={handleRegister} className="flex flex-col gap-6">
@@ -143,7 +143,7 @@ const RegisterPage = () => {
                             whileTap={{ scale: 0.98 }}
                             type="submit"
                             className="btn btn-primary"
-                            style={{ width: '100%', justifyContent: 'center', marginTop: '1rem', padding: '1.2rem', fontWeight: 900 }}
+                            style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem', padding: '0.8rem', fontWeight: 900 }}
                         >
                             Build Network Access
                         </motion.button>
@@ -157,7 +157,7 @@ const RegisterPage = () => {
 
             <style>{`
                 .auth-input {
-                    padding: 1.1rem 1.25rem;
+                    padding: 0.8rem 1rem;
                     border-radius: var(--radius-md);
                     border: 1px solid var(--border-color);
                     background: var(--bg-card);
@@ -165,7 +165,7 @@ const RegisterPage = () => {
                     width: 100%;
                     outline: none;
                     transition: all 0.3s;
-                    font-size: 1rem;
+                    font-size: 0.95rem;
                 }
                 .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
             `}</style>

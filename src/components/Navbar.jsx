@@ -53,7 +53,7 @@ const Navbar = () => {
             left: 0,
             right: 0,
             zIndex: 2000,
-            padding: scrolled ? '1rem 0' : '1.5rem 0',
+            padding: scrolled ? '0.4rem 0' : '0.6rem 0',
             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             pointerEvents: 'none'
         }}>
@@ -64,7 +64,7 @@ const Navbar = () => {
                     WebkitBackdropFilter: 'blur(32px)',
                     border: `1px solid ${theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)'}`,
                     borderRadius: '24px',
-                    padding: '0.8rem 2rem',
+                    padding: '0.6rem 1.5rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',

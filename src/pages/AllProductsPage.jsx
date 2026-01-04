@@ -38,18 +38,18 @@ const AllProductsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="container"
-            style={{ paddingBottom: '6rem', paddingTop: '160px' }}
+            style={{ paddingBottom: '4rem', paddingTop: '2rem' }}
         >
             <section>
-                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <motion.h1
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-2px' }}
+                        style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.4rem', letterSpacing: '-1px' }}
                     >
                         Global <span style={{ color: 'var(--primary)' }}>Marketplace</span>
                     </motion.h1>
-                    <p style={{ opacity: 0.5, fontSize: '1.2rem', fontWeight: 600 }}>Sourcing premium assets from verified international sectors.</p>
+                    <p style={{ opacity: 0.5, fontSize: '1rem', fontWeight: 600 }}>Sourcing premium assets from verified international sectors.</p>
                 </div>
 
                 {/* Glass Filter Bar */}
@@ -59,13 +59,13 @@ const AllProductsPage = () => {
                     transition={{ delay: 0.2 }}
                     className="card"
                     style={{
-                        padding: '2.5rem',
-                        marginBottom: '5rem',
+                        padding: '1.5rem',
+                        marginBottom: '3rem',
                         background: 'var(--bg-glass)',
                         backdropFilter: 'blur(30px)',
                         border: '1px solid var(--border-color)',
-                        borderRadius: '32px',
-                        boxShadow: 'var(--shadow-lg)'
+                        borderRadius: '24px',
+                        boxShadow: 'var(--shadow)'
                     }}
                 >
                     <div className="grid" style={{
@@ -140,8 +140,8 @@ const AllProductsPage = () => {
                             key="grid"
                             className="grid"
                             style={{
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                                gap: '3rem'
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                                gap: '2rem'
                             }}
                         >
                             {products.map((product, index) => (

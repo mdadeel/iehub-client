@@ -16,22 +16,20 @@ const ContactPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="container"
-            style={{ padding: '160px 0 120px 0' }}
+            style={{ paddingBottom: '6rem', paddingTop: '2rem' }}
         >
-            <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+            <section style={{ textAlign: 'center', marginBottom: '4rem' }}>
                 <motion.h1
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    style={{ fontSize: '4.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-2.5px' }}
+                    style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.8rem', letterSpacing: '-1.5px' }}
                 >
-                    Connect with <span style={{ color: 'var(--primary)' }}>Experts</span>
+                    Establish <span style={{ color: 'var(--primary)' }}>Contact</span>
                 </motion.h1>
-                <p style={{ opacity: 0.5, fontSize: '1.4rem', maxWidth: '750px', margin: '0 auto', fontWeight: 600 }}>
-                    Our dedicated sector specialists are available 24/7 to help you navigate international trade protocols and logistics.
-                </p>
-            </div>
+                <p style={{ opacity: 0.5, fontSize: '1rem', fontWeight: 600 }}>Our global support network is operational 24/7/365.</p>
+            </section>
 
-            <div className="grid" style={{ gridTemplateColumns: '1.1fr 0.9fr', gap: '6rem' }}>
+            <div className="grid" style={{ gridTemplateColumns: '1.1fr 0.9fr', gap: '4rem' }}>
                 {/* Premium Contact Form */}
                 <motion.div
                     initial={{ x: -30, opacity: 0 }}
@@ -97,14 +95,12 @@ const ContactPage = () => {
                     <motion.div
                         initial={{ x: 30, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="card contact-item-premium"
+                        transition={{ delay: 0.2 }}
+                        className="card"
+                        style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '24px' }}
                     >
-                        <div className="icon-box-premium"><HiMail /></div>
-                        <div>
-                            <h4 style={{ fontSize: '1.2rem', fontWeight: 900, marginBottom: '0.3rem' }}>Global Comms</h4>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, opacity: 0.5 }}>concierge@iehub.global</p>
-                        </div>
+                        <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.5rem' }}>Secure Messaging</h2>
+                        <p style={{ fontSize: '1rem', fontWeight: 600, opacity: 0.5 }}>concierge@iehub.global</p>
                     </motion.div>
 
                     <motion.div

@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
             </div>
 
             {/* Image Section with Depth */}
-            <div style={{ position: 'relative', height: '260px', overflow: 'hidden', margin: '12px', borderRadius: '24px' }}>
+            <div style={{ position: 'relative', height: '200px', overflow: 'hidden', margin: '8px', borderRadius: '18px' }}>
                 <motion.img
                     src={product.image}
                     alt={product.name}
@@ -63,30 +63,30 @@ const ProductCard = ({ product }) => {
                 {/* Product Price Floating on Image */}
                 <div style={{
                     position: 'absolute',
-                    bottom: '1.5rem',
-                    left: '1.5rem',
+                    bottom: '1rem',
+                    left: '1rem',
                     color: 'white'
                 }}>
-                    <div style={{ fontSize: '0.7rem', fontWeight: 800, opacity: 0.6, textTransform: 'uppercase', marginBottom: '-5px' }}>Unit Value</div>
-                    <div style={{ fontSize: '1.8rem', fontWeight: 900 }}>${product.price.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.65rem', fontWeight: 800, opacity: 0.6, textTransform: 'uppercase', marginBottom: '-2px' }}>Unit Value</div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 900 }}>${product.price ? product.price.toLocaleString() : 'N/A'}</div>
                 </div>
             </div>
 
             {/* Content Section */}
-            <div style={{ padding: '1.5rem 2rem 2.5rem 2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ padding: '1rem 1.25rem 1.5rem 1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ marginBottom: '1rem' }}>
                     <h3 style={{
-                        fontSize: '1.5rem',
+                        fontSize: '1.1rem',
                         fontWeight: 900,
-                        marginBottom: '0.75rem',
-                        letterSpacing: '-0.5px',
+                        marginBottom: '0.5rem',
+                        letterSpacing: '-0.3px',
                         lineHeight: 1.2
                     }}>
                         {product.name}
                     </h3>
                     <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                            <HiStar key={i} style={{ color: i < Math.floor(product.rating) ? 'var(--secondary)' : 'rgba(255,255,255,0.1)', fontSize: '1rem' }} />
+                            <HiStar key={i} style={{ color: i < Math.floor(product.rating || 0) ? 'var(--secondary)' : 'rgba(255,255,255,0.1)', fontSize: '0.85rem' }} />
                         ))}
                     </div>
                 </div>
@@ -94,33 +94,33 @@ const ProductCard = ({ product }) => {
                 {/* Technical Specs Inset */}
                 <div style={{
                     background: 'var(--bg-inset)',
-                    padding: '1.25rem',
-                    borderRadius: '20px',
+                    padding: '0.8rem',
+                    borderRadius: '16px',
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
-                    gap: '1rem',
-                    marginBottom: '2rem',
+                    gap: '0.75rem',
+                    marginBottom: '1.5rem',
                     border: '1px solid rgba(255,255,255,0.03)'
                 }}>
                     <div className="flex flex-col">
-                        <span style={{ fontSize: '0.65rem', fontWeight: 800, opacity: 0.4, textTransform: 'uppercase', marginBottom: '4px' }}>Origin Port</span>
-                        <div className="flex items-center gap-2">
-                            <HiLocationMarker style={{ color: 'var(--primary)', fontSize: '0.9rem' }} />
-                            <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>{product.origin}</span>
+                        <span style={{ fontSize: '0.6rem', fontWeight: 800, opacity: 0.4, textTransform: 'uppercase', marginBottom: '2px' }}>Origin Port</span>
+                        <div className="flex items-center gap-1.5">
+                            <HiLocationMarker style={{ color: 'var(--primary)', fontSize: '0.8rem' }} />
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>{product.origin}</span>
                         </div>
                     </div>
-                    <div className="flex flex-col border-l border-white/5 pl-4">
-                        <span style={{ fontSize: '0.65rem', fontWeight: 800, opacity: 0.4, textTransform: 'uppercase', marginBottom: '4px' }}>Vol Available</span>
-                        <div className="flex items-center gap-2">
-                            <HiInbox style={{ color: 'var(--secondary)', fontSize: '0.9rem' }} />
-                            <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>{product.quantity}</span>
+                    <div className="flex flex-col border-l border-white/5 pl-3">
+                        <span style={{ fontSize: '0.6rem', fontWeight: 800, opacity: 0.4, textTransform: 'uppercase', marginBottom: '2px' }}>Vol Available</span>
+                        <div className="flex items-center gap-1.5">
+                            <HiInbox style={{ color: 'var(--secondary)', fontSize: '0.8rem' }} />
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>{product.quantity}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Interactive CTA */}
                 <motion.button
-                    onClick={() => navigate(`/product/${product._id}`)}
+                    onClick={() => navigate(`/products/${product._id}`)}
                     whileHover={{ x: 5 }}
                     style={{
                         marginTop: 'auto',
@@ -129,8 +129,8 @@ const ProductCard = ({ product }) => {
                         color: 'var(--primary)',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.75rem',
-                        fontSize: '1rem',
+                        gap: '0.5rem',
+                        fontSize: '0.85rem',
                         fontWeight: 900,
                         cursor: 'pointer',
                         padding: 0

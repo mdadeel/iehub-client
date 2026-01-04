@@ -86,8 +86,8 @@ const DashboardLayout = () => {
             </aside>
 
             {/* Content Area */}
-            <main style={{ flex: 1, padding: '3rem 4rem', background: 'var(--bg-subtle-light)', overflowY: 'auto' }}>
-                <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <main style={{ flex: 1, padding: '2rem 3rem', background: 'var(--bg-subtle-light)', overflowY: 'auto' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <Outlet />
                 </div>
             </main>
