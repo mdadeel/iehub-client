@@ -1,8 +1,40 @@
 import { useAuth } from '../hooks/useAuth';
 import { HiTrendingUp, HiUserGroup, HiArchive, HiCurrencyDollar } from 'react-icons/hi';
+import { useState, useEffect } from 'react';
 
 const DashboardPage = () => {
     const { user } = useAuth();
+    const [error, setError] = useState(null);
+
+    // Add error boundary effect to catch potential rendering errors
+    useEffect(() => {
+        try {
+            // Basic check to ensure component can render
+            if (typeof user === 'undefined') {
+                console.warn('User object is undefined in DashboardPage');
+            }
+        } catch (err) {
+            setError(err.message);
+            console.error('Error in DashboardPage:', err);
+        }
+    }, [user]);
+
+    // If there's an error, show a simple error message
+    if (error) {
+        return (
+            <div className="container" style={{ padding: '2rem 0', textAlign: 'center' }}>
+                <h2>Error loading dashboard</h2>
+                <p>Please try refreshing the page or contact support if the issue persists.</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="btn"
+                    style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
+                >
+                    Refresh Page
+                </button>
+            </div>
+        );
+    }
 
     const stats = [
         { title: "Total Imports", value: "24", icon: <HiArchive />, color: "#3b82f6" },
@@ -13,7 +45,7 @@ const DashboardPage = () => {
 
     return (
         <div className="container" style={{ padding: '2rem 0' }}>
-            <h1 style={{ marginBottom: '2rem' }}>Welcome, {user?.displayName || 'User'}</h1>
+            <h1 style={{ marginBottom: '2rem' }}>Welcome, {user?.displayName || user?.email || 'User'}</h1>
 
             {/* Stats Cards */}
             <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
@@ -50,7 +82,7 @@ const DashboardPage = () => {
                             background: 'conic-gradient(var(--primary) 0% 40%, var(--secondary) 40% 70%, #f59e0b 70% 90%, #8b5cf6 90% 100%)',
                             position: 'relative'
                         }}>
-                            <div style={{ position: 'absolute', inset: '40px', background: 'var(--bg-dark)', borderRadius: '50%' }}></div>
+                            <div style={{ position: 'absolute', inset: '40px', background: 'var(--bg-card)', borderRadius: '50%' }}></div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +93,7 @@ const DashboardPage = () => {
                 <h3 style={{ marginBottom: '1.5rem' }}>Recent Transactions</h3>
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
-                        <tr style={{ borderBottom: '1px solid #ddd' }}>
+                        <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                             <th style={{ padding: '1rem 0.5rem' }}>Product</th>
                             <th style={{ padding: '1rem 0.5rem' }}>Type</th>
                             <th style={{ padding: '1rem 0.5rem' }}>Date</th>
@@ -70,7 +102,7 @@ const DashboardPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style={{ borderBottom: '1px solid #eee' }}>
+                        <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                             <td style={{ padding: '1rem 0.5rem' }}>Ceylon Cinnamon</td>
                             <td style={{ padding: '1rem 0.5rem' }}><span style={{ color: '#10b981' }}>Export</span></td>
                             <td style={{ padding: '1rem 0.5rem' }}>Jan 04, 2026</td>
@@ -89,8 +121,6 @@ const DashboardPage = () => {
             </div>
 
             <style>{`
-        .dark table { color: white; }
-        .dark tr { border-color: #334155 !important; }
         .dark span[style*="background: #ecfdf5"] { background: #064e3b; color: #6ee7b7; }
         .dark span[style*="background: #fef3c7"] { background: #451a03; color: #fbbf24; }
       `}</style>

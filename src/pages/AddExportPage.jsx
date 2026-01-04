@@ -148,10 +148,6 @@ const AddExportPage = () => {
                     </button>
                 </form>
             </div>
-            <style>{`
-        .dark .card { background: var(--bg-subtle-dark); color: white; }
-        .dark input, .dark select, .dark textarea { background: #1e293b; color: white; border-color: #334155 !important; }
-      `}</style>
         </div>
     );
 };

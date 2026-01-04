@@ -1,14 +1,47 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { HiHome, HiPlusCircle, HiArrowDown, HiArrowUp, HiUser, HiChartPie } from 'react-icons/hi';
+import { HiHome, HiPlusCircle, HiArrowDown, HiArrowUp, HiUser, HiChartBar } from 'react-icons/hi';
+import { useState, useEffect } from 'react';
 
 const DashboardLayout = () => {
+    const [error, setError] = useState(null);
+
     const menuItems = [
-        { title: 'Overview', path: '/dashboard', icon: <HiChartPie /> },
+        { title: 'Overview', path: '/dashboard', icon: <HiChartBar /> },
         { title: 'Add Export', path: '/dashboard/add-export', icon: <HiPlusCircle /> },
         { title: 'My Exports', path: '/dashboard/my-exports', icon: <HiArrowUp /> },
         { title: 'My Imports', path: '/dashboard/my-imports', icon: <HiArrowDown /> },
         { title: 'Profile', path: '/dashboard/profile', icon: <HiUser /> },
     ];
+
+    useEffect(() => {
+        try {
+            // Verify that menuItems are properly defined
+            if (!menuItems || menuItems.length === 0) {
+                console.error('Menu items are not properly defined');
+            }
+        } catch (err) {
+            setError(err.message);
+            console.error('Error in DashboardLayout:', err);
+        }
+    }, []);
+
+    if (error) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
+                <div>
+                    <h2>Dashboard Layout Error</h2>
+                    <p>There was an issue with the dashboard layout.</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="btn"
+                        style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
+                    >
+                        Refresh Page
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex" style={{ minHeight: 'calc(100vh - 80px)' }}>
@@ -29,7 +62,7 @@ const DashboardLayout = () => {
                             key={item.path}
                             to={item.path}
                             end={item.path === '/dashboard'}
-                            className="btn"
+                            className={({ isActive }) => `btn ${isActive ? 'active' : ''}`}
                             style={({ isActive }) => ({
                                 background: isActive ? 'var(--primary)' : 'transparent',
                                 color: isActive ? 'white' : 'inherit',
@@ -41,8 +74,12 @@ const DashboardLayout = () => {
                                 boxShadow: isActive ? '0 4px 12px rgba(37, 99, 235, 0.2)' : 'none'
                             })}
                         >
-                            <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: isActive ? '600' : '500' }}>{item.title}</span>
+                            {({ isActive }) => (
+                                <>
+                                    <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                                    <span style={{ fontSize: '0.95rem', fontWeight: isActive ? '600' : '500' }}>{item.title}</span>
+                                </>
+                            )}
                         </NavLink>
                     ))}
                 </div>
@@ -58,7 +95,7 @@ const DashboardLayout = () => {
             <style>{`
                 body.dark aside { background: var(--bg-subtle-dark); border-color: var(--border-dark); }
                 body.dark main { background: var(--bg-dark); }
-                
+
                 @media (max-width: 1024px) {
                     aside { width: 240px; }
                     main { padding: 2rem; }
@@ -71,6 +108,10 @@ const DashboardLayout = () => {
                 .btn:hover {
                     background: var(--border-light);
                     color: var(--primary);
+                }
+                .btn.active {
+                    background: var(--primary);
+                    color: white;
                 }
                 .dark .btn:hover {
                     background: var(--bg-subtle-dark);

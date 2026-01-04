@@ -43,8 +43,9 @@ function App() {
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
 
-        {/* Public Routes (Wrapped in MainLayout) */}
+        {/* Main Application Routes (Wrapped in MainLayout) */}
         <Route element={<MainLayout />}>
+          {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -52,16 +53,18 @@ function App() {
           <Route path="/products/:id" element={<ProductDetailsPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
-        </Route>
 
-        {/* User Dashboard Routes (Wrapped in DashboardLayout) */}
-        <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
-          <Route index element={<DashboardPage />} />
-          <Route path="stats" element={<DashboardPage />} /> {/* Alias for index */}
-          <Route path="add-export" element={<AddExportPage />} />
-          <Route path="my-exports" element={<MyExportsPage />} />
-          <Route path="my-imports" element={<MyImportsPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          {/* User Dashboard Routes (Protected) */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route index element={<DashboardPage />} />
+              <Route path="stats" element={<DashboardPage />} />
+              <Route path="add-export" element={<AddExportPage />} />
+              <Route path="my-exports" element={<MyExportsPage />} />
+              <Route path="my-imports" element={<MyImportsPage />} />
+              <Route path="profile" element={<ProfilePage />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </div>

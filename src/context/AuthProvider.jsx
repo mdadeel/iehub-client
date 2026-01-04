@@ -53,11 +53,26 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        // Safety timeout in case Firebase fails to respond
+        const timeoutId = setTimeout(() => {
+            setLoading((currentLoading) => {
+                if (currentLoading) {
+                    console.warn("Auth check timed out - forcing loading to false");
+                    return false;
+                }
+                return currentLoading;
+            });
+        }, 5000);
+
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             setLoading(false);
+            clearTimeout(timeoutId);
         });
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+            clearTimeout(timeoutId);
+        };
     }, []);
 
     const value = {

@@ -43,7 +43,7 @@ const ProfilePage = () => {
                     </div>
 
                     <div style={{ marginTop: '3rem' }}>
-                        <h3 style={{ borderBottom: '1px solid #eee', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Account Information</h3>
+                        <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Account Information</h3>
 
                         {editing ? (
                             <form onSubmit={handleUpdate} className="flex flex-col gap-4">
@@ -53,7 +53,7 @@ const ProfilePage = () => {
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                                        style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                                     />
                                 </div>
                                 <div className="flex flex-col gap-1">
@@ -62,7 +62,7 @@ const ProfilePage = () => {
                                         type="url"
                                         value={photo}
                                         onChange={(e) => setPhoto(e.target.value)}
-                                        style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                                        style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary" style={{ width: '200px', marginTop: '1rem' }}>Save Changes</button>
@@ -86,11 +86,6 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
-            <style>{`
-        .dark .card { background: var(--bg-subtle-dark); color: white; }
-        .dark h3 { border-color: #334155 !important; }
-        .dark input { background: #1e293b; color: white; border-color: #334155 !important; }
-      `}</style>
         </div>
     );
 };
