@@ -1,8 +1,9 @@
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import ProductCard from '../components/ProductCard';
 import api from '../utils/api';
-import { HiSearch, HiFilter, HiSortAscending } from 'react-icons/hi';
 import toast from 'react-hot-toast';
+import { HiSearch, HiFilter, HiSortAscending } from 'react-icons/hi';
+import ProductCard from '../components/ProductCard';
 
 const AllProductsPage = () => {
     const [products, setProducts] = useState([]);
@@ -11,127 +12,210 @@ const AllProductsPage = () => {
     const [category, setCategory] = useState('All');
     const [sortBy, setSortBy] = useState('name');
 
-    // Hardcoded categories to ensure they appear even if DB is empty initially
     const categories = ['All', 'Spices', 'Textiles', 'Beverages', 'Food', 'Eco-Friendly', 'Fashion', 'Tech', 'Other'];
 
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const params = {
-                    search: searchTerm,
-                    category: category,
-                    sort: sortBy
-                };
+                const params = { search: searchTerm, category, sort: sortBy };
                 const { data } = await api.get('/products', { params });
                 setProducts(data);
             } catch (error) {
                 console.error("Failed to fetch products", error);
-                toast.error("Failed to load products");
+                toast.error("Telemetry error: Global market sync failed.");
             } finally {
                 setLoading(false);
             }
         };
 
-        // Debounce search slightly to avoid too many requests
-        const timeoutId = setTimeout(() => {
-            fetchProducts();
-        }, 300);
-
+        const timeoutId = setTimeout(fetchProducts, 400);
         return () => clearTimeout(timeoutId);
     }, [searchTerm, category, sortBy]);
 
     return (
-        <div className="container" style={{ paddingBottom: '4rem' }}>
-            <section style={{ paddingBottom: '2rem' }}>
-                <h1 className="section-title">Global <span style={{ color: 'var(--secondary)' }}>Product Marketplace</span></h1>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="container"
+            style={{ paddingBottom: '6rem', paddingTop: '160px' }}
+        >
+            <section>
+                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+                    <motion.h1
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-2px' }}
+                    >
+                        Global <span style={{ color: 'var(--primary)' }}>Marketplace</span>
+                    </motion.h1>
+                    <p style={{ opacity: 0.5, fontSize: '1.2rem', fontWeight: 600 }}>Sourcing premium assets from verified international sectors.</p>
+                </div>
 
-                {/* Search and Filters Bar */}
-                <div className="card" style={{ padding: '1.5rem', marginBottom: '3rem' }}>
+                {/* Glass Filter Bar */}
+                <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="card"
+                    style={{
+                        padding: '2.5rem',
+                        marginBottom: '5rem',
+                        background: 'var(--bg-glass)',
+                        backdropFilter: 'blur(30px)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '32px',
+                        boxShadow: 'var(--shadow-lg)'
+                    }}
+                >
                     <div className="grid" style={{
                         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '1.5rem',
+                        gap: '2.5rem',
                         alignItems: 'end'
                     }}>
-                        {/* Search */}
-                        <div className="flex flex-col gap-1">
-                            <label style={{ fontWeight: 600, fontSize: '0.9rem' }}><HiSearch /> Search Products</label>
+                        <div className="flex flex-col gap-3">
+                            <label style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1.5px', opacity: 0.4 }}>
+                                <HiSearch style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Identification
+                            </label>
                             <input
                                 type="text"
-                                placeholder="Ex: Cinnamon..."
+                                placeholder="Search products or origin..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                                className="market-input"
                             />
                         </div>
 
-                        {/* Filter */}
-                        <div className="flex flex-col gap-1">
-                            <label style={{ fontWeight: 600, fontSize: '0.9rem' }}><HiFilter /> Category</label>
+                        <div className="flex flex-col gap-3">
+                            <label style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1.5px', opacity: 0.4 }}>
+                                <HiFilter style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Classification
+                            </label>
                             <select
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
-                                style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                                className="market-select"
                             >
                                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
                         </div>
 
-                        {/* Sort */}
-                        <div className="flex flex-col gap-1">
-                            <label style={{ fontWeight: 600, fontSize: '0.9rem' }}><HiSortAscending /> Sort By</label>
+                        <div className="flex flex-col gap-3">
+                            <label style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1.5px', opacity: 0.4 }}>
+                                <HiSortAscending style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Telemetry Sort
+                            </label>
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                                className="market-select"
                             >
-                                <option value="name">Name (A-Z)</option>
-                                <option value="price-low">Price (Low to High)</option>
-                                <option value="price-high">Price (High to Low)</option>
-                                <option value="rating">Top Rated</option>
+                                <option value="name">Product Name (A-Z)</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="rating">Highest Rated</option>
                             </select>
                         </div>
                     </div>
+                </motion.div>
+
+                <div className="flex justify-between items-center" style={{ marginBottom: '3rem' }}>
+                    <div style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--primary)', letterSpacing: '-0.5px' }}>
+                        {products.length} Opportunities Verified
+                    </div>
                 </div>
 
-                {/* Results Info */}
-                <p style={{ marginBottom: '1.5rem', fontWeight: 600, opacity: 0.7 }}>
-                    {loading ? 'Search products...' : `Showing ${products.length} products`}
-                </p>
-
-                {/* Products Grid */}
-                {loading ? (
-                    <div style={{ textAlign: 'center', padding: '4rem' }}>Loading...</div>
-                ) : (
-                    <div className="grid" style={{
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                        gap: '2rem'
-                    }}>
-                        {products.map(product => (
-                            <ProductCard key={product._id || product.id} product={product} />
-                        ))}
-                    </div>
-                )}
-
-                {!loading && products.length === 0 && (
-                    <div style={{ textAlign: 'center', padding: '4rem' }}>
-                        <h2>No products found matching your criteria.</h2>
-                        <button className="btn btn-secondary" style={{ marginTop: '1rem' }} onClick={() => {
-                            setSearchTerm('');
-                            setCategory('All');
-                        }}>Reset Filters</button>
-                    </div>
-                )}
+                <AnimatePresence mode="wait">
+                    {loading ? (
+                        <motion.div
+                            key="loading"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            style={{ textAlign: 'center', padding: '10rem 0' }}
+                        >
+                            <div className="spinner"></div>
+                            <p style={{ marginTop: '1.5rem', opacity: 0.4, fontWeight: 600 }}>Synchronizing global inventory...</p>
+                        </motion.div>
+                    ) : products.length > 0 ? (
+                        <motion.div
+                            key="grid"
+                            className="grid"
+                            style={{
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                                gap: '3rem'
+                            }}
+                        >
+                            {products.map((product, index) => (
+                                <motion.div
+                                    key={product._id || product.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.05 }}
+                                >
+                                    <ProductCard product={product} />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="empty"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            style={{ textAlign: 'center', padding: '10rem 0' }}
+                        >
+                            <HiSearch size={80} style={{ opacity: 0.05, marginBottom: '2rem' }} />
+                            <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '1rem' }}>Zero Signals Detected</h2>
+                            <p style={{ opacity: 0.4, marginBottom: '2.5rem', fontWeight: 600 }}>Modify your identification parameters to discover verified assets.</p>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="btn btn-primary"
+                                onClick={() => { setSearchTerm(''); setCategory('All'); }}
+                                style={{ padding: '1rem 2.5rem', fontWeight: 800 }}
+                            >
+                                RESET ALL PARAMETERS
+                            </motion.button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </section>
 
             <style>{`
-        .dark select, .dark input { 
-          background: #1e293b; 
-          color: white; 
-          border-color: #334155 !important; 
-        }
-      `}</style>
-        </div>
+                .market-input, .market-select {
+                    padding: 1.1rem 1.4rem;
+                    border-radius: 16px;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-color);
+                    color: var(--text-body);
+                    outline: none;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                .market-input:focus, .market-select:focus { 
+                    border-color: var(--primary); 
+                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+                    background: var(--bg-inset);
+                }
+                .market-select {
+                    appearance: none;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.3)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: right 1.25rem center;
+                    background-size: 1.25rem;
+                }
+                .spinner {
+                    width: 48px;
+                    height: 48px;
+                    border: 4px solid var(--border-color);
+                    border-top: 4px solid var(--primary);
+                    border-radius: 50%;
+                    animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+                    margin: 0 auto;
+                }
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            `}</style>
+        </motion.div>
     );
 };
 

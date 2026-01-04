@@ -1,7 +1,31 @@
 import Hero from '../components/Hero';
 import LatestProducts from '../components/LatestProducts';
-import { HiLightningBolt, HiShieldCheck, HiGlobeAlt, HiChartBar, HiChevronDown } from 'react-icons/hi';
-import { useState } from 'react';
+import { HiLightningBolt, HiShieldCheck, HiGlobeAlt, HiChartBar } from 'react-icons/hi';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+const SectionHeader = ({ title, highlight, subtitle }) => (
+    <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+        <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-2.5px' }}
+        >
+            {title} <span style={{ color: 'var(--primary)' }}>{highlight}</span>
+        </motion.h2>
+        {subtitle && (
+            <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                style={{ opacity: 0.5, maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', fontWeight: 600, lineHeight: 1.6 }}
+            >
+                {subtitle}
+            </motion.p>
+        )}
+    </div>
+);
 
 const Features = () => {
     const features = [
@@ -14,14 +38,19 @@ const Features = () => {
     return (
         <section style={{ background: 'var(--bg-surface)' }}>
             <div className="container">
-                <h2 className="section-title">Why Choose <span style={{ color: 'var(--primary)' }}>ExportHub?</span></h2>
+                <SectionHeader title="Why Choose" highlight="ExportHub?" subtitle="We provide the tools you need to succeed in the international marketplace." />
                 <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem' }}>
                     {features.map((f, i) => (
-                        <div key={i} className="card" style={{ padding: '2rem', textAlign: 'center' }}>
-                            <div style={{ fontSize: '3rem', color: 'var(--secondary)', marginBottom: '1rem' }}>{f.icon}</div>
-                            <h3 style={{ marginBottom: '1rem' }}>{f.title}</h3>
-                            <p style={{ opacity: 0.8 }}>{f.desc}</p>
-                        </div>
+                        <motion.div
+                            key={i}
+                            whileHover={{ y: -5 }}
+                            className="card"
+                            style={{ padding: '2.5rem', textAlign: 'center', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
+                        >
+                            <div style={{ fontSize: '3rem', color: 'var(--primary)', marginBottom: '1.5rem', opacity: 0.8 }}>{f.icon}</div>
+                            <h3 style={{ marginBottom: '1rem', fontWeight: 700 }}>{f.title}</h3>
+                            <p style={{ opacity: 0.7, fontSize: '0.95rem', lineHeight: 1.6 }}>{f.desc}</p>
+                        </motion.div>
                     ))}
                 </div>
             </div>
@@ -38,13 +67,19 @@ const Stats = () => {
     ];
 
     return (
-        <section style={{ background: 'var(--primary)', color: 'white' }}>
-            <div className="container grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', textAlign: 'center' }}>
+        <section style={{ background: 'var(--bg-dark)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, var(--primary-dark), transparent)', opacity: 0.3 }}></div>
+            <div className="container grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '4rem', textAlign: 'center', position: 'relative', zIndex: 1 }}>
                 {stats.map((s, i) => (
-                    <div key={i}>
-                        <div style={{ fontSize: '3rem', fontWeight: 800, color: 'var(--secondary)' }}>{s.value}</div>
-                        <div style={{ fontSize: '1.2rem', opacity: 0.9 }}>{s.label}</div>
-                    </div>
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                    >
+                        <div style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--secondary)', marginBottom: '0.5rem' }}>{s.value}</div>
+                        <div style={{ fontSize: '1rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>{s.label}</div>
+                    </motion.div>
                 ))}
             </div>
         </section>
@@ -62,23 +97,33 @@ const HowItWorks = () => {
     return (
         <section>
             <div className="container">
-                <h2 className="section-title">How It <span style={{ color: 'var(--secondary)' }}>Works</span></h2>
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem' }}>
+                <SectionHeader title="Streamlined" highlight="Workflow" subtitle="Getting started with global trade has never been easier." />
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '4rem' }}>
                     {steps.map((s, i) => (
-                        <div key={i} style={{ textAlign: 'center', position: 'relative' }}>
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            style={{ textAlign: 'center', position: 'relative' }}
+                        >
                             <div style={{
-                                fontSize: '4rem',
+                                fontSize: '6rem',
                                 fontWeight: 900,
+                                background: 'linear-gradient(to bottom, var(--primary), transparent)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
                                 opacity: 0.1,
                                 position: 'absolute',
-                                top: '-20px',
+                                top: '-40px',
                                 left: '50%',
                                 transform: 'translateX(-50%)',
                                 zIndex: -1
                             }}>{s.num}</div>
-                            <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>{s.title}</h3>
-                            <p style={{ opacity: 0.8 }}>{s.desc}</p>
-                        </div>
+                            <h3 style={{ marginBottom: '1rem', color: 'var(--text-body)', fontWeight: 700 }}>{s.title}</h3>
+                            <p style={{ opacity: 0.7, lineHeight: 1.6 }}>{s.desc}</p>
+                        </motion.div>
                     ))}
                 </div>
             </div>
@@ -96,68 +141,25 @@ const Testimonials = () => {
     return (
         <section style={{ background: 'var(--bg-surface)' }}>
             <div className="container">
-                <h2 className="section-title">What Our <span style={{ color: 'var(--primary)' }}>Partners Say</span></h2>
+                <SectionHeader title="Trusted by" highlight="Global Leaders" />
                 <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                     {reviews.map((r, i) => (
-                        <div key={i} className="card" style={{ padding: '2rem', fontStyle: 'italic' }}>
-                            <p style={{ marginBottom: '1.5rem' }}>"{r.text}"</p>
-                            <div style={{ fontWeight: 700, color: 'var(--primary)' }}>{r.name}</div>
-                            <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>{r.role}</div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
-const Newsletter = () => {
-    return (
-        <section style={{ background: 'var(--bg-subtle-dark)', color: 'white' }}>
-            <div className="container" style={{ textAlign: 'center' }}>
-                <h2 className="section-title" style={{ color: 'white' }}>Stay <span style={{ color: 'var(--secondary)' }}>Updated</span></h2>
-                <p style={{ marginBottom: '2rem' }}>Subscribe for global trade insights and latest product alerts.</p>
-                <div className="flex justify-center" style={{ maxWidth: '500px', margin: '0 auto', gap: 0 }}>
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                        style={{
-                            flex: 1,
-                            padding: '1rem',
-                            borderRadius: 'var(--radius-md) 0 0 var(--radius-md)',
-                            border: 'none',
-                            outline: 'none'
-                        }}
-                    />
-                    <button className="btn btn-secondary" style={{ borderRadius: '0 var(--radius-md) var(--radius-md) 0', padding: '0 2rem' }}>
-                        Subscribe
-                    </button>
-                </div>
-            </div>
-        </section>
-    );
-};
-
-const FAQ = () => {
-    const [active, setActive] = useState(0);
-    const faqs = [
-        { q: "How do I start exporting?", a: "Register as an exporter, complete your profile, and start adding your products to our global catalog." },
-        { q: "What are the import limits?", a: "Import quantity cannot exceed the available exported quantity listed on the product details page." },
-        { q: "Is ExportHub secure?", a: "Yes, we use industry-standard encryption and verified user roles to ensure safe global trading." },
-    ];
-
-    return (
-        <section>
-            <div className="container" style={{ maxWidth: '800px' }}>
-                <h2 className="section-title">Frequently Asked <span style={{ color: 'var(--primary)' }}>Questions</span></h2>
-                <div className="flex flex-col gap-4">
-                    {faqs.map((f, i) => (
-                        <div key={i} className="card" style={{ padding: '1rem' }} onClick={() => setActive(i)}>
-                            <div className="flex justify-between items-center" style={{ cursor: 'pointer', fontWeight: 600 }}>
-                                {f.q} <HiChevronDown style={{ transform: active === i ? 'rotate(180deg)' : 'none', transition: '0.3s' }} />
+                        <motion.div
+                            key={i}
+                            whileHover={{ scale: 1.02 }}
+                            className="card"
+                            style={{ padding: '2.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
+                        >
+                            <div style={{ color: 'var(--primary)', fontSize: '2rem', marginBottom: '1rem' }}>"</div>
+                            <p style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9 }}>{r.text}</p>
+                            <div className="flex items-center gap-3">
+                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>{r.name[0]}</div>
+                                <div>
+                                    <div style={{ fontWeight: 700 }}>{r.name}</div>
+                                    <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>{r.role}</div>
+                                </div>
                             </div>
-                            {active === i && <p style={{ marginTop: '1rem', opacity: 0.8 }}>{f.a}</p>}
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
@@ -165,46 +167,59 @@ const FAQ = () => {
     );
 };
 
-const CategoriesList = () => {
-    const cats = ["Electronics", "Textiles", "Spices", "Fashion", "Handicrafts", "Automotive"];
-    return (
-        <section style={{ background: 'var(--bg-surface)' }}>
-            <div className="container">
-                <h2 className="section-title">Top <span style={{ color: 'var(--primary)' }}>Categories</span></h2>
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
-                    {cats.map((c, i) => (
-                        <div key={i} className="card" style={{ padding: '1.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--primary)' }}>
-                            {c}
-                        </div>
-                    ))}
+const Newsletter = () => (
+    <section>
+        <div className="container">
+            <div className="card" style={{
+                background: 'var(--bg-dark)', color: 'white', padding: '4rem 2rem', textAlign: 'center',
+                borderRadius: 'var(--radius-lg)', overflow: 'hidden', position: 'relative'
+            }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, var(--primary) 0%, transparent 100%)', opacity: 0.2 }}></div>
+                <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px', margin: '0 auto' }}>
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Stay Informed</h2>
+                    <p style={{ opacity: 0.7, marginBottom: '2.5rem' }}>Subscribe to get the latest trade opportunities and market insights.</p>
+                    <div className="flex" style={{ gap: '1rem' }}>
+                        <input
+                            type="email"
+                            placeholder="your@email.com"
+                            style={{ flex: 1, padding: '1rem 1.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                        />
+                        <button className="btn btn-primary" style={{ padding: '0 2.5rem' }}>Subscribe</button>
+                    </div>
                 </div>
             </div>
-        </section>
-    );
-};
+        </div>
+    </section>
+);
 
 const HomePage = () => {
     return (
-        <div>
-            <div className="container" style={{ paddingTop: '120px' }}>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
+            <div className="container" style={{ paddingTop: '160px' }}>
                 <Hero />
             </div>
             <LatestProducts />
-            <HowItWorks />
-            <CategoriesList />
-            <Features />
             <Stats />
-            <FAQ />
+            <HowItWorks />
+            <Features />
             <Testimonials />
             <Newsletter />
-            <section>
-                <div className="container" style={{ textAlign: 'center' }}>
-                    <h2 className="section-title">Ready to Start Exporting?</h2>
-                    <p style={{ marginBottom: '2rem', fontSize: '1.2rem' }}>Join thousands of businesses expanding their reach today.</p>
-                    <button className="btn btn-primary" style={{ padding: '1rem 3rem' }}>Create Free Account</button>
+
+            <section style={{ background: 'var(--bg-surface)' }}>
+                <div className="container" style={{ textAlign: 'center', padding: '6rem 0' }}>
+                    <h2 style={{ fontSize: '4rem', fontWeight: 900, marginBottom: '1.5rem', letterSpacing: '-3px' }}>Start Your Trade <span style={{ color: 'var(--primary)' }}>Journey</span></h2>
+                    <p style={{ opacity: 0.5, marginBottom: '4rem', fontSize: '1.4rem', fontWeight: 600 }}>Connect with a worldwide network of trusted business partners.</p>
+                    <div className="flex justify-center gap-4">
+                        <Link to="/register" className="btn btn-primary" style={{ padding: '1.2rem 3rem' }}>Create Account</Link>
+                        <Link to="/about" className="btn" style={{ border: '1px solid var(--border-color)', padding: '1.2rem 3rem' }}>Learn More</Link>
+                    </div>
                 </div>
             </section>
-        </div>
+        </motion.div>
     );
 };
 

@@ -1,74 +1,163 @@
 import { useNavigate } from 'react-router-dom';
-import { HiStar, HiLocationMarker, HiInbox } from 'react-icons/hi';
+import { HiStar, HiLocationMarker, HiInbox, HiChevronRight, HiArrowRight } from 'react-icons/hi';
+import { motion } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
     const navigate = useNavigate();
 
     return (
-        <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ height: '200px', overflow: 'hidden' }}>
-                <img
-                    src={product.image}
-                    alt={product.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -12 }}
+            className="premium-product-card"
+            style={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: '32px',
+                overflow: 'hidden',
+                background: 'var(--bg-glass)',
+                backdropFilter: 'blur(40px)',
+                border: '1px solid var(--border-color)',
+                position: 'relative',
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+        >
+            {/* Category Badge - Luxury Style */}
+            <div style={{
+                position: 'absolute',
+                top: '1.5rem',
+                left: '1.5rem',
+                zIndex: 10,
+                background: 'var(--primary)',
+                color: 'white',
+                padding: '0.4rem 1rem',
+                borderRadius: '12px',
+                fontSize: '0.7rem',
+                fontWeight: 900,
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                boxShadow: '0 8px 16px rgba(37, 99, 235, 0.3)'
+            }}>
+                {product.category}
             </div>
 
-            <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div className="flex justify-between items-start" style={{ marginBottom: '0.5rem' }}>
-                    <h3 style={{ fontSize: '1.25rem', color: 'var(--primary)' }}>{product.name}</h3>
-                    <span style={{
-                        background: 'var(--bg-subtle-light)',
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '0.8rem',
-                        fontWeight: 600,
-                        color: 'var(--primary)'
+            {/* Image Section with Depth */}
+            <div style={{ position: 'relative', height: '260px', overflow: 'hidden', margin: '12px', borderRadius: '24px' }}>
+                <motion.img
+                    src={product.image}
+                    alt={product.name}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ duration: 0.8 }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)',
+                    pointerEvents: 'none'
+                }}></div>
+
+                {/* Product Price Floating on Image */}
+                <div style={{
+                    position: 'absolute',
+                    bottom: '1.5rem',
+                    left: '1.5rem',
+                    color: 'white'
+                }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 800, opacity: 0.6, textTransform: 'uppercase', marginBottom: '-5px' }}>Unit Value</div>
+                    <div style={{ fontSize: '1.8rem', fontWeight: 900 }}>${product.price.toLocaleString()}</div>
+                </div>
+            </div>
+
+            {/* Content Section */}
+            <div style={{ padding: '1.5rem 2rem 2.5rem 2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{
+                        fontSize: '1.5rem',
+                        fontWeight: 900,
+                        marginBottom: '0.75rem',
+                        letterSpacing: '-0.5px',
+                        lineHeight: 1.2
                     }}>
-                        {product.category}
-                    </span>
-                </div>
-
-                <div className="flex items-center gap-1" style={{ marginBottom: '1rem', color: '#ffc107' }}>
-                    <HiStar />
-                    <span className="text-muted" style={{ fontSize: '0.9rem' }}>{product.rating}</span>
-                </div>
-
-                <div className="flex flex-col gap-2" style={{ marginBottom: '1.5rem', fontSize: '0.9rem' }}>
-                    <div className="flex items-center gap-2 text-muted">
-                        <HiLocationMarker style={{ color: 'var(--secondary)' }} />
-                        <span>Origin: {product.origin}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted">
-                        <HiInbox style={{ color: 'var(--accent)' }} />
-                        <span>Quantity: {product.quantity} units</span>
+                        {product.name}
+                    </h3>
+                    <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                            <HiStar key={i} style={{ color: i < Math.floor(product.rating) ? 'var(--secondary)' : 'rgba(255,255,255,0.1)', fontSize: '1rem' }} />
+                        ))}
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center" style={{ marginTop: 'auto' }}>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--primary)' }}>
-                        ${product.price.toFixed(2)}
-                    </span>
-                    <button
-                        onClick={() => navigate(`/product/${product._id}`)}
-                        className="btn btn-primary"
-                        style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
-                    >
-                        See Details
-                    </button>
+                {/* Technical Specs Inset */}
+                <div style={{
+                    background: 'var(--bg-inset)',
+                    padding: '1.25rem',
+                    borderRadius: '20px',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '1rem',
+                    marginBottom: '2rem',
+                    border: '1px solid rgba(255,255,255,0.03)'
+                }}>
+                    <div className="flex flex-col">
+                        <span style={{ fontSize: '0.65rem', fontWeight: 800, opacity: 0.4, textTransform: 'uppercase', marginBottom: '4px' }}>Origin Port</span>
+                        <div className="flex items-center gap-2">
+                            <HiLocationMarker style={{ color: 'var(--primary)', fontSize: '0.9rem' }} />
+                            <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>{product.origin}</span>
+                        </div>
+                    </div>
+                    <div className="flex flex-col border-l border-white/5 pl-4">
+                        <span style={{ fontSize: '0.65rem', fontWeight: 800, opacity: 0.4, textTransform: 'uppercase', marginBottom: '4px' }}>Vol Available</span>
+                        <div className="flex items-center gap-2">
+                            <HiInbox style={{ color: 'var(--secondary)', fontSize: '0.9rem' }} />
+                            <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>{product.quantity}</span>
+                        </div>
+                    </div>
                 </div>
+
+                {/* Interactive CTA */}
+                <motion.button
+                    onClick={() => navigate(`/product/${product._id}`)}
+                    whileHover={{ x: 5 }}
+                    style={{
+                        marginTop: 'auto',
+                        background: 'transparent',
+                        border: 'none',
+                        color: 'var(--primary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        fontSize: '1rem',
+                        fontWeight: 900,
+                        cursor: 'pointer',
+                        padding: 0
+                    }}
+                >
+                    VIEW SPECIFICATIONS <HiArrowRight />
+                </motion.button>
             </div>
 
             <style>{`
-        .text-muted { color: var(--text-muted-light); }
-        .dark .text-muted { color: var(--text-muted-dark); }
-        .dark .card h3 { color: var(--secondary-light); }
-        .dark .card span[style*="background: var(--bg-subtle-light)"] { 
-          background: var(--bg-subtle-dark); 
-          color: var(--secondary);
-        }
-      `}</style>
-        </div>
+                .premium-product-card:hover { 
+                    border-color: var(--primary);
+                    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.3);
+                }
+                .premium-product-card:after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, var(--primary) 0%, transparent 100%);
+                    opacity: 0;
+                    transition: 0.5s;
+                    pointer-events: none;
+                    z-index: -1;
+                }
+                .premium-product-card:hover:after { opacity: 0.05; }
+            `}</style>
+        </motion.div>
     );
 };
 

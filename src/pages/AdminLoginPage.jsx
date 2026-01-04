@@ -14,10 +14,10 @@ const AdminLoginPage = () => {
 
         if (email === 'admin121@gmail.com' && password === 'admin121') {
             localStorage.setItem('isAdmin', 'true');
-            toast.success('Welcome back, Admin!');
+            toast.success('Central command authorized. Welcome, Admin.');
             navigate('/admin/dashboard');
         } else {
-            toast.error('Invalid credentials');
+            toast.error('Authorization failed. Access denied.');
         }
     };
 
@@ -27,81 +27,128 @@ const AdminLoginPage = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'var(--bg-dark)',
-            color: 'white'
+            background: 'radial-gradient(circle at center, #111827 0%, #030712 100%)',
+            color: 'white',
+            padding: '2rem'
         }}>
             <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="card"
                 style={{
                     width: '100%',
-                    maxWidth: '400px',
-                    padding: '3rem',
-                    background: 'rgba(255,255,255,0.05)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.1)'
+                    maxWidth: '440px',
+                    padding: '3.5rem',
+                    background: 'rgba(17, 24, 39, 0.7)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                    borderRadius: '24px',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}
             >
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <div style={{
-                        width: '60px', height: '60px',
-                        background: 'var(--primary)',
-                        borderRadius: '50%',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        margin: '0 auto 1rem',
-                        fontSize: '1.5rem'
-                    }}>
+                {/* Decorative Glow */}
+                <div style={{
+                    position: 'absolute',
+                    top: '-50px',
+                    right: '-50px',
+                    width: '150px',
+                    height: '150px',
+                    background: 'var(--primary)',
+                    filter: 'blur(80px)',
+                    opacity: 0.15,
+                    pointerEvents: 'none'
+                }} />
+
+                <div style={{ textAlign: 'center', marginBottom: '3rem', position: 'relative' }}>
+                    <motion.div
+                        initial={{ rotate: -20, opacity: 0 }}
+                        animate={{ rotate: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        style={{
+                            width: '72px', height: '72px',
+                            background: 'linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%)',
+                            borderRadius: '20px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            margin: '0 auto 1.5rem',
+                            fontSize: '2rem',
+                            boxShadow: '0 10px 20px -5px rgba(37, 99, 235, 0.5)'
+                        }}>
                         <HiLockClosed />
-                    </div>
-                    <h2>Admin Portal</h2>
-                    <p style={{ opacity: 0.6 }}>Secure Access Only</p>
+                    </motion.div>
+                    <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-0.5px' }}>Admin <span style={{ color: 'var(--primary)' }}>Portal</span></h2>
+                    <p style={{ opacity: 0.4, fontWeight: 600, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>High-Security Zone</p>
                 </div>
 
-                <form onSubmit={handleLogin} className="flex flex-col gap-4">
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Email</label>
+                <form onSubmit={handleLogin} className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-2">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '1.5px', marginLeft: '4px' }}>Security ID</label>
                         <input
                             type="email"
+                            placeholder="admin@enterprise.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            style={{
-                                width: '100%',
-                                padding: '0.8rem',
-                                borderRadius: 'var(--radius-sm)',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                background: 'rgba(0,0,0,0.2)',
-                                color: 'white'
-                            }}
+                            className="admin-input"
                         />
                     </div>
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Password</label>
+                    <div className="flex flex-col gap-2">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '1.5px', marginLeft: '4px' }}>Access Key</label>
                         <input
                             type="password"
+                            placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            style={{
-                                width: '100%',
-                                padding: '0.8rem',
-                                borderRadius: 'var(--radius-sm)',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                background: 'rgba(0,0,0,0.2)',
-                                color: 'white'
-                            }}
+                            className="admin-input"
                         />
                     </div>
-                    <button
+                    <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         type="submit"
                         className="btn btn-primary"
-                        style={{ marginTop: '1rem', justifyContent: 'center' }}
+                        style={{
+                            marginTop: '1.5rem',
+                            justifyContent: 'center',
+                            padding: '1.2rem',
+                            fontWeight: 900,
+                            letterSpacing: '1px',
+                            borderRadius: '14px',
+                            fontSize: '1rem'
+                        }}
                     >
-                        Access Dashboard
-                    </button>
+                        AUTHORIZE ACCESS
+                    </motion.button>
                 </form>
+
+                <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+                    <p style={{ fontSize: '0.8rem', opacity: 0.3, fontWeight: 500 }}>
+                        All sessions are logged and encrypted. <br />
+                        Unauthorized access attempts will be flagged.
+                    </p>
+                </div>
             </motion.div>
+
+            <style>{`
+                .admin-input {
+                    padding: 1.1rem 1.25rem;
+                    background: rgba(255, 255, 255, 0.03);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 14px;
+                    color: white;
+                    font-size: 1rem;
+                    outline: none;
+                    transition: all 0.3s ease;
+                }
+                .admin-input:focus {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-color: var(--primary);
+                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+                }
+            `}</style>
         </div>
     );
 };

@@ -1,58 +1,118 @@
-const AboutUsPage = () => {
-    return (
-        <div className="container" style={{ padding: '6rem 0' }}>
-            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                <h1 className="section-title">Our <span style={{ color: 'var(--primary)' }}>Story</span></h1>
-                <p style={{ fontSize: '1.2rem', opacity: 0.8, textAlign: 'center', marginBottom: '4rem' }}>
-                    Empowering global businesses to transcend borders through a seamless trade ecosystem.
-                </p>
+import { motion } from 'framer-motion';
+import { HiGlobeAlt, HiShieldCheck, HiTrendingUp, HiUsers } from 'react-icons/hi';
 
-                <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '4rem', marginBottom: '6rem' }}>
-                    <div>
-                        <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary)' }}>The Mission</h2>
-                        <p style={{ opacity: 0.8 }}>
-                            ExportHub was founded with a single goal: to simplify the complexities of international trade.
-                            We believe that every business, regardless of size, deserves access to global markets.
-                            Our platform bridges the gap between local exporters and international importers through
-                            advanced technology and a verified network.
-                        </p>
-                    </div>
-                    <div>
-                        <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary)' }}>Our Vision</h2>
-                        <p style={{ opacity: 0.8 }}>
-                            We envision a world where global trade is as effortless as local commerce.
-                            By fostering transparency, security, and efficiency, we aim to become the
-                            backbone of the digital global supply chain.
-                        </p>
-                    </div>
+const AboutUsPage = () => {
+    const stats = [
+        { label: "Global Reach", value: "150+", icon: <HiGlobeAlt />, desc: "Trading across borders seamlessly." },
+        { label: "Verified Supply", value: "10K+", icon: <HiShieldCheck />, desc: "Premium product catalog." },
+        { label: "Trusted Partners", value: "2.5K+", icon: <HiUsers />, desc: "Elite network of exporters." },
+        { label: "Trade Volume", value: "$45M+", icon: <HiTrendingUp />, desc: "Year-to-date transaction value." },
+    ];
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="container"
+            style={{ padding: '160px 0 120px 0' }}
+        >
+            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+                <div style={{ textAlign: 'center', marginBottom: '8rem' }}>
+                    <motion.h1
+                        initial={{ y: 30, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        style={{ fontSize: '5rem', fontWeight: 900, marginBottom: '1.5rem', letterSpacing: '-3px' }}
+                    >
+                        Our Digital <span style={{ color: 'var(--primary)' }}>Heritage</span>
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        style={{ fontSize: '1.4rem', opacity: 0.5, maxWidth: '800px', margin: '0 auto', lineHeight: 1.6, fontWeight: 600 }}
+                    >
+                        ExportHub is a sophisticated ecosystem designed to empower enterprises
+                        to transcend borders through verified technology and global trust.
+                    </motion.p>
                 </div>
 
-                <div className="card" style={{ padding: '3rem', textAlign: 'center', background: 'var(--bg-subtle-light)' }}>
-                    <h2 style={{ marginBottom: '2rem' }}>Global Reach in Numbers</h2>
-                    <div className="grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
-                        <div>
-                            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)' }}>150+</div>
-                            <div style={{ fontSize: '0.9rem', opacity: 0.6 }}>Countries</div>
+                <div className="grid" style={{ gridTemplateColumns: '1.2fr 0.8fr', gap: '8rem', marginBottom: '10rem', alignItems: 'center' }}>
+                    <motion.div
+                        initial={{ x: -40, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        viewport={{ once: true }}
+                    >
+                        <h2 style={{ fontSize: '3.5rem', marginBottom: '2rem', fontWeight: 900, letterSpacing: '-1.5px' }}>The Central <span style={{ color: 'var(--primary)' }}>Mission</span></h2>
+                        <p style={{ opacity: 0.6, fontSize: '1.2rem', lineHeight: 1.8, marginBottom: '2.5rem', fontWeight: 500 }}>
+                            Founded in 2024, ExportHub was architected to solve the multi-layered complexities of international logistics and sector verification.
+                            We believe transparency is the fundamental currency of global commerce.
+                        </p>
+                        <p style={{ opacity: 0.6, fontSize: '1.2rem', lineHeight: 1.8, fontWeight: 500 }}>
+                            Our infrastructure bridges the gap between artisan exporters and international corporate buyers
+                            through a highly automated, secure network that ensures every transaction is verified at the source.
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true }}
+                        style={{ position: 'relative' }}
+                    >
+                        <div style={{
+                            width: '100%',
+                            aspectRatio: '1',
+                            background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+                            borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
+                            opacity: 0.15,
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            zIndex: -1,
+                            filter: 'blur(40px)'
+                        }}></div>
+                        <div style={{
+                            padding: '4rem',
+                            background: 'var(--bg-glass)',
+                            backdropFilter: 'blur(20px)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '40px',
+                            textAlign: 'center',
+                            boxShadow: 'var(--shadow-lg)'
+                        }}>
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: '1rem', fontWeight: 900 }}>Global Vision</h3>
+                            <p style={{ opacity: 0.5, fontSize: '1.1rem', fontWeight: 600 }}>"Empowering every local entity to become a verified global leader."</p>
                         </div>
-                        <div>
-                            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)' }}>10K+</div>
-                            <div style={{ fontSize: '0.9rem', opacity: 0.6 }}>Products</div>
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)' }}>2.5K+</div>
-                            <div style={{ fontSize: '0.9rem', opacity: 0.6 }}>Exporters</div>
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)' }}>$45M</div>
-                            <div style={{ fontSize: '0.9rem', opacity: 0.6 }}>Trade Vol</div>
-                        </div>
-                    </div>
+                    </motion.div>
+                </div>
+
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '3rem' }}>
+                    {stats.map((s, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ y: 20, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="card"
+                            style={{
+                                padding: '3rem',
+                                textAlign: 'center',
+                                background: 'var(--bg-glass)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '32px',
+                                boxShadow: 'var(--shadow)'
+                            }}
+                        >
+                            <div style={{ color: 'var(--primary)', fontSize: '3rem', marginBottom: '1.5rem' }}>{s.icon}</div>
+                            <div style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-1px' }}>{s.value}</div>
+                            <div style={{ fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '1.5rem', opacity: 0.4 }}>{s.label}</div>
+                            <p style={{ fontSize: '0.95rem', opacity: 0.5, fontWeight: 600, lineHeight: 1.5 }}>{s.desc}</p>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
-            <style>{`
-                .dark .card { background: var(--bg-subtle-dark); }
-            `}</style>
-        </div>
+        </motion.div>
     );
 };
 

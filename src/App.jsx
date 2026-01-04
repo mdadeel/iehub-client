@@ -23,6 +23,13 @@ import ProfilePage from './pages/ProfilePage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 
+// New Refinement Pages
+import BrowseCategoriesPage from './pages/BrowseCategoriesPage';
+import LatestTradesPage from './pages/LatestTradesPage';
+import GlobalLogisticsPage from './pages/GlobalLogisticsPage';
+import TradeExpertsPage from './pages/TradeExpertsPage';
+import MarketInsightsPage from './pages/MarketInsightsPage';
+
 // Routes
 import PrivateRoute from './routes/PrivateRoute';
 
@@ -53,6 +60,11 @@ function App() {
           <Route path="/products/:id" element={<ProductDetailsPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/categories" element={<BrowseCategoriesPage />} />
+          <Route path="/trades" element={<LatestTradesPage />} />
+          <Route path="/shipping" element={<GlobalLogisticsPage />} />
+          <Route path="/careers" element={<TradeExpertsPage />} />
+          <Route path="/news" element={<MarketInsightsPage />} />
 
           {/* User Dashboard Routes (Protected) */}
           <Route element={<PrivateRoute />}>

@@ -5,35 +5,41 @@ import { useAuth } from '../hooks/useAuth';
 import {
     HiMenu, HiX, HiMoon, HiSun, HiLogout,
     HiViewGrid, HiChevronDown, HiUser,
-    HiShieldCheck
+    HiShieldCheck, HiShoppingBag, HiClipboardList,
+    HiGlobe, HiTruck, HiSparkles, HiChatAlt2,
+    HiDocumentReport, HiUserGroup
 } from 'react-icons/hi';
 
 const Navbar = () => {
     const { user, logout, theme, toggleTheme } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [profileOpen, setProfileOpen] = useState(false);
+    const [activeMenu, setActiveMenu] = useState(null);
     const dropdownRef = useRef(null);
 
-    const navLinks = [
-        { title: 'Home', path: '/' },
-        { title: 'Products', path: '/products' },
-        { title: 'About Us', path: '/about' },
-        { title: 'Contact', path: '/contact' },
+    const marketplaceLinks = [
+        { title: 'Browse Categories', path: '/categories', icon: <HiViewGrid />, desc: 'Industrial, Electronics, and more.' },
+        { title: 'Latest Trades', path: '/trades', icon: <HiClipboardList />, desc: 'Real-time commodity telemetry.' },
+        { title: 'Global Logistics', path: '/shipping', icon: <HiTruck />, desc: 'Our algorithmic routing engine.' },
     ];
 
-    // Handle scroll effect
+    const resourceLinks = [
+        { title: 'Our Story', path: '/about', icon: <HiSparkles />, desc: 'The heritage of ExportHub.' },
+        { title: 'Trade Experts', path: '/careers', icon: <HiUserGroup />, desc: 'Connect with sector architects.' },
+        { title: 'Market Insights', path: '/news', icon: <HiDocumentReport />, desc: 'Deep-dive trade analysis.' },
+        { title: 'Contact Support', path: '/contact', icon: <HiChatAlt2 />, desc: '24/7 technical assistance.' },
+    ];
+
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close dropdown on click outside
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setProfileOpen(false);
+                setActiveMenu(null);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -46,250 +52,313 @@ const Navbar = () => {
             top: 0,
             left: 0,
             right: 0,
-            zIndex: 1000,
-            padding: scrolled ? '0.5rem 0' : '0.8rem 0',
-            transition: 'var(--transition)',
+            zIndex: 2000,
+            padding: scrolled ? '1rem 0' : '1.5rem 0',
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             pointerEvents: 'none'
         }}>
             <nav className="container" style={{ pointerEvents: 'auto' }}>
                 <div style={{
-                    background: theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(15, 23, 42, 0.8)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    border: `1px solid ${theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)'}`,
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '0.6rem 1.5rem',
+                    background: theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(10, 10, 15, 0.7)',
+                    backdropFilter: 'blur(32px)',
+                    WebkitBackdropFilter: 'blur(32px)',
+                    border: `1px solid ${theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)'}`,
+                    borderRadius: '24px',
+                    padding: '0.8rem 2rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    boxShadow: scrolled ? 'var(--shadow-lg)' : 'var(--shadow)',
-                    transition: 'var(--transition)'
+                    boxShadow: scrolled ? '0 20px 40px -10px rgba(0,0,0,0.15)' : 'none',
+                    transition: 'all 0.4s ease'
                 }}>
 
-                    {/* Brand / Logo */}
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                        <Link to="/" className="flex items-center gap-2">
+                    {/* Left: Brand */}
+                    <div className="flex items-center gap-12">
+                        <Link to="/" className="flex items-center gap-3">
                             <motion.div
-                                whileHover={{ rotate: 15 }}
+                                whileHover={{ rotate: 10, scale: 1.1 }}
                                 style={{
-                                    width: '38px',
-                                    height: '38px',
-                                    background: 'var(--primary)',
-                                    borderRadius: '10px',
+                                    width: '42px',
+                                    height: '42px',
+                                    background: 'linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%)',
+                                    borderRadius: '12px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    color: 'white',
-                                    boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)'
+                                    boxShadow: '0 8px 16px -4px rgba(37, 99, 235, 0.3)'
                                 }}
                             >
-                                <img src="/logo.png" alt="Logo" style={{ width: '24px', height: '24px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+                                <HiGlobe style={{ color: 'white', fontSize: '1.5rem' }} />
                             </motion.div>
-                            <span style={{
-                                fontSize: '1.25rem',
-                                fontWeight: '800',
-                                letterSpacing: '-0.5px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '2px'
-                            }}>
-                                IE <span style={{ color: 'var(--primary)' }}>HUB</span>
+                            <span style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-1.5px', color: theme === 'light' ? '#0f172a' : 'white' }}>
+                                IE<span style={{ color: 'var(--primary)' }}>HUB</span>
                             </span>
                         </Link>
-                    </div>
 
-                    {/* Centered Navigation Links */}
-                    <div className="hidden md-flex items-center gap-1">
-                        {navLinks.map((link) => (
-                            <NavLink
-                                key={link.path}
-                                to={link.path}
-                                style={({ isActive }) => ({
-                                    padding: '0.6rem 1.2rem',
-                                    borderRadius: 'var(--radius-md)',
-                                    fontSize: '0.9rem',
-                                    fontWeight: '600',
-                                    color: isActive ? 'var(--primary)' : 'inherit',
-                                    opacity: isActive ? 1 : 0.7,
-                                    position: 'relative',
-                                    transition: 'var(--transition)'
-                                })}
-                            >
-                                {({ isActive }) => (
-                                    <>
-                                        {link.title}
-                                        {isActive && (
-                                            <motion.div
-                                                layoutId="nav-active"
-                                                style={{
-                                                    position: 'absolute',
-                                                    bottom: '4px',
-                                                    left: '1.2rem',
-                                                    right: '1.2rem',
-                                                    height: '2px',
-                                                    background: 'var(--primary)',
-                                                    borderRadius: '2px'
-                                                }}
-                                            />
-                                        )}
+                        {/* DESKTOP NAV */}
+                        <div className="desktop-visible items-center gap-2">
+                            <NavLink to="/" style={({ isActive }) => ({
+                                padding: '0.6rem 1.2rem',
+                                borderRadius: '12px',
+                                fontSize: '0.9rem',
+                                fontWeight: 800,
+                                opacity: isActive ? 1 : 0.6,
+                                color: isActive ? 'var(--primary)' : 'inherit'
+                            })}>Home</NavLink>
+
+                            <NavLink to="/products" style={({ isActive }) => ({
+                                padding: '0.6rem 1.2rem',
+                                borderRadius: '12px',
+                                fontSize: '0.9rem',
+                                fontWeight: 800,
+                                opacity: isActive ? 1 : 0.6,
+                                color: isActive ? 'var(--primary)' : 'inherit'
+                            })}>All Products</NavLink>
+
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    onClick={() => setActiveMenu(activeMenu === 'marketplace' ? null : 'marketplace')}
+                                    style={{
+                                        padding: '0.6rem 1.2rem',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: 'inherit',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontWeight: 800,
+                                        fontSize: '0.9rem',
+                                        opacity: 0.6,
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Marketplace <HiChevronDown style={{ fontSize: '0.8rem', transform: activeMenu === 'marketplace' ? 'rotate(180deg)' : 'none', transition: '0.3s' }} />
+                                </button>
+                                <AnimatePresence>
+                                    {activeMenu === 'marketplace' && (
                                         <motion.div
-                                            className="hover-bg"
+                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            ref={dropdownRef}
                                             style={{
                                                 position: 'absolute',
-                                                inset: '4px',
-                                                background: 'var(--primary)',
-                                                borderRadius: 'var(--radius-md)',
-                                                opacity: 0,
-                                                zIndex: -1
+                                                top: '140%',
+                                                left: 0,
+                                                width: '400px',
+                                                background: 'var(--bg-card)',
+                                                border: '1px solid var(--border-color)',
+                                                borderRadius: '24px',
+                                                padding: '1.5rem',
+                                                boxShadow: 'var(--shadow-lg)',
+                                                display: 'grid',
+                                                gridTemplateColumns: '1fr',
+                                                gap: '1rem'
                                             }}
-                                            whileHover={{ opacity: 0.08 }}
-                                        />
-                                    </>
-                                )}
-                            </NavLink>
-                        ))}
+                                        >
+                                            {marketplaceLinks.map((link) => (
+                                                <Link
+                                                    key={link.path}
+                                                    to={link.path}
+                                                    onClick={() => setActiveMenu(null)}
+                                                    className="nav-mega-item"
+                                                >
+                                                    <div className="nav-icon">{link.icon}</div>
+                                                    <div>
+                                                        <div className="nav-title">{link.title}</div>
+                                                        <div className="nav-desc">{link.desc}</div>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    onClick={() => setActiveMenu(activeMenu === 'resources' ? null : 'resources')}
+                                    style={{
+                                        padding: '0.6rem 1.2rem',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: 'inherit',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontWeight: 800,
+                                        fontSize: '0.9rem',
+                                        opacity: 0.6,
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Resources <HiChevronDown style={{ fontSize: '0.8rem', transform: activeMenu === 'resources' ? 'rotate(180deg)' : 'none', transition: '0.3s' }} />
+                                </button>
+                                <AnimatePresence>
+                                    {activeMenu === 'resources' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '140%',
+                                                left: 0,
+                                                width: '400px',
+                                                background: 'var(--bg-card)',
+                                                border: '1px solid var(--border-color)',
+                                                borderRadius: '24px',
+                                                padding: '1.5rem',
+                                                boxShadow: 'var(--shadow-lg)',
+                                                display: 'grid',
+                                                gridTemplateColumns: '1fr',
+                                                gap: '1rem'
+                                            }}
+                                        >
+                                            {resourceLinks.map((link) => (
+                                                <Link
+                                                    key={link.path}
+                                                    to={link.path}
+                                                    onClick={() => setActiveMenu(null)}
+                                                    className="nav-mega-item"
+                                                >
+                                                    <div className="nav-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>{link.icon}</div>
+                                                    <div>
+                                                        <div className="nav-title">{link.title}</div>
+                                                        <div className="nav-desc">{link.desc}</div>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Right Actions */}
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifySelf: 'end', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                        <button
+                    {/* Right: Actions */}
+                    <div className="flex items-center gap-4">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={toggleTheme}
-                            className="btn"
                             style={{
-                                padding: '0.6rem',
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '14px',
                                 background: 'transparent',
-                                borderRadius: '50%',
-                                opacity: 0.7
+                                border: '1px solid var(--border-color)',
+                                color: 'inherit',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
                             }}
                         >
                             {theme === 'light' ? <HiMoon size={20} /> : <HiSun size={20} />}
-                        </button>
+                        </motion.button>
 
-                        <div style={{ width: '1px', height: '20px', background: 'rgba(128,128,128,0.2)', margin: '0 0.5rem' }} />
+                        <div style={{ width: '1px', height: '24px', background: 'var(--border-color)', margin: '0 0.5rem' }}></div>
 
                         {user ? (
-                            <div style={{ position: 'relative' }} ref={dropdownRef}>
+                            <div style={{ position: 'relative' }}>
                                 <motion.div
-                                    className="flex items-center gap-2"
-                                    style={{ cursor: 'pointer', padding: '0.3rem 0.5rem', borderRadius: '30px', border: '1px solid transparent' }}
-                                    whileHover={{ background: 'rgba(128,128,128,0.05)', borderColor: 'rgba(128,128,128,0.1)' }}
-                                    onClick={() => setProfileOpen(!profileOpen)}
+                                    onClick={() => setActiveMenu(activeMenu === 'profile' ? null : 'profile')}
+                                    style={{
+                                        cursor: 'pointer',
+                                        width: '44px',
+                                        height: '44px',
+                                        borderRadius: '14px',
+                                        overflow: 'hidden',
+                                        border: '2px solid var(--primary)'
+                                    }}
                                 >
-                                    <img
-                                        src={user.photoURL || 'https://via.placeholder.com/40'}
-                                        alt="Profile"
-                                        style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--primary)' }}
-                                    />
-                                    <span className="hidden lg-block" style={{ fontSize: '0.85rem', fontWeight: '600' }}>{user.displayName?.split(' ')[0]}</span>
-                                    <HiChevronDown style={{ fontSize: '0.8rem', opacity: 0.5, transform: profileOpen ? 'rotate(180deg)' : 'none', transition: '0.3s' }} />
+                                    <img src={user.photoURL || 'https://via.placeholder.com/40'} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 </motion.div>
-
                                 <AnimatePresence>
-                                    {profileOpen && (
+                                    {activeMenu === 'profile' && (
                                         <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                            className="dropdown-menu"
+                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
                                             style={{
-                                                top: '120%',
+                                                position: 'absolute',
+                                                top: '140%',
                                                 right: 0,
-                                                minWidth: '220px',
-                                                padding: '0.75rem',
-                                                boxShadow: '0 20px 40px rgba(0,0,0,0.15)'
+                                                width: '240px',
+                                                background: 'var(--bg-card)',
+                                                border: '1px solid var(--border-color)',
+                                                borderRadius: '24px',
+                                                padding: '1rem',
+                                                boxShadow: 'var(--shadow-lg)'
                                             }}
                                         >
-                                            <div style={{ padding: '0.5rem 0.75rem', marginBottom: '0.5rem', borderBottom: '1px solid var(--border-light)' }}>
-                                                <div style={{ fontWeight: '700', fontSize: '0.9rem' }}>{user.displayName}</div>
-                                                <div style={{ fontSize: '0.7rem', opacity: 0.5, wordBreak: 'break-all' }}>{user.email}</div>
+                                            <div style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', marginBottom: '0.5rem' }}>
+                                                <div style={{ fontWeight: 900, fontSize: '0.9rem' }}>{user.displayName}</div>
+                                                <div style={{ fontSize: '0.7rem', opacity: 0.4 }}>{user.email}</div>
                                             </div>
-
-                                            <Link to="/dashboard" className="dropdown-item" onClick={() => setProfileOpen(false)}>
-                                                <div style={{ background: 'rgba(37,99,235,0.1)', color: 'var(--primary)', padding: '0.4rem', borderRadius: '6px' }}><HiViewGrid /></div>
-                                                <span>Dashboard</span>
-                                            </Link>
-                                            <Link to="/dashboard/profile" className="dropdown-item" onClick={() => setProfileOpen(false)}>
-                                                <div style={{ background: 'rgba(128,128,128,0.1)', color: 'gray', padding: '0.4rem', borderRadius: '6px' }}><HiUser /></div>
-                                                <span>Profile</span>
-                                            </Link>
-
-                                            <div
-                                                className="dropdown-item"
-                                                style={{ marginTop: '0.5rem', borderTop: '1px solid var(--border-light)', paddingTop: '0.5rem', color: 'var(--danger)' }}
-                                                onClick={() => { logout(); setProfileOpen(false); }}
-                                            >
-                                                <div style={{ background: 'rgba(244,63,94,0.1)', padding: '0.4rem', borderRadius: '6px' }}><HiLogout /></div>
-                                                <span>Sign Out</span>
-                                            </div>
+                                            <Link to="/dashboard" onClick={() => setActiveMenu(null)} className="dropdown-item">Performance Hub</Link>
+                                            <Link to="/dashboard/profile" onClick={() => setActiveMenu(null)} className="dropdown-item">Settings</Link>
+                                            <button onClick={logout} className="dropdown-item" style={{ color: 'var(--danger)', border: 'none', background: 'transparent', width: '100%', cursor: 'pointer' }}>Sign Out</button>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <Link to="/login" className="btn btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.85rem', borderRadius: '30px' }}>
-                                Sign In
+                            <Link to="/login" className="btn btn-primary" style={{ padding: '0.8rem 1.8rem', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem' }}>
+                                PORTAL ACCESS
                             </Link>
                         )}
 
-                        {/* Mobile Toggle */}
-                        <button
-                            className="md-hidden"
-                            onClick={() => setMobileOpen(!mobileOpen)}
-                            style={{ background: 'transparent', padding: '0.5rem', marginLeft: '0.5rem' }}
-                        >
-                            {mobileOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+                        <button className="mobile-visible" onClick={() => setMobileOpen(!mobileOpen)} style={{ background: 'transparent', border: 'none', color: theme === 'light' ? '#0f172a' : 'white' }}>
+                            {mobileOpen ? <HiX size={28} /> : <HiMenu size={28} />}
                         </button>
                     </div>
                 </div>
             </nav>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu */}
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
                         style={{
-                            overflow: 'hidden',
-                            background: theme === 'light' ? 'white' : 'var(--bg-subtle-dark)',
-                            marginTop: '0.5rem',
-                            borderBottom: '1px solid var(--border-light)'
+                            position: 'fixed',
+                            inset: 0,
+                            background: theme === 'light' ? 'white' : '#0a0a0f',
+                            zIndex: 3000,
+                            padding: '2rem'
                         }}
                     >
-                        <div className="container" style={{ padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            {navLinks.map((link, i) => (
-                                <motion.div
-                                    key={link.path}
-                                    initial={{ x: -20, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    transition={{ delay: i * 0.1 }}
-                                >
-                                    <Link
-                                        to={link.path}
-                                        onClick={() => setMobileOpen(false)}
-                                        style={{ fontSize: '1.2rem', fontWeight: '700', padding: '0.5rem 0', display: 'block' }}
-                                    >
-                                        {link.title}
-                                    </Link>
-                                </motion.div>
-                            ))}
+                        <div className="flex justify-between items-center mb-12">
+                            <span style={{ fontSize: '1.5rem', fontWeight: 900 }}>IE<span style={{ color: 'var(--primary)' }}>HUB</span></span>
+                            <button onClick={() => setMobileOpen(false)} style={{ background: 'transparent', border: 'none', color: 'inherit' }}><HiX size={32} /></button>
+                        </div>
+
+                        <div className="flex flex-col gap-6">
+                            <Link to="/" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.8rem', fontWeight: 900, color: 'inherit' }}>Home</Link>
+                            <Link to="/products" onClick={() => setMobileOpen(false)} style={{ fontSize: '1.8rem', fontWeight: 900, color: 'inherit' }}>All Products</Link>
+                            <div style={{ padding: '1rem 0' }}>
+                                <div style={{ fontSize: '0.8rem', fontWeight: 900, opacity: 0.4, textTransform: 'uppercase', marginBottom: '1rem' }}>Marketplace</div>
+                                <div className="flex flex-col gap-4">
+                                    {marketplaceLinks.map(link => (
+                                        <Link key={link.path} to={link.path} onClick={() => setMobileOpen(false)} style={{ fontSize: '1.2rem', fontWeight: 700, opacity: 0.8 }}>{link.title}</Link>
+                                    ))}
+                                </div>
+                            </div>
+                            <div style={{ padding: '1rem 0' }}>
+                                <div style={{ fontSize: '0.8rem', fontWeight: 900, opacity: 0.4, textTransform: 'uppercase', marginBottom: '1rem' }}>Resources</div>
+                                <div className="flex flex-col gap-4">
+                                    {resourceLinks.map(link => (
+                                        <Link key={link.path} to={link.path} onClick={() => setMobileOpen(false)} style={{ fontSize: '1.2rem', fontWeight: 700, opacity: 0.8 }}>{link.title}</Link>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                .hidden { display: none !important; }
-                @media (min-width: 768px) {
-                    .md-flex { display: flex !important; }
-                    .md-hidden { display: none !important; }
-                }
-                @media (min-width: 1024px) {
-                    .lg-block { display: block !important; }
-                }
-            `}} />
         </header>
     );
 };

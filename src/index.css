@@ -46,6 +46,11 @@
   --text-muted: var(--text-muted-light);
   --border-color: var(--border-light);
   --glass-bg: var(--glass-bg-light);
+  --glass-border: rgba(255, 255, 255, 0.5);
+
+  /* Depth & Premium Tokens */
+  --glow-primary: 0 0 20px rgba(37, 99, 235, 0.15);
+  --glass-shimmer: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
 }
 
 /* Base Setup */
@@ -72,22 +77,28 @@ body.dark {
   --bg-page: var(--bg-dark);
   --bg-surface: var(--bg-subtle-dark);
   --bg-inset: var(--bg-dark);
-  --bg-card: var(--bg-subtle-dark);
+  --bg-card: #0f172a;
+  /* Slightly lighter than page for depth */
   --text-body: var(--text-dark);
   --text-muted: var(--text-muted-dark);
   --border-color: var(--border-dark);
   --glass-bg: var(--glass-bg-dark);
-  
+  --glass-border: rgba(255, 255, 255, 0.05);
+
   background-color: var(--bg-page);
   color: var(--text-body);
 }
 
-input, select, textarea {
-  background: var(--bg-card); /* or surface? card is usually white/dark-grey. Inputs on cards might need surface/inset? */
+input,
+select,
+textarea {
+  background: var(--bg-card);
+  /* or surface? card is usually white/dark-grey. Inputs on cards might need surface/inset? */
   /* Let's use bg-card for now as it maps to white/subtle-dark. */
   /* Actually, if input is on a card (white), input bg should be white or inset? */
   /* usually input is white. */
-  background: var(--bg-page); /* White on light. Darkest on dark. */
+  background: var(--bg-page);
+  /* White on light. Darkest on dark. */
   /* If I use bg-page:
      Light: White. Input on White Card. OK.
      Dark: Black (#020617). Input on Grey Card (#0f172a). Contrast OK.
@@ -99,7 +110,9 @@ input, select, textarea {
   outline: none;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
@@ -170,6 +183,53 @@ button {
 
 .grid {
   display: grid;
+}
+
+/* Responsive & Layout Utilities */
+.hidden {
+  display: none !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.desktop-visible {
+  display: flex !important;
+}
+
+.mobile-visible {
+  display: none !important;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-12 {
+  gap: 3rem;
+}
+
+@media (max-width: 1024px) {
+  .desktop-visible {
+    display: none !important;
+  }
+
+  .mobile-visible {
+    display: flex !important;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
 }
 
 /* Section Styling */
@@ -319,6 +379,65 @@ body.dark .navbar {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Navbar & Mega-Menu Styles */
+.nav-mega-item {
+  display: flex !important;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-mega-item:hover {
+  background: var(--bg-surface);
+  transform: translateY(-2px);
+}
+
+.nav-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 1.25rem;
+}
+
+.nav-title {
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-body);
+}
+
+.nav-desc {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  transition: 0.3s;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-surface);
+  color: var(--primary);
 }
 
 /* Scrollbar Modern */
