@@ -33,7 +33,7 @@ const AddExportPage = () => {
             setFormData({
                 name: '', image: '', price: '', origin: '', rating: 5, quantity: '', category: 'Spices', description: ''
             });
-            navigate('/my-exports');
+            navigate('/dashboard/my-exports');
         } catch (error) {
             console.error("Failed to add product", error);
             toast.error("Failed to add product");
