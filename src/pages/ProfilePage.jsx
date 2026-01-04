@@ -1,19 +1,33 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { HiUserCircle, HiMail, HiBriefcase, HiCheckCircle } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
-import { HiMail, HiPencil, HiUserCircle } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
     const { user } = useAuth();
-    const [editing, setEditing] = useState(false);
-    const [name, setName] = useState(user?.displayName || '');
-    const [photo, setPhoto] = useState(user?.photoURL || '');
+    const [isEditing, setIsEditing] = useState(false);
+    // Mock user data extension since actual auth might just have basic info
+    const [formData, setFormData] = useState({
+        displayName: user?.displayName || 'Trade Merchant',
+        email: user?.email || '',
+        role: 'Verified Exporter',
+        company: 'Global Trade Ltd.',
+        location: 'Colombo, Sri Lanka'
+    });
 
-    const handleUpdate = (e) => {
+    const handleSave = (e) => {
         e.preventDefault();
-        toast.success("Profile security protocols updated. Changes saved.");
-        setEditing(false);
+        // In a real app, API call to update profile
+        toast.promise(
+            new Promise((resolve) => setTimeout(resolve, 1000)),
+            {
+                loading: 'Updating profile...',
+                success: 'Profile updated successfully!',
+                error: 'Could not update profile.',
+            }
+        );
+        setIsEditing(false);
     };
 
     return (
@@ -21,192 +35,170 @@ const ProfilePage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="container"
-            style={{ paddingTop: '120px', paddingBottom: '8rem' }}
+            style={{ paddingTop: '2.5rem', paddingBottom: '6rem', maxWidth: '900px' }}
         >
-            <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                <motion.div
-                    initial={{ y: 30, opacity: 0 }}
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                <motion.h1
+                    initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="card"
+                    style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem' }}
+                >
+                    User <span style={{ color: 'var(--secondary)' }}>Profile</span>
+                </motion.h1>
+                <p style={{ opacity: 0.6 }}>Manage your account settings and business preferences.</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+                {/* Profile Card */}
+                <motion.div
+                    className="card md:col-span-1"
                     style={{
-                        overflow: 'hidden',
+                        padding: '2rem',
                         background: 'var(--bg-glass)',
-                        backdropFilter: 'blur(30px)',
+                        textAlign: 'center',
                         border: '1px solid var(--border-color)',
-                        borderRadius: '32px',
-                        boxShadow: 'var(--shadow-lg)'
+                        borderRadius: '24px'
                     }}
                 >
-                    {/* Hero Header */}
-                    <div style={{
-                        height: '240px',
-                        background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                        position: 'relative',
-                        opacity: 0.9
-                    }}>
-                        {/* Abstract Pattern Overlay */}
-                        <div style={{
-                            position: 'absolute',
-                            inset: 0,
-                            backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
-                            backgroundSize: '32px 32px',
-                            mixMode: 'overlay'
-                        }}></div>
+                    <div style={{ width: '120px', height: '120px', margin: '0 auto 1.5rem', borderRadius: '50%', background: 'var(--bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--secondary)', position: 'relative' }}>
+                        {user?.photoURL ? (
+                            <img src={user.photoURL} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                        ) : (
+                            <span style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--secondary)' }}>
+                                {formData.displayName.charAt(0)}
+                            </span>
+                        )}
+                        <div style={{ position: 'absolute', bottom: '0', right: '0', background: '#10b981', color: 'white', padding: '0.25rem', borderRadius: '50%', border: '2px solid var(--bg-card)' }}>
+                            <HiCheckCircle size={20} />
+                        </div>
+                    </div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.25rem' }}>{formData.displayName}</h2>
+                    <p style={{ opacity: 0.5, fontSize: '0.9rem', marginBottom: '1.5rem' }}>{formData.role}</p>
 
-                        <div style={{
-                            position: 'absolute',
-                            bottom: '-70px',
-                            left: '60px',
-                            width: '160px',
-                            height: '160px',
-                            borderRadius: '32px',
-                            background: 'var(--bg-card)',
-                            padding: '8px',
-                            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.3)',
-                            border: '1px solid var(--border-color)'
-                        }}>
-                            <img
-                                src={user?.photoURL || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'}
-                                alt="Profile"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px' }}
+                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
+                        <div className="flex items-center gap-3 opacity-70">
+                            <HiMail className="text-xl" />
+                            <span style={{ fontSize: '0.9rem' }}>{formData.email}</span>
+                        </div>
+                        <div className="flex items-center gap-3 opacity-70">
+                            <HiBriefcase className="text-xl" />
+                            <span style={{ fontSize: '0.9rem' }}>{formData.company}</span>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Edit Form */}
+                <motion.div
+                    className="card md:col-span-2"
+                    style={{
+                        padding: '2.5rem',
+                        background: 'var(--bg-glass)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '24px'
+                    }}
+                >
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Account Details</h3>
+                        <button
+                            onClick={() => setIsEditing(!isEditing)}
+                            className="btn btn-sm"
+                            style={{ background: isEditing ? 'var(--bg-inset)' : 'var(--primary)', border: 'none' }}
+                        >
+                            {isEditing ? 'Cancel Edit' : 'Edit Profile'}
+                        </button>
+                    </div>
+
+                    <form onSubmit={handleSave} className="flex flex-col gap-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="form-group">
+                                <label className="label">Display Name</label>
+                                <input
+                                    type="text"
+                                    disabled={!isEditing}
+                                    value={formData.displayName}
+                                    onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                                    className="input-field"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label className="label">Job Title / Role</label>
+                                <input
+                                    type="text"
+                                    disabled={!isEditing}
+                                    value={formData.role}
+                                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                                    className="input-field"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="form-group">
+                                <label className="label">Company Name</label>
+                                <input
+                                    type="text"
+                                    disabled={!isEditing}
+                                    value={formData.company}
+                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                    className="input-field"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label className="label">Location</label>
+                                <input
+                                    type="text"
+                                    disabled={!isEditing}
+                                    value={formData.location}
+                                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                    className="input-field"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label className="label">Email Address</label>
+                            <input
+                                type="email"
+                                disabled={true} // Usually email is managed via auth provider
+                                value={formData.email}
+                                className="input-field"
+                                style={{ opacity: 0.5, cursor: 'not-allowed' }}
                             />
                         </div>
-                    </div>
 
-                    <div style={{ padding: '100px 60px 60px 60px' }}>
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <motion.h1
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-2px' }}
-                                >
-                                    {user?.displayName || 'Trade Participant'}
-                                </motion.h1>
-                                <p className="flex items-center gap-3" style={{ opacity: 0.5, fontWeight: 700, fontSize: '1.1rem' }}>
-                                    <HiMail style={{ color: 'var(--primary)', fontSize: '1.25rem' }} /> {user?.email || 'unverified@iehub.global'}
-                                </p>
-                            </div>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => setEditing(!editing)}
-                                className="btn"
-                                style={{
-                                    background: 'var(--bg-card)',
-                                    border: '1px solid var(--border-color)',
-                                    padding: '1rem 2rem',
-                                    borderRadius: '16px',
-                                    fontWeight: 800,
-                                    fontSize: '0.9rem',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
-                                }}
-                            >
-                                <HiPencil style={{ marginRight: '10px' }} /> {editing ? 'Cancel Redaction' : 'Modify Credentials'}
-                            </motion.button>
-                        </div>
-
-                        <div style={{ marginTop: '5rem' }}>
-                            <div className="flex items-center gap-4" style={{ marginBottom: '3rem' }}>
-                                <HiUserCircle style={{ color: 'var(--primary)', fontSize: '2rem' }} />
-                                <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8 }}>Portal Identification</h3>
-                            </div>
-
-                            {editing ? (
-                                <motion.form
-                                    initial={{ opacity: 0, scale: 0.98 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    onSubmit={handleUpdate}
-                                    className="flex flex-col gap-8"
-                                    style={{ maxWidth: '600px' }}
-                                >
-                                    <div className="flex flex-col gap-3">
-                                        <label style={{ fontWeight: 800, fontSize: '0.75rem', opacity: 0.4, textTransform: 'uppercase', letterSpacing: '1.5px', marginLeft: '4px' }}>PUBLIC DISPLAY NAME IDENTIFIER</label>
-                                        <input
-                                            type="text"
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            className="profile-input"
-                                            placeholder="Enter operational name..."
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-3">
-                                        <label style={{ fontWeight: 800, fontSize: '0.75rem', opacity: 0.4, textTransform: 'uppercase', letterSpacing: '1.5px', marginLeft: '4px' }}>AVATAR RESOURCE ENDPOINT (URL)</label>
-                                        <input
-                                            type="url"
-                                            value={photo}
-                                            onChange={(e) => setPhoto(e.target.value)}
-                                            className="profile-input"
-                                            placeholder="https://resource.cdn/user/photo.jpg"
-                                        />
-                                    </div>
-                                    <motion.button
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        type="submit"
-                                        className="btn btn-primary"
-                                        style={{ padding: '1.2rem', marginTop: '1rem', fontWeight: 900, letterSpacing: '1px', borderRadius: '16px' }}
-                                    >
-                                        COMMIT CREDENTIAL UPDATES
-                                    </motion.button>
-                                </motion.form>
-                            ) : (
-                                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '4rem' }}>
-                                    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                                        <label className="info-label">Network Identifier</label>
-                                        <p className="info-value">{user?.uid?.substring(0, 16) || 'IEH-88291-ZX-992'}</p>
-                                    </motion.div>
-                                    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                                        <label className="info-label">Security Protocol Tier</label>
-                                        <p className="info-value" style={{ color: 'var(--secondary)' }}>Verified Global Partner</p>
-                                    </motion.div>
-                                    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                                        <label className="info-label">Operational Zone</label>
-                                        <p className="info-value">Global Exchange (Active)</p>
-                                    </motion.div>
-                                    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-                                        <label className="info-label">Encryption Join Date</label>
-                                        <p className="info-value">{new Date().toLocaleDateString(undefined, { month: 'long', year: 'numeric', day: 'numeric' })}</p>
-                                    </motion.div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                        {isEditing && (
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: '1rem' }}>
+                                <button type="submit" className="btn btn-primary" style={{ padding: '0.8rem 2rem' }}>
+                                    Save Changes
+                                </button>
+                            </motion.div>
+                        )}
+                    </form>
                 </motion.div>
             </div>
 
             <style>{`
-                .profile-input {
-                    padding: 1.25rem 1.5rem;
-                    background: var(--bg-inset);
+                .label { font-size: 0.8rem; font-weight: 700; opacity: 0.6; margin-bottom: 0.5rem; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+                .input-field {
+                    width: 100%;
+                    padding: 0.9rem 1.1rem;
+                    border-radius: 12px;
                     border: 1px solid var(--border-color);
-                    border-radius: 16px;
+                    background: var(--bg-inset);
                     color: var(--text-body);
-                    font-size: 1rem;
-                    font-weight: 600;
                     outline: none;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    transition: all 0.2s;
                 }
-                .profile-input:focus { 
-                    border-color: var(--primary); 
-                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+                .input-field:focus:not(:disabled) {
+                    border-color: var(--secondary);
                     background: var(--bg-card);
+                    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
                 }
-                .info-label { 
-                    font-size: 0.75rem; 
-                    opacity: 0.4; 
-                    font-weight: 800; 
-                    text-transform: uppercase; 
-                    letter-spacing: 1.5px; 
-                    display: block; 
-                    margin-bottom: 0.75rem; 
-                }
-                .info-value { 
-                    font-size: 1.4rem; 
-                    font-weight: 900; 
-                    margin: 0; 
-                    color: white;
-                    letter-spacing: -0.5px;
+                .input-field:disabled {
+                    opacity: 0.7;
+                    background: transparent;
+                    border-color: transparent;
+                    padding-left: 0;
                 }
             `}</style>
         </motion.div>

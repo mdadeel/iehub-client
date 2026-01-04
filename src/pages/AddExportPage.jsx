@@ -1,4 +1,10 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { HiCloudUpload, HiCurrencyDollar, HiCube } from 'react-icons/hi';
+import { useAuth } from '../hooks/useAuth';
+import api from '../utils/api';
 
 const AddExportPage = () => {
     const { user } = useAuth();
@@ -16,6 +22,17 @@ const AddExportPage = () => {
     });
 
     const categories = ['Spices', 'Textiles', 'Beverages', 'Food', 'Eco-Friendly', 'Fashion', 'Tech', 'Other'];
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, image: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,132 +61,137 @@ const AddExportPage = () => {
         >
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <div style={{ marginBottom: '3.5rem' }}>
-                    <motion.h1
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        style={{ fontSize: '2.8rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-1.5px' }}
+                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                        <motion.h1
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-1px' }}
+                        >
+                            New Export <span style={{ color: 'var(--secondary)' }}>Listing</span>
+                        </motion.h1>
+                        <p style={{ opacity: 0.6, fontSize: '1.1rem' }}>Register your goods on the global trade network.</p>
+                    </div>
+
+                    <motion.div
+                        className="card"
+                        style={{
+                            padding: '3rem',
+                            background: 'var(--bg-glass)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '24px',
+                            boxShadow: 'var(--shadow-lg)'
+                        }}
                     >
-                        Initialize <span style={{ color: 'var(--primary)' }}>Export SKU</span>
-                    </motion.h1>
-                    <p style={{ opacity: 0.5, fontWeight: 600 }}>Deploy your local resources to the verified global exchange</p>
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                            {/* Image Upload Section */}
+                            <div className="flex justify-center mb-4">
+                                <div style={{ position: 'relative', width: '100%', height: '200px', borderRadius: '20px', overflow: 'hidden', background: 'var(--bg-inset)', border: '2px dashed var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                                    <input type="file" onChange={handleImageChange} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer', zIndex: 10 }} />
+                                    {formData.image ? (
+                                        <img src={formData.image} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    ) : (
+                                        <div className="flex flex-col items-center gap-2" style={{ opacity: 0.5 }}>
+                                            <HiCloudUpload size={40} />
+                                            <span style={{ fontWeight: 600 }}>Click to upload product image</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="form-group">
+                                    <label>Product Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        placeholder="e.g. Ceylon Black Tea"
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Category</label>
+                                    <select
+                                        value={formData.category}
+                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                        className="input-field"
+                                    >
+                                        <option>Spices</option>
+                                        <option>Tea & Coffee</option>
+                                        <option>Textiles</option>
+                                        <option>Rubber</option>
+                                        <option>Coconut Products</option>
+                                        <option>Gemstones</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="form-group">
+                                    <label><HiCurrencyDollar style={{ marginRight: '5px', marginBottom: '-2px' }} /> Unit Price (USD)</label>
+                                    <input
+                                        type="number"
+                                        required
+                                        step="0.01"
+                                        value={formData.price}
+                                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                        placeholder="0.00"
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label><HiCube style={{ marginRight: '5px', marginBottom: '-2px' }} /> Available Quantity</label>
+                                    <input
+                                        type="number"
+                                        required
+                                        value={formData.quantity}
+                                        onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                                        placeholder="Total units"
+                                        className="input-field"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Origin</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={formData.origin}
+                                    onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+                                    className="input-field"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Description (Optional)</label>
+                                <textarea
+                                    rows={4}
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    placeholder="Describe quality, certifications, etc."
+                                    className="input-field"
+                                    style={{ resize: 'vertical' }}
+                                />
+                            </div>
+
+                            <div style={{ marginTop: '1rem' }}>
+                                <button
+                                    type="submit"
+                                    disabled={submitting}
+                                    className="btn btn-primary w-full"
+                                    style={{ padding: '1rem', fontSize: '1.1rem', fontWeight: 800, borderRadius: '12px', justifyContent: 'center' }}
+                                >
+                                    {submitting ? <div className="spinner-sm"></div> : 'Publish Listing'}
+                                </button>
+                            </div>
+                        </form>
+                    </motion.div>
                 </div>
 
-                <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="card"
-                    style={{
-                        padding: '3.5rem',
-                        background: 'var(--bg-glass)',
-                        backdropFilter: 'blur(24px)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: 'var(--radius-lg)',
-                        boxShadow: 'var(--shadow-lg)'
-                    }}
-                >
-                    <form onSubmit={handleSubmit} className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                        <div className="flex flex-col gap-2" style={{ gridColumn: 'span 2' }}>
-                            <label className="form-label">Global Product Title</label>
-                            <input
-                                type="text" required
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                placeholder="Example: Grade A Ceylon Cinnamon"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2" style={{ gridColumn: 'span 2' }}>
-                            <label className="form-label">Asset Resource (Image URL)</label>
-                            <input
-                                type="url" required
-                                value={formData.image}
-                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                placeholder="https://cloud-storage.com/asset-id-44.jpg"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="form-label">Price Per Unit ($)</label>
-                            <input
-                                type="number" required step="0.01"
-                                value={formData.price}
-                                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                placeholder="0.00"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="form-label">Provenance / Origin</label>
-                            <input
-                                type="text" required
-                                value={formData.origin}
-                                onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
-                                placeholder="Ex: Sri Lanka"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="form-label">Classification Segment</label>
-                            <select
-                                value={formData.category}
-                                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                className="form-input"
-                                style={{ appearance: 'none' }}
-                            >
-                                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                            </select>
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="form-label">Initial Stock Allocation</label>
-                            <input
-                                type="number" required
-                                value={formData.quantity}
-                                onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                                placeholder="500"
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2" style={{ gridColumn: 'span 2' }}>
-                            <label className="form-label">Asset Technical Description</label>
-                            <textarea
-                                value={formData.description}
-                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                placeholder="Provide comprehensive details for global verification..."
-                                rows="4"
-                                className="form-input"
-                                style={{ fontFamily: 'inherit', resize: 'none' }}
-                            />
-                        </div>
-
-                        <motion.button
-                            whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)' }}
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            disabled={submitting}
-                            className="btn btn-primary"
-                            style={{
-                                gridColumn: 'span 2',
-                                justifyContent: 'center',
-                                marginTop: '2rem',
-                                padding: '1.2rem',
-                                fontWeight: 900,
-                                fontSize: '1.1rem',
-                                letterSpacing: '0.5px'
-                            }}
-                        >
-                            {submitting ? 'PROCESSING PROTOCOL...' : 'DEPLOY ASSET TO MARKETPLACE'}
-                        </motion.button>
-                    </form>
-                </motion.div>
-            </div>
-
-            <style>{`
+                <style>{`
                 .form-label { fontSize: 0.75rem; font-weight: 800; opacity: 0.5; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.2rem; }
                 .form-input { 
                     padding: 1.1rem 1.25rem; 
@@ -189,6 +211,7 @@ const AddExportPage = () => {
                     background-size: 1.25rem;
                 }
             `}</style>
+            </div>
         </motion.div>
     );
 };
