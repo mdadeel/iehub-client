@@ -1,8 +1,4 @@
 import { useAuth } from '../hooks/useAuth';
-import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-    PieChart, Pie, Cell, LineChart, Line
-} from 'recharts';
 import { HiTrendingUp, HiUserGroup, HiArchive, HiCurrencyDollar } from 'react-icons/hi';
 
 const DashboardPage = () => {
@@ -14,22 +10,6 @@ const DashboardPage = () => {
         { title: "Revenue", value: "$4,250", icon: <HiCurrencyDollar />, color: "#f59e0b" },
         { title: "Trade Rating", value: "4.9", icon: <HiUserGroup />, color: "#8b5cf6" },
     ];
-
-    const chartData = [
-        { name: 'Mon', imports: 4, exports: 2 },
-        { name: 'Tue', imports: 3, exports: 5 },
-        { name: 'Wed', imports: 2, exports: 3 },
-        { name: 'Thu', imports: 5, exports: 7 },
-        { name: 'Fri', imports: 8, exports: 4 },
-    ];
-
-    const pieData = [
-        { name: 'Asia', value: 400 },
-        { name: 'Europe', value: 300 },
-        { name: 'USA', value: 200 },
-        { name: 'Other', value: 100 },
-    ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     return (
         <div className="container" style={{ padding: '2rem 0' }}>
@@ -48,32 +28,31 @@ const DashboardPage = () => {
                 ))}
             </div>
 
-            {/* Charts Row */}
+            {/* Simplified Visualizers (Replaces Crashing Charts) */}
             <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-                <div className="card" style={{ padding: '1.5rem', height: '350px' }}>
+                <div className="card" style={{ padding: '1.5rem', height: '300px' }}>
                     <h3 style={{ marginBottom: '1.5rem' }}>Weekly Trade Activity</h3>
-                    <ResponsiveContainer width="100%" height="80%">
-                        <BarChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="imports" fill="#3b82f6" />
-                            <Bar dataKey="exports" fill="#10b981" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', height: '200px', gap: '1rem' }}>
+                        {[40, 60, 30, 80, 50, 90, 70].map((h, i) => (
+                            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <div style={{ height: `${h}%`, background: 'var(--primary)', borderRadius: '4px 4px 0 0', opacity: 0.8 }}></div>
+                                <div style={{ height: `${h / 2}%`, background: 'var(--secondary)', borderRadius: '4px 4px 0 0', opacity: 0.8 }}></div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
-                <div className="card" style={{ padding: '1.5rem', height: '350px' }}>
+                <div className="card" style={{ padding: '1.5rem', height: '300px' }}>
                     <h3 style={{ marginBottom: '1.5rem' }}>Market Distribution</h3>
-                    <ResponsiveContainer width="100%" height="80%">
-                        <PieChart>
-                            <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value" label>
-                                {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
-                    </ResponsiveContainer>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <div style={{
+                            width: '180px', height: '180px', borderRadius: '50%',
+                            background: 'conic-gradient(var(--primary) 0% 40%, var(--secondary) 40% 70%, #f59e0b 70% 90%, #8b5cf6 90% 100%)',
+                            position: 'relative'
+                        }}>
+                            <div style={{ position: 'absolute', inset: '40px', background: 'var(--bg-dark)', borderRadius: '50%' }}></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
