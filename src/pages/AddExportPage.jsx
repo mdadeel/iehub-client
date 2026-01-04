@@ -58,7 +58,7 @@ const AddExportPage = () => {
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             placeholder="Ex: Pure Ceylon Cinnamon"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -69,7 +69,7 @@ const AddExportPage = () => {
                             value={formData.image}
                             onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                             placeholder="https://example.com/image.jpg"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -80,7 +80,7 @@ const AddExportPage = () => {
                             value={formData.price}
                             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                             placeholder="0.00"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -91,7 +91,7 @@ const AddExportPage = () => {
                             value={formData.origin}
                             onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
                             placeholder="Ex: Sri Lanka"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -100,7 +100,7 @@ const AddExportPage = () => {
                         <select
                             value={formData.category}
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         >
                             {categories.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
@@ -113,7 +113,7 @@ const AddExportPage = () => {
                             value={formData.quantity}
                             onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                             placeholder="Ex: 500"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -123,7 +123,7 @@ const AddExportPage = () => {
                             type="number" min="1" max="5" required
                             value={formData.rating}
                             onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -134,7 +134,7 @@ const AddExportPage = () => {
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             placeholder="Describe your product..."
                             rows="3"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd', fontFamily: 'inherit' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', fontFamily: 'inherit' }}
                         />
                     </div>
 

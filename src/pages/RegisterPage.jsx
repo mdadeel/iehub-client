@@ -52,7 +52,7 @@ const RegisterPage = () => {
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             placeholder="John Doe"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -63,7 +63,7 @@ const RegisterPage = () => {
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             placeholder="john@example.com"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -74,7 +74,7 @@ const RegisterPage = () => {
                             value={formData.photo}
                             onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
                             placeholder="https://example.com/photo.jpg"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -85,7 +85,7 @@ const RegisterPage = () => {
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             placeholder="••••••••"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -98,10 +98,6 @@ const RegisterPage = () => {
                     Already have an account? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 700 }}>Login here</Link>
                 </p>
             </div>
-            <style>{`
-        .dark .card { background: var(--bg-subtle-dark); color: white; }
-        .dark input { background: #1e293b; color: white; border-color: #334155 !important; }
-      `}</style>
         </div>
     );
 };

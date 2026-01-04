@@ -49,7 +49,7 @@ const LoginPage = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="name@company.com"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -64,7 +64,7 @@ const LoginPage = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="••••••••"
-                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid #ddd' }}
+                            style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                         />
                     </div>
 
@@ -80,7 +80,7 @@ const LoginPage = () => {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        background: 'white',
+                        background: 'var(--bg-card)',
                         padding: '0 1rem',
                         fontSize: '0.8rem',
                         opacity: 0.6
@@ -90,7 +90,7 @@ const LoginPage = () => {
                 <button onClick={handleGoogleLogin} className="btn" style={{
                     width: '100%',
                     justifyContent: 'center',
-                    border: '1px solid #ddd',
+                    border: '1px solid var(--border-color)',
                     background: 'white',
                     color: 'var(--text-light)'
                 }}>
@@ -101,11 +101,6 @@ const LoginPage = () => {
                     Don't have an account? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 700 }}>Register Now</Link>
                 </p>
             </div>
-            <style>{`
-        .dark .card { background: var(--bg-subtle-dark); color: white; }
-        .dark input { background: #1e293b; color: white; border-color: #334155 !important; }
-        .dark span[style*="background: white"] { background: var(--bg-subtle-dark); color: white; }
-      `}</style>
         </div>
     );
 };

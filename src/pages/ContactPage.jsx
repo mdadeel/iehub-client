@@ -62,7 +62,7 @@ const ContactPage = () => {
                 {/* Contact Info */}
                 <div className="flex flex-col gap-8">
                     <div className="card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div style={{ fontSize: '2rem', color: 'var(--primary)', background: 'var(--bg-subtle-light)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
+                        <div style={{ fontSize: '2rem', color: 'var(--primary)', background: 'var(--bg-inset)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
                             <HiMail />
                         </div>
                         <div>
@@ -72,7 +72,7 @@ const ContactPage = () => {
                     </div>
 
                     <div className="card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div style={{ fontSize: '2rem', color: 'var(--accent)', background: 'var(--bg-subtle-light)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
+                        <div style={{ fontSize: '2rem', color: 'var(--accent)', background: 'var(--bg-inset)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
                             <HiPhone />
                         </div>
                         <div>
@@ -82,7 +82,7 @@ const ContactPage = () => {
                     </div>
 
                     <div className="card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div style={{ fontSize: '2rem', color: 'var(--secondary)', background: 'var(--bg-subtle-light)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
+                        <div style={{ fontSize: '2rem', color: 'var(--secondary)', background: 'var(--bg-inset)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
                             <HiLocationMarker />
                         </div>
                         <div>
@@ -106,7 +106,6 @@ const ContactPage = () => {
             </div>
             <style>{`
                 .dark input, .dark select, .dark textarea { border-color: var(--border-dark) !important; color: white; }
-                .dark .card div[style*="background: var(--bg-subtle-light)"] { background: var(--bg-dark); }
                 .dark option { background: var(--bg-subtle-dark); color: white; }
             `}</style>
         </div>

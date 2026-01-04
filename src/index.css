@@ -36,6 +36,16 @@
   --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --glass-blur: blur(12px);
+
+  /* Semantic Variables (Dynamic) */
+  --bg-page: var(--bg-light);
+  --bg-surface: var(--bg-subtle-light);
+  --bg-inset: var(--bg-subtle-light);
+  --bg-card: #ffffff;
+  --text-body: var(--text-light);
+  --text-muted: var(--text-muted-light);
+  --border-color: var(--border-light);
+  --glass-bg: var(--glass-bg-light);
 }
 
 /* Base Setup */
@@ -50,16 +60,48 @@ body {
   line-height: 1.6;
   transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden;
+  background-color: var(--bg-page);
+  color: var(--text-body);
 }
 
 body.light {
-  background-color: var(--bg-light);
-  color: var(--text-light);
+  /* Defaults are already set in :root */
 }
 
 body.dark {
-  background-color: var(--bg-dark);
-  color: var(--text-dark);
+  --bg-page: var(--bg-dark);
+  --bg-surface: var(--bg-subtle-dark);
+  --bg-inset: var(--bg-dark);
+  --bg-card: var(--bg-subtle-dark);
+  --text-body: var(--text-dark);
+  --text-muted: var(--text-muted-dark);
+  --border-color: var(--border-dark);
+  --glass-bg: var(--glass-bg-dark);
+  
+  background-color: var(--bg-page);
+  color: var(--text-body);
+}
+
+input, select, textarea {
+  background: var(--bg-card); /* or surface? card is usually white/dark-grey. Inputs on cards might need surface/inset? */
+  /* Let's use bg-card for now as it maps to white/subtle-dark. */
+  /* Actually, if input is on a card (white), input bg should be white or inset? */
+  /* usually input is white. */
+  background: var(--bg-page); /* White on light. Darkest on dark. */
+  /* If I use bg-page:
+     Light: White. Input on White Card. OK.
+     Dark: Black (#020617). Input on Grey Card (#0f172a). Contrast OK.
+  */
+  color: var(--text-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 h1,
@@ -188,17 +230,12 @@ section {
 
 /* Card Styling - Glassmorphism */
 .card {
-  background: white;
+  background: var(--bg-card, white);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-color);
   padding: 1.5rem;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
-}
-
-.dark .card {
-  background: var(--bg-subtle-dark);
-  border-color: var(--border-dark);
 }
 
 .card:hover {

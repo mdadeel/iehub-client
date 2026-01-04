@@ -55,14 +55,14 @@ const ImportModal = ({ product, user, onClose, onSuccess }) => {
                             style={{
                                 padding: '0.75rem',
                                 borderRadius: 'var(--radius-sm)',
-                                border: isOverLimit ? '2px solid var(--danger)' : '1px solid #ddd'
+                                border: isOverLimit ? '2px solid var(--danger)' : '1px solid var(--border-color)'
                             }}
                         />
                         {isOverLimit && <span style={{ color: 'var(--danger)', fontSize: '0.8rem' }}>Cannot exceed available stock!</span>}
                     </div>
 
                     <div className="flex gap-2" style={{ marginTop: '1rem' }}>
-                        <button type="button" onClick={onClose} className="btn" style={{ flex: 1, border: '1px solid #ddd' }}>Cancel</button>
+                        <button type="button" onClick={onClose} className="btn" style={{ flex: 1, border: '1px solid var(--border-color)' }}>Cancel</button>
                         <button
                             type="submit"
                             disabled={isOverLimit || qty < 1 || submitting}
@@ -155,7 +155,7 @@ const ProductDetailsPage = () => {
                         <p style={{ opacity: 0.8, marginTop: '0.5rem' }}>{product.description}</p>
                     </div>
 
-                    <div className="card" style={{ padding: '1.5rem', background: 'var(--bg-subtle-light)', border: 'none' }}>
+                    <div className="card" style={{ padding: '1.5rem', background: 'var(--bg-surface)', border: 'none' }}>
                         <h4 style={{ marginBottom: '1rem' }}>Import Specifications</h4>
                         <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                             <li>• Instant sync with "My Imports"</li>
@@ -184,10 +184,6 @@ const ProductDetailsPage = () => {
                     onSuccess={fetchProduct}
                 />
             )}
-
-            <style>{`
-        .dark .card[style*="background: var(--bg-subtle-light)"] { background: #1e293b; color: white; }
-      `}</style>
         </div>
     );
 };

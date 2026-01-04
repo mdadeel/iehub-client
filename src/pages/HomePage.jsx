@@ -12,7 +12,7 @@ const Features = () => {
     ];
 
     return (
-        <section style={{ background: 'var(--bg-subtle-light)' }}>
+        <section style={{ background: 'var(--bg-surface)' }}>
             <div className="container">
                 <h2 className="section-title">Why Choose <span style={{ color: 'var(--primary)' }}>ExportHub?</span></h2>
                 <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem' }}>
@@ -25,11 +25,6 @@ const Features = () => {
                     ))}
                 </div>
             </div>
-            <style>{`
-        .dark section[style*="background: var(--bg-subtle-light)"] { 
-          background: #1e293b; 
-        }
-      `}</style>
         </section>
     );
 };
@@ -99,7 +94,7 @@ const Testimonials = () => {
     ];
 
     return (
-        <section style={{ background: 'var(--bg-subtle-light)' }}>
+        <section style={{ background: 'var(--bg-surface)' }}>
             <div className="container">
                 <h2 className="section-title">What Our <span style={{ color: 'var(--primary)' }}>Partners Say</span></h2>
                 <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
@@ -173,7 +168,7 @@ const FAQ = () => {
 const CategoriesList = () => {
     const cats = ["Electronics", "Textiles", "Spices", "Fashion", "Handicrafts", "Automotive"];
     return (
-        <section style={{ background: 'var(--bg-subtle-light)' }}>
+        <section style={{ background: 'var(--bg-surface)' }}>
             <div className="container">
                 <h2 className="section-title">Top <span style={{ color: 'var(--primary)' }}>Categories</span></h2>
                 <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
