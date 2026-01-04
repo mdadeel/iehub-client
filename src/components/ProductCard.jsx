@@ -31,15 +31,15 @@ const ProductCard = ({ product }) => {
 
                 <div className="flex items-center gap-1" style={{ marginBottom: '1rem', color: '#ffc107' }}>
                     <HiStar />
-                    <span style={{ color: 'var(--text-muted-light)', fontSize: '0.9rem' }}>{product.rating}</span>
+                    <span className="text-muted" style={{ fontSize: '0.9rem' }}>{product.rating}</span>
                 </div>
 
                 <div className="flex flex-col gap-2" style={{ marginBottom: '1.5rem', fontSize: '0.9rem' }}>
-                    <div className="flex items-center gap-2" style={{ color: 'var(--text-muted-light)' }}>
+                    <div className="flex items-center gap-2 text-muted">
                         <HiLocationMarker style={{ color: 'var(--secondary)' }} />
                         <span>Origin: {product.origin}</span>
                     </div>
-                    <div className="flex items-center gap-2" style={{ color: 'var(--text-muted-light)' }}>
+                    <div className="flex items-center gap-2 text-muted">
                         <HiInbox style={{ color: 'var(--accent)' }} />
                         <span>Quantity: {product.quantity} units</span>
                     </div>
@@ -60,6 +60,8 @@ const ProductCard = ({ product }) => {
             </div>
 
             <style>{`
+        .text-muted { color: var(--text-muted-light); }
+        .dark .text-muted { color: var(--text-muted-dark); }
         .dark .card h3 { color: var(--secondary-light); }
         .dark .card span[style*="background: var(--bg-subtle-light)"] { 
           background: var(--bg-subtle-dark); 

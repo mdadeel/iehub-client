@@ -107,6 +107,7 @@ const ContactPage = () => {
             <style>{`
                 .dark input, .dark select, .dark textarea { border-color: var(--border-dark) !important; color: white; }
                 .dark .card div[style*="background: var(--bg-subtle-light)"] { background: var(--bg-dark); }
+                .dark option { background: var(--bg-subtle-dark); color: white; }
             `}</style>
         </div>
     );

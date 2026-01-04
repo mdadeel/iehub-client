@@ -49,7 +49,6 @@ const DashboardPage = () => {
             </div>
 
             {/* Charts Row */}
-            {/*
             <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
                 <div className="card" style={{ padding: '1.5rem', height: '350px' }}>
                     <h3 style={{ marginBottom: '1.5rem' }}>Weekly Trade Activity</h3>
@@ -77,7 +76,6 @@ const DashboardPage = () => {
                     </ResponsiveContainer>
                 </div>
             </div>
-            */}
 
             {/* Recent Activity Table */}
             <div className="card" style={{ padding: '1.5rem', overflowX: 'auto' }}>

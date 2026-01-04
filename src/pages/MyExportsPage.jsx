@@ -173,6 +173,11 @@ const MyExportsPage = () => {
                     onUpdate={handleUpdate}
                 />
             )}
+            <style>{`
+        .dark .btn[style*="background: #fee2e2"] { background: #450a0a; color: #f87171; }
+        .dark .card { background: var(--bg-subtle-dark); color: white; }
+        .dark input { background: #1e293b; color: white; border-color: #334155 !important; }
+      `}</style>
         </div>
     );
 };
