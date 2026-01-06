@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { HiCloudUpload, HiCurrencyDollar, HiCube } from 'react-icons/hi';
@@ -9,6 +9,21 @@ import api from '../utils/api';
 const AddExportPage = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+
+    // Redirect guest users back to dashboard
+    if (user?.isGuest) {
+        useEffect(() => {
+            toast.error("This feature is not available in demo mode. Please create an account.");
+            navigate('/dashboard');
+        }, [navigate]);
+
+        return (
+            <div className="container" style={{ paddingTop: '120px', textAlign: 'center' }}>
+                <p>Redirecting...</p>
+            </div>
+        );
+    }
+
     const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         name: '',

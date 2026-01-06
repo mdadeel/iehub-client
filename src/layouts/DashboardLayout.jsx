@@ -1,11 +1,17 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { HiHome, HiPlusCircle, HiArrowDown, HiArrowUp, HiUser, HiChartBar } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
 
 const DashboardLayout = () => {
+    const { user } = useAuth();
     const [error, setError] = useState(null);
 
-    const menuItems = [
+    // Filter menu items based on user type
+    const menuItems = user?.isGuest ? [
+        { title: 'Overview', path: '/dashboard', icon: <HiChartBar /> },
+        { title: 'Profile', path: '/dashboard/profile', icon: <HiUser /> },
+    ] : [
         { title: 'Overview', path: '/dashboard', icon: <HiChartBar /> },
         { title: 'Add Export', path: '/dashboard/add-export', icon: <HiPlusCircle /> },
         { title: 'My Exports', path: '/dashboard/my-exports', icon: <HiArrowUp /> },
@@ -55,6 +61,18 @@ const DashboardLayout = () => {
             }}>
                 <div style={{ marginBottom: '2rem', padding: '0 1rem' }}>
                     <h5 style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '1px', opacity: 0.5 }}>Management</h5>
+                    {user?.isGuest && (
+                        <div style={{
+                            marginTop: '0.5rem',
+                            padding: '0.5rem',
+                            background: 'var(--bg-inset)',
+                            borderRadius: 'var(--radius-sm)',
+                            fontSize: '0.7rem',
+                            color: 'var(--secondary)'
+                        }}>
+                            Demo Mode Active
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-col gap-2">
                     {menuItems.map(item => (

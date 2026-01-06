@@ -12,9 +12,12 @@ const LatestProducts = () => {
         const fetchLatest = async () => {
             try {
                 const { data } = await api.get('/products');
-                setProducts(data.slice(0, 6));
+                // Ensure data is an array before setting products
+                const productsArray = Array.isArray(data) ? data : (data?.products || []);
+                setProducts(productsArray.slice(0, 6));
             } catch (error) {
                 console.error("Failed to fetch products", error);
+                setProducts([]); // Set empty array on error
             } finally {
                 setLoading(false);
             }

@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
-import { FaGoogle } from 'react-icons/fa';
+import { FaGoogle, FaUser, FaCrown } from 'react-icons/fa';
 
 const LoginPage = () => {
-    const { loginUser, loginWithGoogle } = useAuth();
+    const { loginUser, loginWithGoogle, loginAsGuest } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -34,6 +34,17 @@ const LoginPage = () => {
             .catch((err) => {
                 toast.error(err.message);
             });
+    };
+
+    const handleDemoLogin = async (userType) => {
+        try {
+            // Use guest login for demo access
+            await loginAsGuest(userType === 'user' ? 'demo-user' : 'demo-admin');
+            toast.success(`Demo ${userType} access granted. Welcome to IE HUB.`);
+            navigate(from, { replace: true });
+        } catch (error) {
+            toast.error("Demo access failed. Please try again.");
+        }
     };
 
     return (
@@ -126,6 +137,74 @@ const LoginPage = () => {
                         >
                             Sign In to Portal
                         </motion.button>
+
+                        <div style={{ textAlign: 'center', margin: '1.5rem 0', position: 'relative' }}>
+                            <div style={{ height: '1px', background: 'var(--border-color)', width: '100%' }}></div>
+                            <span style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                background: 'var(--bg-card)',
+                                padding: '0 1.5rem',
+                                fontSize: '0.75rem',
+                                fontWeight: 700,
+                                letterSpacing: '1px',
+                                opacity: 0.4
+                            }}>DEMO ACCESS</span>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                type="button"
+                                onClick={() => handleDemoLogin('user')}
+                                className="btn"
+                                style={{
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    border: '1px solid var(--border-color)',
+                                    background: 'var(--bg-inset)',
+                                    padding: '1rem',
+                                    fontWeight: 700,
+                                    color: 'var(--text-body)'
+                                }}
+                            >
+                                <FaUser style={{ marginRight: '10px', color: 'var(--primary)' }} /> Demo User Access
+                            </motion.button>
+
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                type="button"
+                                onClick={() => handleDemoLogin('admin')}
+                                className="btn"
+                                style={{
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    border: '1px solid var(--border-color)',
+                                    background: 'var(--bg-inset)',
+                                    padding: '1rem',
+                                    fontWeight: 700,
+                                    color: 'var(--text-body)'
+                                }}
+                            >
+                                <FaCrown style={{ marginRight: '10px', color: 'var(--secondary)' }} /> Demo Admin Access
+                            </motion.button>
+                        </div>
+
+                        <div style={{
+                            textAlign: 'center',
+                            marginTop: '1rem',
+                            padding: '0.8rem',
+                            background: 'var(--bg-inset)',
+                            borderRadius: 'var(--radius-md)',
+                            fontSize: '0.75rem',
+                            opacity: 0.8
+                        }}>
+                            <p>Demo access allows you to explore the platform without creating an account</p>
+                        </div>
                     </form>
 
                     <div style={{ textAlign: 'center', margin: '2rem 0', position: 'relative' }}>

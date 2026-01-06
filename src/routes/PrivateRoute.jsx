@@ -55,7 +55,7 @@ const PrivateRoute = ({ children }) => {
         );
     }
 
-    // Check if user is authenticated
+    // Check if user is authenticated (either real user or guest)
     if (user) {
         // For nested routes, use Outlet; otherwise render children
         return children || <Outlet />;

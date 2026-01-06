@@ -7,13 +7,17 @@ import toast from 'react-hot-toast';
 const ProfilePage = () => {
     const { user } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
+
+    // Check if user is a guest
+    const isGuestUser = user?.isGuest;
+
     // Mock user data extension since actual auth might just have basic info
     const [formData, setFormData] = useState({
-        displayName: user?.displayName || 'Trade Merchant',
-        email: user?.email || '',
-        role: 'Verified Exporter',
-        company: 'Global Trade Ltd.',
-        location: 'Colombo, Sri Lanka'
+        displayName: user?.displayName || (isGuestUser ? 'Demo User' : 'Trade Merchant'),
+        email: user?.email || (isGuestUser ? 'demo@importexport.com' : ''),
+        role: isGuestUser ? 'Demo Account' : 'Verified Exporter',
+        company: isGuestUser ? 'Demo Company' : 'Global Trade Ltd.',
+        location: isGuestUser ? 'Demo Location' : 'Colombo, Sri Lanka'
     });
 
     const handleSave = (e) => {
@@ -46,6 +50,21 @@ const ProfilePage = () => {
                     User <span style={{ color: 'var(--secondary)' }}>Profile</span>
                 </motion.h1>
                 <p style={{ opacity: 0.6 }}>Manage your account settings and business preferences.</p>
+
+                {isGuestUser && (
+                    <div style={{
+                        marginTop: '1rem',
+                        padding: '0.8rem',
+                        background: 'var(--bg-inset)',
+                        borderRadius: 'var(--radius-md)',
+                        fontSize: '0.85rem',
+                        border: '1px solid var(--border-color)'
+                    }}>
+                        <p style={{ color: 'var(--secondary)', fontWeight: 600 }}>
+                            You are currently using a demo account. Data may not be saved permanently.
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">

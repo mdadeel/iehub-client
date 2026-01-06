@@ -269,10 +269,24 @@ const Navbar = () => {
                                         height: '44px',
                                         borderRadius: '14px',
                                         overflow: 'hidden',
-                                        border: '2px solid var(--primary)'
+                                        border: user.isGuest ? '2px dashed var(--secondary)' : '2px solid var(--primary)'
                                     }}
                                 >
-                                    <img src={user.photoURL || 'https://via.placeholder.com/40'} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    {user.isGuest ? (
+                                        <div style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            background: 'var(--bg-inset)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: 'var(--secondary)'
+                                        }}>
+                                            <HiUser size={20} />
+                                        </div>
+                                    ) : (
+                                        <img src={user.photoURL || 'https://via.placeholder.com/40'} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    )}
                                 </motion.div>
                                 <AnimatePresence>
                                     {activeMenu === 'profile' && (
@@ -294,7 +308,22 @@ const Navbar = () => {
                                         >
                                             <div style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', marginBottom: '0.5rem' }}>
                                                 <div style={{ fontWeight: 900, fontSize: '0.9rem' }}>{user.displayName}</div>
-                                                <div style={{ fontSize: '0.7rem', opacity: 0.4 }}>{user.email}</div>
+                                                <div style={{ fontSize: '0.7rem', opacity: 0.4 }}>
+                                                    {user.email} {user.isGuest && '(Demo)'}
+                                                </div>
+                                                {user.isGuest && (
+                                                    <div style={{
+                                                        fontSize: '0.6rem',
+                                                        opacity: 0.6,
+                                                        marginTop: '0.5rem',
+                                                        padding: '0.3rem 0.5rem',
+                                                        background: 'var(--bg-inset)',
+                                                        borderRadius: '4px',
+                                                        display: 'inline-block'
+                                                    }}>
+                                                        DEMO MODE
+                                                    </div>
+                                                )}
                                             </div>
                                             <Link to="/dashboard" onClick={() => setActiveMenu(null)} className="dropdown-item">Performance Hub</Link>
                                             <Link to="/dashboard/profile" onClick={() => setActiveMenu(null)} className="dropdown-item">Settings</Link>

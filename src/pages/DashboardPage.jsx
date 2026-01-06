@@ -18,7 +18,12 @@ const DashboardPage = () => {
 
     useEffect(() => {
         const fetchDashboardData = async () => {
-            if (!user?.email) return;
+            // Don't fetch personalized data for guest users
+            if (!user?.email || user.isGuest) {
+                setLoading(false);
+                return;
+            }
+
             try {
                 const [productsRes, importsRes] = await Promise.all([
                     api.get(`/products`), // Fetch all to filter client-side if API doesn't support specific filter
@@ -50,7 +55,12 @@ const DashboardPage = () => {
         fetchDashboardData();
     }, [user]);
 
-    const statCards = [
+    const statCards = user?.isGuest ? [
+        { title: "Demo Exports", value: "12", icon: <HiTrendingUp />, color: "var(--secondary)" },
+        { title: "Demo Imports", value: "8", icon: <HiArchive />, color: "var(--primary)" },
+        { title: "Demo Asset Value", value: "$45,670", icon: <HiCurrencyDollar />, color: "#f59e0b" },
+        { title: "Demo Rating", value: "4.8", icon: <HiUserGroup />, color: "#8b5cf6" },
+    ] : [
         { title: "My Exports", value: stats.exports, icon: <HiTrendingUp />, color: "var(--secondary)" },
         { title: "Active Imports", value: stats.imports, icon: <HiArchive />, color: "var(--primary)" },
         { title: "Total Asset Value", value: `$${stats.value.toLocaleString()}`, icon: <HiCurrencyDollar />, color: "#f59e0b" },
@@ -79,9 +89,29 @@ const DashboardPage = () => {
                     >
                         Overview
                     </motion.h1>
-                    <p style={{ opacity: 0.6, fontWeight: 500 }}>
-                        Welcome back, <strong style={{ color: 'var(--text-heading)' }}>{user?.displayName}</strong>. Here is your sector summary.
-                    </p>
+                    {user?.isGuest ? (
+                        <div>
+                            <p style={{ opacity: 0.6, fontWeight: 500 }}>
+                                Welcome to the demo dashboard, <strong style={{ color: 'var(--text-heading)' }}>{user?.displayName}</strong>.
+                            </p>
+                            <div style={{
+                                marginTop: '0.5rem',
+                                padding: '0.8rem',
+                                background: 'var(--bg-inset)',
+                                borderRadius: 'var(--radius-md)',
+                                fontSize: '0.85rem',
+                                border: '1px solid var(--border-color)'
+                            }}>
+                                <p style={{ color: 'var(--secondary)', fontWeight: 600 }}>
+                                    Note: You are using a demo account. Personalized data is not available in demo mode.
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+                        <p style={{ opacity: 0.6, fontWeight: 500 }}>
+                            Welcome back, <strong style={{ color: 'var(--text-heading)' }}>{user?.displayName}</strong>. Here is your sector summary.
+                        </p>
+                    )}
                 </div>
                 <div className="hidden md-block" style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '0.75rem', fontWeight: 800, opacity: 0.4, letterSpacing: '1px' }}>SYSTEM STATUS</div>
@@ -170,14 +200,29 @@ const DashboardPage = () => {
                     <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '2rem', fontSize: '0.9rem' }}>Manage your global trade portfolio.</p>
 
                     <div className="flex flex-col gap-3">
-                        <Link to="/dashboard/add-export" className="btn" style={{ background: 'var(--bg-card)', color: 'var(--text-heading)', justifyContent: 'space-between' }}>
-                            <span>New Export Listing</span>
-                            <HiArrowRight />
-                        </Link>
-                        <Link to="/products" className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', justifyContent: 'space-between' }}>
-                            <span>Browse Marketplace</span>
-                            <HiArrowRight />
-                        </Link>
+                        {user?.isGuest ? (
+                            <>
+                                <Link to="/products" className="btn" style={{ background: 'var(--bg-card)', color: 'var(--text-heading)', justifyContent: 'space-between' }}>
+                                    <span>Browse Products</span>
+                                    <HiArrowRight />
+                                </Link>
+                                <Link to="/register" className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', justifyContent: 'space-between' }}>
+                                    <span>Create Account</span>
+                                    <HiArrowRight />
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/dashboard/add-export" className="btn" style={{ background: 'var(--bg-card)', color: 'var(--text-heading)', justifyContent: 'space-between' }}>
+                                    <span>New Export Listing</span>
+                                    <HiArrowRight />
+                                </Link>
+                                <Link to="/products" className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.3)', justifyContent: 'space-between' }}>
+                                    <span>Browse Marketplace</span>
+                                    <HiArrowRight />
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </motion.div>
             </div>

@@ -20,10 +20,13 @@ const AllProductsPage = () => {
             try {
                 const params = { search: searchTerm, category, sort: sortBy };
                 const { data } = await api.get('/products', { params });
-                setProducts(data);
+                // Ensure data is an array before setting products
+                const productsArray = Array.isArray(data) ? data : (data?.products || []);
+                setProducts(productsArray);
             } catch (error) {
                 console.error("Failed to fetch products", error);
                 toast.error("Telemetry error: Global market sync failed.");
+                setProducts([]); // Set empty array on error
             } finally {
                 setLoading(false);
             }

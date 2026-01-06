@@ -1,4 +1,7 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { HiUsers, HiCube, HiBriefcase, HiCheckCircle, HiLogout } from 'react-icons/hi';
 
 const AdminDashboardPage = () => {
     const navigate = useNavigate();
@@ -16,17 +19,17 @@ const AdminDashboardPage = () => {
     };
 
     const stats = [
-        { label: "Total Users", value: "1,245", icon: <HiUsers />, color: "#3b82f6" },
-        { label: "Active Products", value: "8,500", icon: <HiCube />, color: "#10b981" },
-        { label: "Pending Approvals", value: "42", icon: <HiBriefcase />, color: "#f59e0b" },
+        { label: "Total Users", value: "1,245", icon: <HiUsers />, color: "var(--primary)" },
+        { label: "Active Products", value: "8,500", icon: <HiCube />, color: "var(--secondary)" },
+        { label: "Pending Approvals", value: "42", icon: <HiBriefcase />, color: "var(--accent)" },
         { label: "Completed Trades", value: "3.2M", icon: <HiCheckCircle />, color: "#8b5cf6" },
     ];
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg-dark)', color: 'var(--text-body)' }}>
+        <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-body)' }}>
             {/* Admin Header */}
             <header style={{
-                background: 'rgba(15, 23, 42, 0.8)',
+                background: 'var(--bg-glass)',
                 backdropFilter: 'blur(12px)',
                 padding: '1rem 3rem',
                 display: 'flex',
@@ -37,7 +40,7 @@ const AdminDashboardPage = () => {
                 top: 0,
                 zIndex: 100
             }}>
-                <div style={{ fontWeight: '900', fontSize: '1.4rem', color: 'white', letterSpacing: '-0.5px' }}>
+                <div style={{ fontWeight: '900', fontSize: '1.4rem', color: 'var(--text-body)', letterSpacing: '-0.5px' }}>
                     IE HUB <span style={{ color: 'var(--primary)' }}>SYSTEM CONTROL</span>
                 </div>
                 <motion.button
@@ -49,7 +52,7 @@ const AdminDashboardPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        color: '#f87171',
+                        color: 'var(--danger)',
                         background: 'rgba(239, 68, 68, 0.1)',
                         padding: '0.6rem 1.2rem',
                         fontWeight: 700,
@@ -64,7 +67,7 @@ const AdminDashboardPage = () => {
                     <motion.h1
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem', color: 'white' }}
+                        style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem', color: 'var(--text-body)' }}
                     >
                         Global <span style={{ color: 'var(--primary)' }}>Overview</span>
                     </motion.h1>
@@ -83,7 +86,7 @@ const AdminDashboardPage = () => {
                             className="card"
                             style={{
                                 padding: '2rem',
-                                background: 'var(--bg-glass)',
+                                background: 'var(--bg-card)',
                                 border: '1px solid var(--border-color)',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -94,20 +97,19 @@ const AdminDashboardPage = () => {
                             <div style={{
                                 width: '64px',
                                 height: '64px',
-                                background: `${s.color}15`,
+                                background: 'var(--bg-inset)',
                                 color: s.color,
                                 borderRadius: '16px',
                                 fontSize: '1.8rem',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                boxShadow: `0 8px 16px -4px ${s.color}20`
+                                justifyContent: 'center'
                             }}>
                                 {s.icon}
                             </div>
                             <div>
-                                <div style={{ opacity: 0.4, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>{s.label}</div>
-                                <div style={{ fontSize: '2rem', fontWeight: 900, color: 'white' }}>{s.value}</div>
+                                <div style={{ opacity: 0.5, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>{s.label}</div>
+                                <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--text-body)' }}>{s.value}</div>
                             </div>
                         </motion.div>
                     ))}
@@ -120,7 +122,7 @@ const AdminDashboardPage = () => {
                     transition={{ delay: 0.4 }}
                     className="card"
                     style={{
-                        background: 'var(--bg-glass)',
+                        background: 'var(--bg-card)',
                         padding: '3rem',
                         border: '1px solid var(--border-color)',
                         borderRadius: '24px'
@@ -128,8 +130,8 @@ const AdminDashboardPage = () => {
                 >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
                         <div>
-                            <h3 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'white' }}>Infrastructure Management</h3>
-                            <p style={{ opacity: 0.4, fontWeight: 600, fontSize: '0.9rem' }}>Comprehensive database of registered entities</p>
+                            <h3 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--text-body)' }}>Infrastructure Management</h3>
+                            <p style={{ opacity: 0.5, fontWeight: 600, fontSize: '0.9rem' }}>Comprehensive database of registered entities</p>
                         </div>
                         <button className="btn btn-primary" style={{ padding: '0.7rem 1.4rem', fontWeight: 800 }}>EXPORT LOGS</button>
                     </div>
@@ -137,7 +139,7 @@ const AdminDashboardPage = () => {
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.75rem', textAlign: 'left' }}>
                             <thead>
-                                <tr style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '1.5px' }}>
+                                <tr style={{ color: 'var(--text-muted)', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '1.5px' }}>
                                     <th style={{ padding: '1rem 1.5rem' }}>Entity / Identifier</th>
                                     <th style={{ padding: '1rem 1.5rem' }}>Sector Role</th>
                                     <th style={{ padding: '1rem 1.5rem' }}>Core Status</th>
@@ -148,20 +150,20 @@ const AdminDashboardPage = () => {
                                 {[1, 2, 3, 4, 5].map((_, i) => (
                                     <motion.tr
                                         key={i}
-                                        whileHover={{ background: 'rgba(255,255,255,0.02)' }}
+                                        whileHover={{ background: 'var(--bg-inset)' }}
                                         style={{
-                                            background: 'rgba(0,0,0,0.2)',
+                                            background: 'var(--bg-surface)',
                                             borderRadius: '16px',
                                             transition: 'all 0.2s'
                                         }}
                                     >
-                                        <td style={{ padding: '1.25rem 1.5rem', borderRadius: '16px 0 0 16px', fontWeight: 700, color: 'white' }}>
+                                        <td style={{ padding: '1.25rem 1.5rem', borderRadius: '16px 0 0 16px', fontWeight: 700, color: 'var(--text-body)' }}>
                                             Global Logistics Corp_{400 + i}
                                         </td>
                                         <td style={{ padding: '1.25rem 1.5rem', opacity: 0.6, fontWeight: 600 }}>EXPORTER_PREMIUM</td>
                                         <td style={{ padding: '1.25rem 1.5rem' }}>
                                             <span style={{
-                                                color: '#10b981',
+                                                color: 'var(--secondary)',
                                                 background: 'rgba(16, 185, 129, 0.1)',
                                                 padding: '0.4rem 0.8rem',
                                                 borderRadius: '8px',
@@ -171,7 +173,7 @@ const AdminDashboardPage = () => {
                                             }}>SYNCHRONIZED</span>
                                         </td>
                                         <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right', borderRadius: '0 16px 16px 0' }}>
-                                            <button style={{ color: 'var(--primary)', background: 'transparent', fontWeight: 800, fontSize: '0.85rem' }}>OVERRIDE</button>
+                                            <button style={{ color: 'var(--primary)', background: 'transparent', fontWeight: 800, fontSize: '0.85rem', border: 'none', cursor: 'pointer' }}>OVERRIDE</button>
                                         </td>
                                     </motion.tr>
                                 ))}
@@ -185,3 +187,4 @@ const AdminDashboardPage = () => {
 };
 
 export default AdminDashboardPage;
+

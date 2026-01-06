@@ -8,6 +8,38 @@ import api from '../utils/api';
 
 const MyImportsPage = () => {
     const { user } = useAuth();
+
+    // Handle guest users
+    if (user?.isGuest) {
+        return (
+            <div className="container" style={{ paddingTop: '120px', textAlign: 'center', paddingBottom: '6rem' }}>
+                <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem' }}>
+                        My <span style={{ color: 'var(--primary)' }}>Imports</span>
+                    </h1>
+                    <div style={{
+                        padding: '2rem',
+                        background: 'var(--bg-glass)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '24px',
+                        marginBottom: '2rem'
+                    }}>
+                        <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>
+                            You are currently using a demo account.
+                        </p>
+                        <p style={{ opacity: 0.7, marginBottom: '1.5rem' }}>
+                            Import tracking is not available in demo mode. Please create an account to access this feature.
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Link to="/register" className="btn btn-primary">Create Account</Link>
+                            <Link to="/dashboard" className="btn">Back to Dashboard</Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     const [imports, setImports] = useState([]);
     const [filteredImports, setFilteredImports] = useState([]);
     const [loading, setLoading] = useState(true);

@@ -42,6 +42,25 @@ export const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password);
     };
 
+    // Guest/Demo user login
+    const loginAsGuest = (userType = 'guest') => {
+        setLoading(true);
+        // Create a mock user object for demo/guest access
+        const guestUser = {
+            uid: `guest-${Date.now()}`,
+            email: userType === 'demo-user' ? 'demo@importexport.com' :
+                   userType === 'demo-admin' ? 'admin@importexport.com' :
+                   `guest-${Date.now()}@example.com`,
+            displayName: `${userType.charAt(0).toUpperCase() + userType.slice(1)} User`,
+            isGuest: true,
+            userType: userType
+        };
+
+        setUser(guestUser);
+        setLoading(false);
+        return Promise.resolve({ user: guestUser });
+    };
+
     const loginWithGoogle = () => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
@@ -83,7 +102,8 @@ export const AuthProvider = ({ children }) => {
         registerUser,
         loginUser,
         loginWithGoogle,
-        logout
+        logout,
+        loginAsGuest
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
