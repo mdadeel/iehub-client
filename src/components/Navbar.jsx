@@ -85,10 +85,12 @@ const Navbar = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    boxShadow: '0 8px 16px -4px rgba(37, 99, 235, 0.3)'
+                                    padding: '6px',
+                                    boxShadow: '0 8px 16px -4px rgba(37, 99, 235, 0.3)',
+                                    overflow: 'hidden'
                                 }}
                             >
-                                <HiGlobe style={{ color: 'white', fontSize: '1.5rem' }} />
+                                <img src="/logo.png" alt="IEHUB Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             </motion.div>
                             <span style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-1.5px', color: theme === 'light' ? '#0f172a' : 'white' }}>
                                 IE<span style={{ color: 'var(--primary)' }}>HUB</span>
@@ -361,7 +363,10 @@ const Navbar = () => {
                         }}
                     >
                         <div className="flex justify-between items-center mb-12">
-                            <span style={{ fontSize: '1.5rem', fontWeight: 900 }}>IE<span style={{ color: 'var(--primary)' }}>HUB</span></span>
+                            <div className="flex items-center gap-3">
+                                <img src="/logo.png" alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
+                                <span style={{ fontSize: '1.5rem', fontWeight: 900 }}>IE<span style={{ color: 'var(--primary)' }}>HUB</span></span>
+                            </div>
                             <button onClick={() => setMobileOpen(false)} style={{ background: 'transparent', border: 'none', color: 'inherit' }}><HiX size={32} /></button>
                         </div>
 

@@ -60,8 +60,11 @@ const AddExportPage = () => {
             toast.success("Product integrated into global supply chain.");
             navigate('/dashboard/my-exports');
         } catch (error) {
-            console.error("Failed to add product", error);
-            toast.error("Asset integration failed. Verify network status.");
+            console.error("Failed to add product:", error.response?.data || error.message);
+            const errorMessage = error.response?.status === 413
+                ? "Image too large. Please use a smaller file."
+                : "Asset integration failed. Verify network status.";
+            toast.error(errorMessage);
         } finally {
             setSubmitting(false);
         }
