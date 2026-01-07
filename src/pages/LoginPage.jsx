@@ -178,19 +178,19 @@ const LoginPage = () => {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 type="button"
-                                onClick={() => handleDemoLogin('admin')}
+                                onClick={() => navigate('/admin/login')}
                                 className="btn"
                                 style={{
                                     width: '100%',
                                     justifyContent: 'center',
-                                    border: '1px solid var(--border-color)',
-                                    background: 'var(--bg-inset)',
+                                    border: '1px solid var(--secondary)',
+                                    background: 'rgba(16, 185, 129, 0.1)',
                                     padding: '1rem',
                                     fontWeight: 700,
-                                    color: 'var(--text-body)'
+                                    color: 'var(--secondary)'
                                 }}
                             >
-                                <FaCrown style={{ marginRight: '10px', color: 'var(--secondary)' }} /> Demo Admin Access
+                                <FaCrown style={{ marginRight: '10px', color: 'var(--secondary)' }} /> Go to Admin Portal
                             </motion.button>
                         </div>
 

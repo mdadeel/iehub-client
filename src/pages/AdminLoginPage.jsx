@@ -124,7 +124,47 @@ const AdminLoginPage = () => {
                     </motion.button>
                 </form>
 
-                <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+                {/* Demo Admin Access */}
+                <div style={{ textAlign: 'center', margin: '2rem 0', position: 'relative' }}>
+                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', width: '100%' }}></div>
+                    <span style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        background: 'rgba(17, 24, 39, 0.9)',
+                        padding: '0 1rem',
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        letterSpacing: '1px',
+                        opacity: 0.5
+                    }}>DEMO ACCESS</span>
+                </div>
+
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    onClick={() => {
+                        localStorage.setItem('isAdmin', 'true');
+                        toast.success('Demo admin access granted. Welcome to System Control.');
+                        navigate('/admin/dashboard');
+                    }}
+                    className="btn"
+                    style={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        border: '1px solid var(--secondary)',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        padding: '1rem',
+                        fontWeight: 700,
+                        color: '#10b981'
+                    }}
+                >
+                    <HiLockClosed style={{ marginRight: '10px' }} /> Demo Admin Access
+                </motion.button>
+
+                <div style={{ marginTop: '2rem', textAlign: 'center' }}>
                     <p style={{ fontSize: '0.8rem', opacity: 0.3, fontWeight: 500 }}>
                         All sessions are logged and encrypted. <br />
                         Unauthorized access attempts will be flagged.
