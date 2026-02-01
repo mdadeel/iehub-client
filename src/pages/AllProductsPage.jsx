@@ -41,7 +41,7 @@ const AllProductsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="container"
-            style={{ paddingBottom: '4rem' }}
+            style={{ paddingBottom: '4rem', paddingTop: 'var(--hero-padding-top)' }}
         >
             <section style={{ paddingTop: '0' }}>
 
