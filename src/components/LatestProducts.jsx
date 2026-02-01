@@ -47,23 +47,23 @@ const LatestProducts = () => {
     }
 
     return (
-        <section style={{ padding: '8rem 0' }}>
+        <section style={{ padding: '4rem 0' }}>
             <div className="container">
-                <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-1.5px' }}
+                        style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.6rem', letterSpacing: '-1.5px' }}
                     >
                         Market <span style={{ color: 'var(--primary)' }}>Opportunities</span>
                     </motion.h2>
-                    <p style={{ opacity: 0.5, fontWeight: 600, fontSize: '1.1rem' }}>Identified high-yield assets currently available for acquisition</p>
+                    <p style={{ opacity: 0.5, fontWeight: 600, fontSize: '1rem' }}>Identified high-yield assets currently available for acquisition</p>
                 </div>
 
                 <div className="grid" style={{
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                    gap: '3rem'
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '2rem'
                 }}>
                     {products.map((product, index) => (
                         <motion.div
@@ -88,9 +88,10 @@ const LatestProducts = () => {
                             to="/products"
                             className="btn btn-primary"
                             style={{
-                                padding: '1.2rem 3.5rem',
+                                padding: '0.6rem 2.5rem',
                                 fontWeight: 900,
                                 letterSpacing: '1px',
+                                borderRadius: '12px',
                                 boxShadow: '0 10px 30px -5px rgba(37, 99, 235, 0.3)'
                             }}
                         >

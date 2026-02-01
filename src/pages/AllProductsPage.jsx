@@ -41,19 +41,9 @@ const AllProductsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="container"
-            style={{ paddingBottom: '4rem', paddingTop: '2rem' }}
+            style={{ paddingBottom: '4rem' }}
         >
-            <section>
-                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <motion.h1
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.4rem', letterSpacing: '-1px' }}
-                    >
-                        Global <span style={{ color: 'var(--primary)' }}>Marketplace</span>
-                    </motion.h1>
-                    <p style={{ opacity: 0.5, fontSize: '1rem', fontWeight: 600 }}>Sourcing premium assets from verified international sectors.</p>
-                </div>
+            <section style={{ paddingTop: '0' }}>
 
                 {/* Glass Filter Bar */}
                 <motion.div
@@ -62,22 +52,22 @@ const AllProductsPage = () => {
                     transition={{ delay: 0.2 }}
                     className="card"
                     style={{
-                        padding: '1.5rem',
-                        marginBottom: '3rem',
+                        padding: '1rem',
+                        marginBottom: '2rem',
                         background: 'var(--bg-glass)',
                         backdropFilter: 'blur(30px)',
                         border: '1px solid var(--border-color)',
-                        borderRadius: '24px',
+                        borderRadius: '20px',
                         boxShadow: 'var(--shadow)'
                     }}
                 >
                     <div className="grid" style={{
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '2.5rem',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                        gap: '1.5rem',
                         alignItems: 'end'
                     }}>
                         <div className="flex flex-col gap-3">
-                            <label style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1.5px', opacity: 0.4 }}>
+                            <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1.2px', opacity: 0.4 }}>
                                 <HiSearch style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Identification
                             </label>
                             <input
@@ -90,7 +80,7 @@ const AllProductsPage = () => {
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <label style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1.5px', opacity: 0.4 }}>
+                            <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1.2px', opacity: 0.4 }}>
                                 <HiFilter style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Classification
                             </label>
                             <select
@@ -103,7 +93,7 @@ const AllProductsPage = () => {
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <label style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1.5px', opacity: 0.4 }}>
+                            <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1.2px', opacity: 0.4 }}>
                                 <HiSortAscending style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Telemetry Sort
                             </label>
                             <select
@@ -120,7 +110,7 @@ const AllProductsPage = () => {
                     </div>
                 </motion.div>
 
-                <div className="flex justify-between items-center" style={{ marginBottom: '3rem' }}>
+                <div className="flex justify-between items-center" style={{ marginBottom: '2rem' }}>
                     <div style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--primary)', letterSpacing: '-0.5px' }}>
                         {products.length} Opportunities Verified
                     </div>
@@ -184,13 +174,13 @@ const AllProductsPage = () => {
 
             <style>{`
                 .market-input, .market-select {
-                    padding: 1.1rem 1.4rem;
-                    border-radius: 16px;
+                    padding: 0.8rem 1.1rem;
+                    border-radius: 12px;
                     background: var(--bg-card);
                     border: 1px solid var(--border-color);
                     color: var(--text-body);
                     outline: none;
-                    font-size: 1rem;
+                    font-size: 0.9rem;
                     font-weight: 600;
                     cursor: pointer;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

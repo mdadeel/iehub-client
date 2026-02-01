@@ -8,19 +8,19 @@ const Footer = () => {
         <footer style={{
             background: 'var(--bg-dark)',
             color: 'white',
-            padding: '6rem 0 3rem 0',
-            marginTop: '8rem',
+            padding: '4rem 0 2rem 0',
+            marginTop: '4rem',
             borderTop: '1px solid var(--border-color)'
         }}>
             <div className="container grid" style={{
                 gridTemplateColumns: '1.5fr 1fr 1fr 1.2fr',
-                gap: '4rem'
+                gap: '2.5rem'
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-1px' }}>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.8px' }}>
                         IE <span style={{ color: 'var(--primary)' }}>HUB</span>
                     </div>
-                    <p style={{ opacity: 0.6, lineHeight: 1.7, fontSize: '0.95rem' }}>
+                    <p style={{ opacity: 0.6, lineHeight: 1.6, fontSize: '0.9rem' }}>
                         The ultimate ecosystem for global business connectivity. We bridge the gap between international suppliers and local markets with verified security and real-time synchronization.
                     </p>
                     <div className="flex gap-4" style={{ marginTop: '0.5rem' }}>
@@ -39,7 +39,7 @@ const Footer = () => {
 
                 <div>
                     <h4 style={{ marginBottom: '1.5rem', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--primary)' }}>Marketplace</h4>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem', opacity: 0.7, fontSize: '0.9rem' }}>
+                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem', opacity: 0.7, fontSize: '0.85rem' }}>
                         <li><Link to="/products" className="hover-link">All Products</Link></li>
                         <li><Link to="/categories" className="hover-link">Browse Categories</Link></li>
                         <li><Link to="/trades" className="hover-link">Latest Trades</Link></li>
@@ -49,7 +49,7 @@ const Footer = () => {
 
                 <div>
                     <h4 style={{ marginBottom: '1.5rem', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--primary)' }}>Company</h4>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem', opacity: 0.7, fontSize: '0.9rem' }}>
+                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem', opacity: 0.7, fontSize: '0.85rem' }}>
                         <li><Link to="/about" className="hover-link">Our Story</Link></li>
                         <li><Link to="/careers" className="hover-link">Trade Experts</Link></li>
                         <li><Link to="/news" className="hover-link">Market Insights</Link></li>

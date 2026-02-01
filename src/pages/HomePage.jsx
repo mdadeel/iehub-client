@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const SectionHeader = ({ title, highlight, subtitle }) => (
-    <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.8rem', letterSpacing: '-1.5px' }}
+            style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.6rem', letterSpacing: '-1.2px' }}
         >
             {title} <span style={{ color: 'var(--primary)' }}>{highlight}</span>
         </motion.h2>
@@ -19,7 +19,7 @@ const SectionHeader = ({ title, highlight, subtitle }) => (
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                style={{ opacity: 0.5, maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', fontWeight: 600, lineHeight: 1.6 }}
+                style={{ opacity: 0.5, maxWidth: '600px', margin: '0 auto', fontSize: '1rem', fontWeight: 600, lineHeight: 1.6 }}
             >
                 {subtitle}
             </motion.p>
@@ -45,9 +45,9 @@ const Features = () => {
                             key={i}
                             whileHover={{ y: -5 }}
                             className="card"
-                            style={{ padding: '2.5rem', textAlign: 'center', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
+                            style={{ padding: '1.5rem', textAlign: 'center', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
                         >
-                            <div style={{ fontSize: '3rem', color: 'var(--primary)', marginBottom: '1.5rem', opacity: 0.8 }}>{f.icon}</div>
+                            <div style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '1rem', opacity: 0.8 }}>{f.icon}</div>
                             <h3 style={{ marginBottom: '1rem', fontWeight: 700 }}>{f.title}</h3>
                             <p style={{ opacity: 0.7, fontSize: '0.95rem', lineHeight: 1.6 }}>{f.desc}</p>
                         </motion.div>
@@ -69,7 +69,7 @@ const Stats = () => {
     return (
         <section style={{ background: 'var(--bg-dark)', color: 'white', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, var(--primary-dark), transparent)', opacity: 0.3 }}></div>
-            <div className="container grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '4rem', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+            <div className="container grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2rem', textAlign: 'center', position: 'relative', zIndex: 1 }}>
                 {stats.map((s, i) => (
                     <motion.div
                         key={i}
@@ -77,8 +77,8 @@ const Stats = () => {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        <div style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--secondary)', marginBottom: '0.5rem' }}>{s.value}</div>
-                        <div style={{ fontSize: '1rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>{s.label}</div>
+                        <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--secondary)', marginBottom: '0.25rem' }}>{s.value}</div>
+                        <div style={{ fontSize: '0.85rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 600 }}>{s.label}</div>
                     </motion.div>
                 ))}
             </div>
@@ -98,7 +98,7 @@ const HowItWorks = () => {
         <section>
             <div className="container">
                 <SectionHeader title="Streamlined" highlight="Workflow" subtitle="Getting started with global trade has never been easier." />
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '4rem' }}>
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem' }}>
                     {steps.map((s, i) => (
                         <motion.div
                             key={i}
@@ -109,14 +109,14 @@ const HowItWorks = () => {
                             style={{ textAlign: 'center', position: 'relative' }}
                         >
                             <div style={{
-                                fontSize: '6rem',
+                                fontSize: '4rem',
                                 fontWeight: 900,
                                 background: 'linear-gradient(to bottom, var(--primary), transparent)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 opacity: 0.1,
                                 position: 'absolute',
-                                top: '-40px',
+                                top: '-30px',
                                 left: '50%',
                                 transform: 'translateX(-50%)',
                                 zIndex: -1
@@ -148,10 +148,10 @@ const Testimonials = () => {
                             key={i}
                             whileHover={{ scale: 1.02 }}
                             className="card"
-                            style={{ padding: '2.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
+                            style={{ padding: '1.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
                         >
-                            <div style={{ color: 'var(--primary)', fontSize: '2rem', marginBottom: '1rem' }}>"</div>
-                            <p style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9 }}>{r.text}</p>
+                            <div style={{ color: 'var(--primary)', fontSize: '1.5rem', marginBottom: '0.5rem' }}>"</div>
+                            <p style={{ marginBottom: '1.5rem', fontSize: '0.95rem', lineHeight: 1.7, opacity: 0.9 }}>{r.text}</p>
                             <div className="flex items-center gap-3">
                                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>{r.name[0]}</div>
                                 <div>
@@ -175,16 +175,16 @@ const Newsletter = () => (
                 borderRadius: 'var(--radius-lg)', overflow: 'hidden', position: 'relative'
             }}>
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, var(--primary) 0%, transparent 100%)', opacity: 0.2 }}></div>
-                <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px', margin: '0 auto' }}>
-                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Stay Informed</h2>
+                <div style={{ position: 'relative', zIndex: 1, maxWidth: '550px', margin: '0 auto' }}>
+                    <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Stay Informed</h2>
                     <p style={{ opacity: 0.7, marginBottom: '2.5rem' }}>Subscribe to get the latest trade opportunities and market insights.</p>
-                    <div className="flex" style={{ gap: '1rem' }}>
+                    <div className="flex" style={{ gap: '1rem', maxWidth: '500px', margin: '0 auto' }}>
                         <input
                             type="email"
                             placeholder="your@email.com"
-                            style={{ flex: 1, padding: '1rem 1.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                            style={{ flex: 1, padding: '0.75rem 1.25rem', borderRadius: '12px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '0.9rem' }}
                         />
-                        <button className="btn btn-primary" style={{ padding: '0 2.5rem' }}>Subscribe</button>
+                        <button className="btn btn-primary" style={{ padding: '0 2rem', borderRadius: '12px', fontSize: '0.9rem' }}>Subscribe</button>
                     </div>
                 </div>
             </div>
@@ -210,12 +210,12 @@ const HomePage = () => {
             <Newsletter />
 
             <section style={{ background: 'var(--bg-surface)' }}>
-                <div className="container" style={{ textAlign: 'center', padding: '4rem 0' }}>
-                    <h2 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-1.5px' }}>Start Your Trade <span style={{ color: 'var(--primary)' }}>Journey</span></h2>
-                    <p style={{ opacity: 0.5, marginBottom: '3rem', fontSize: '1.1rem', fontWeight: 600 }}>Connect with a worldwide network of trusted business partners.</p>
+                <div className="container" style={{ textAlign: 'center', padding: '3rem 0' }}>
+                    <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.6rem', letterSpacing: '-1.2px' }}>Start Your Trade <span style={{ color: 'var(--primary)' }}>Journey</span></h2>
+                    <p style={{ opacity: 0.5, marginBottom: '2rem', fontSize: '1rem', fontWeight: 600 }}>Connect with a worldwide network of trusted business partners.</p>
                     <div className="flex justify-center gap-4">
-                        <Link to="/register" className="btn btn-primary" style={{ padding: '1.2rem 3rem' }}>Create Account</Link>
-                        <Link to="/about" className="btn" style={{ border: '1px solid var(--border-color)', padding: '1.2rem 3rem' }}>Learn More</Link>
+                        <Link to="/register" className="btn btn-primary" style={{ padding: '0.6rem 2rem', fontSize: '0.9rem', borderRadius: '12px' }}>Create Account</Link>
+                        <Link to="/about" className="btn" style={{ border: '1px solid var(--border-color)', padding: '0.6rem 2rem', fontSize: '0.9rem', borderRadius: '12px' }}>Learn More</Link>
                     </div>
                 </div>
             </section>

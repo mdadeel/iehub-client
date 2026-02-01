@@ -53,7 +53,7 @@ const Navbar = () => {
             left: 0,
             right: 0,
             zIndex: 2000,
-            padding: scrolled ? '0.4rem 0' : '0.6rem 0',
+            padding: scrolled ? '0.2rem 0' : '0.4rem 0',
             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             pointerEvents: 'none'
         }}>
@@ -63,8 +63,8 @@ const Navbar = () => {
                     backdropFilter: 'blur(32px)',
                     WebkitBackdropFilter: 'blur(32px)',
                     border: `1px solid ${theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)'}`,
-                    borderRadius: '24px',
-                    padding: '0.6rem 1.5rem',
+                    borderRadius: '20px',
+                    padding: '0.4rem 1.25rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -78,8 +78,8 @@ const Navbar = () => {
                             <motion.div
                                 whileHover={{ rotate: 10, scale: 1.1 }}
                                 style={{
-                                    width: '42px',
-                                    height: '42px',
+                                    width: '34px',
+                                    height: '34px',
                                     background: 'linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%)',
                                     borderRadius: '12px',
                                     display: 'flex',
@@ -92,7 +92,7 @@ const Navbar = () => {
                             >
                                 <img src="/logo.png" alt="IEHUB Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             </motion.div>
-                            <span style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-1.5px', color: theme === 'light' ? '#0f172a' : 'white' }}>
+                            <span style={{ fontSize: '1.2rem', fontWeight: 900, letterSpacing: '-1px', color: theme === 'light' ? '#0f172a' : 'white' }}>
                                 IE<span style={{ color: 'var(--primary)' }}>HUB</span>
                             </span>
                         </Link>
@@ -109,9 +109,9 @@ const Navbar = () => {
                             })}>Home</NavLink>
 
                             <NavLink to="/products" style={({ isActive }) => ({
-                                padding: '0.6rem 1.2rem',
-                                borderRadius: '12px',
-                                fontSize: '0.9rem',
+                                padding: '0.5rem 1rem',
+                                borderRadius: '10px',
+                                fontSize: '0.85rem',
                                 fontWeight: 800,
                                 opacity: isActive ? 1 : 0.6,
                                 color: isActive ? 'var(--primary)' : 'inherit'
@@ -147,11 +147,11 @@ const Navbar = () => {
                                                 position: 'absolute',
                                                 top: '140%',
                                                 left: 0,
-                                                width: '400px',
+                                                width: '360px',
                                                 background: 'var(--bg-card)',
                                                 border: '1px solid var(--border-color)',
-                                                borderRadius: '24px',
-                                                padding: '1.5rem',
+                                                borderRadius: '20px',
+                                                padding: '1.25rem',
                                                 boxShadow: 'var(--shadow-lg)',
                                                 display: 'grid',
                                                 gridTemplateColumns: '1fr',
@@ -206,11 +206,11 @@ const Navbar = () => {
                                                 position: 'absolute',
                                                 top: '140%',
                                                 left: 0,
-                                                width: '400px',
+                                                width: '360px',
                                                 background: 'var(--bg-card)',
                                                 border: '1px solid var(--border-color)',
-                                                borderRadius: '24px',
-                                                padding: '1.5rem',
+                                                borderRadius: '20px',
+                                                padding: '1.25rem',
                                                 boxShadow: 'var(--shadow-lg)',
                                                 display: 'grid',
                                                 gridTemplateColumns: '1fr',
@@ -335,7 +335,7 @@ const Navbar = () => {
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <Link to="/login" className="btn btn-primary" style={{ padding: '0.8rem 1.8rem', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem' }}>
+                            <Link to="/login" className="btn btn-primary" style={{ padding: '0.6rem 1.4rem', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem' }}>
                                 PORTAL ACCESS
                             </Link>
                         )}
