@@ -1,9 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { HiStar, HiLocationMarker, HiInbox, HiChevronRight, HiArrowRight } from 'react-icons/hi';
+import { HiStar, HiLocationMarker, HiInbox, HiArrowRight } from 'react-icons/hi';
 import { motion } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
-    const navigate = useNavigate();
+    const navigateToProductDetail = useNavigate();
+
+    const handleViewSpecifications = () => {
+        navigateToProductDetail(`/products/${product._id}`);
+    };
 
     return (
         <motion.div
@@ -120,7 +124,7 @@ const ProductCard = ({ product }) => {
 
                 {/* Interactive CTA */}
                 <motion.button
-                    onClick={() => navigate(`/products/${product._id}`)}
+                    onClick={handleViewSpecifications}
                     whileHover={{ x: 5 }}
                     style={{
                         marginTop: 'auto',
@@ -141,7 +145,7 @@ const ProductCard = ({ product }) => {
             </div>
 
             <style>{`
-                .premium-product-card:hover { 
+                .premium-product-card:hover {
                     border-color: var(--primary);
                     box-shadow: 0 40px 80px -20px rgba(0,0,0,0.3);
                 }
