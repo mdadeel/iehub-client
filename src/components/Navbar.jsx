@@ -53,22 +53,18 @@ const Navbar = () => {
             left: 0,
             right: 0,
             zIndex: 2000,
-            padding: scrolled ? '0.2rem 0' : '0.4rem 0',
             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-            pointerEvents: 'none'
+            background: scrolled ? 'var(--glass-bg)' : 'transparent',
+            backdropFilter: scrolled ? 'var(--glass-blur)' : 'none',
+            WebkitBackdropFilter: scrolled ? 'var(--glass-blur)' : 'none',
+            borderBottom: scrolled ? '1px solid var(--border-color)' : 'none'
         }}>
-            <nav className="container" style={{ pointerEvents: 'auto' }}>
+            <nav className="container">
                 <div style={{
-                    background: theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(10, 10, 15, 0.7)',
-                    backdropFilter: 'blur(32px)',
-                    WebkitBackdropFilter: 'blur(32px)',
-                    border: `1px solid ${theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)'}`,
-                    borderRadius: '20px',
-                    padding: '0.4rem 1.25rem',
+                    height: scrolled ? '64px' : '80px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    boxShadow: scrolled ? '0 20px 40px -10px rgba(0,0,0,0.15)' : 'none',
                     transition: 'all 0.4s ease'
                 }}>
 
@@ -78,27 +74,27 @@ const Navbar = () => {
                             <motion.div
                                 whileHover={{ rotate: 10, scale: 1.1 }}
                                 style={{
-                                    width: '34px',
-                                    height: '34px',
+                                    width: 'clamp(28px, 4vw, 34px)',
+                                    height: 'clamp(28px, 4vw, 34px)',
                                     background: 'linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%)',
-                                    borderRadius: '12px',
+                                    borderRadius: '10px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    padding: '6px',
+                                    padding: '5px',
                                     boxShadow: '0 8px 16px -4px rgba(37, 99, 235, 0.3)',
                                     overflow: 'hidden'
                                 }}
                             >
                                 <img src="/logo.png" alt="IEHUB Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             </motion.div>
-                            <span style={{ fontSize: '1.2rem', fontWeight: 900, letterSpacing: '-1px', color: theme === 'light' ? '#0f172a' : 'white' }}>
+                            <span style={{ fontSize: 'clamp(1rem, 3vw, 1.2rem)', fontWeight: 900, letterSpacing: '-1px', color: theme === 'light' ? '#0f172a' : 'white' }}>
                                 IE<span style={{ color: 'var(--primary)' }}>HUB</span>
                             </span>
                         </Link>
 
-                        {/* DESKTOP NAV */}
-                        <div className="desktop-visible items-center gap-2">
+                        {/* DESKTOP NAV - CENTERED */}
+                        <div className="desktop-visible items-center" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', gap: '0.5rem' }}>
                             <NavLink to="/" style={({ isActive }) => ({
                                 padding: '0.6rem 1.2rem',
                                 borderRadius: '12px',
@@ -139,39 +135,41 @@ const Navbar = () => {
                                 <AnimatePresence>
                                     {activeMenu === 'marketplace' && (
                                         <motion.div
-                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            initial={{ opacity: 0, y: 20, scale: 0.98 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                                            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                                             ref={dropdownRef}
                                             style={{
                                                 position: 'absolute',
-                                                top: '140%',
-                                                left: 0,
-                                                width: '360px',
+                                                top: 'calc(100% + 0.75rem)',
+                                                left: '-100px',
+                                                width: '300px',
                                                 background: 'var(--bg-card)',
+                                                backdropFilter: 'blur(30px)',
+                                                WebkitBackdropFilter: 'blur(30px)',
                                                 border: '1px solid var(--border-color)',
                                                 borderRadius: '20px',
-                                                padding: '1.25rem',
-                                                boxShadow: 'var(--shadow-lg)',
-                                                display: 'grid',
-                                                gridTemplateColumns: '1fr',
-                                                gap: '1rem'
+                                                padding: '0.75rem',
+                                                boxShadow: '0 20px 40px -8px rgba(0,0,0,0.2)',
                                             }}
                                         >
-                                            {marketplaceLinks.map((link) => (
-                                                <Link
-                                                    key={link.path}
-                                                    to={link.path}
-                                                    onClick={() => setActiveMenu(null)}
-                                                    className="nav-mega-item"
-                                                >
-                                                    <div className="nav-icon">{link.icon}</div>
-                                                    <div>
-                                                        <div className="nav-title">{link.title}</div>
-                                                        <div className="nav-desc">{link.desc}</div>
-                                                    </div>
-                                                </Link>
-                                            ))}
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.25rem' }}>
+                                                {marketplaceLinks.map((link) => (
+                                                    <Link
+                                                        key={link.path}
+                                                        to={link.path}
+                                                        onClick={() => setActiveMenu(null)}
+                                                        className="nav-mega-item"
+                                                    >
+                                                        <div className="nav-icon" style={{ background: 'rgba(37, 99, 235, 0.08)', color: 'var(--primary)' }}>{link.icon}</div>
+                                                        <div>
+                                                            <div className="nav-title">{link.title}</div>
+                                                            <div className="nav-desc">{link.desc}</div>
+                                                        </div>
+                                                    </Link>
+                                                ))}
+                                            </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -199,38 +197,40 @@ const Navbar = () => {
                                 <AnimatePresence>
                                     {activeMenu === 'resources' && (
                                         <motion.div
-                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            initial={{ opacity: 0, y: 20, scale: 0.98 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                                            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                                             style={{
                                                 position: 'absolute',
-                                                top: '140%',
-                                                left: 0,
-                                                width: '360px',
+                                                top: 'calc(100% + 0.75rem)',
+                                                left: '-100px',
+                                                width: '300px',
                                                 background: 'var(--bg-card)',
+                                                backdropFilter: 'blur(30px)',
+                                                WebkitBackdropFilter: 'blur(30px)',
                                                 border: '1px solid var(--border-color)',
                                                 borderRadius: '20px',
-                                                padding: '1.25rem',
-                                                boxShadow: 'var(--shadow-lg)',
-                                                display: 'grid',
-                                                gridTemplateColumns: '1fr',
-                                                gap: '1rem'
+                                                padding: '0.75rem',
+                                                boxShadow: '0 20px 40px -8px rgba(0,0,0,0.2)',
                                             }}
                                         >
-                                            {resourceLinks.map((link) => (
-                                                <Link
-                                                    key={link.path}
-                                                    to={link.path}
-                                                    onClick={() => setActiveMenu(null)}
-                                                    className="nav-mega-item"
-                                                >
-                                                    <div className="nav-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>{link.icon}</div>
-                                                    <div>
-                                                        <div className="nav-title">{link.title}</div>
-                                                        <div className="nav-desc">{link.desc}</div>
-                                                    </div>
-                                                </Link>
-                                            ))}
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.25rem' }}>
+                                                {resourceLinks.map((link) => (
+                                                    <Link
+                                                        key={link.path}
+                                                        to={link.path}
+                                                        onClick={() => setActiveMenu(null)}
+                                                        className="nav-mega-item"
+                                                    >
+                                                        <div className="nav-icon" style={{ background: 'rgba(16, 185, 129, 0.08)', color: 'var(--accent)' }}>{link.icon}</div>
+                                                        <div>
+                                                            <div className="nav-title">{link.title}</div>
+                                                            <div className="nav-desc">{link.desc}</div>
+                                                        </div>
+                                                    </Link>
+                                                ))}
+                                            </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -245,9 +245,9 @@ const Navbar = () => {
                             whileTap={{ scale: 0.9 }}
                             onClick={toggleTheme}
                             style={{
-                                width: '44px',
-                                height: '44px',
-                                borderRadius: '14px',
+                                width: 'clamp(38px, 5vw, 44px)',
+                                height: 'clamp(38px, 5vw, 44px)',
+                                borderRadius: '12px',
                                 background: 'transparent',
                                 border: '1px solid var(--border-color)',
                                 color: 'inherit',
@@ -259,7 +259,7 @@ const Navbar = () => {
                             {theme === 'light' ? <HiMoon size={20} /> : <HiSun size={20} />}
                         </motion.button>
 
-                        <div style={{ width: '1px', height: '24px', background: 'var(--border-color)', margin: '0 0.5rem' }}></div>
+                        <div style={{ width: '1px', height: '20px', background: 'var(--border-color)', margin: '0 0.5rem', opacity: 0.3 }}></div>
 
                         {user ? (
                             <div style={{ position: 'relative' }}>
@@ -267,9 +267,9 @@ const Navbar = () => {
                                     onClick={() => setActiveMenu(activeMenu === 'profile' ? null : 'profile')}
                                     style={{
                                         cursor: 'pointer',
-                                        width: '44px',
-                                        height: '44px',
-                                        borderRadius: '14px',
+                                        width: 'clamp(38px, 5vw, 44px)',
+                                        height: 'clamp(38px, 5vw, 44px)',
+                                        borderRadius: '12px',
                                         overflow: 'hidden',
                                         border: user.isGuest ? '2px dashed var(--secondary)' : '2px solid var(--primary)'
                                     }}
@@ -293,32 +293,35 @@ const Navbar = () => {
                                 <AnimatePresence>
                                     {activeMenu === 'profile' && (
                                         <motion.div
-                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            initial={{ opacity: 0, y: 20, scale: 0.98 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                                            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                                             style={{
                                                 position: 'absolute',
-                                                top: '140%',
+                                                top: 'calc(100% + 0.75rem)',
                                                 right: 0,
                                                 width: '240px',
                                                 background: 'var(--bg-card)',
+                                                backdropFilter: 'blur(30px)',
+                                                WebkitBackdropFilter: 'blur(30px)',
                                                 border: '1px solid var(--border-color)',
-                                                borderRadius: '24px',
-                                                padding: '1rem',
-                                                boxShadow: 'var(--shadow-lg)'
+                                                borderRadius: '20px',
+                                                padding: '0.75rem',
+                                                boxShadow: '0 20px 40px -8px rgba(0,0,0,0.2)'
                                             }}
                                         >
-                                            <div style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', marginBottom: '0.5rem' }}>
-                                                <div style={{ fontWeight: 900, fontSize: '0.9rem' }}>{user.displayName}</div>
-                                                <div style={{ fontSize: '0.7rem', opacity: 0.4 }}>
+                                            <div style={{ padding: '0 0.25rem 0.5rem 0.25rem', borderBottom: '1px solid var(--border-color)', marginBottom: '0.5rem' }}>
+                                                <div style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '-0.2px' }}>{user.displayName}</div>
+                                                <div style={{ fontSize: '0.65rem', opacity: 0.4, fontWeight: 600 }}>
                                                     {user.email} {user.isGuest && '(Demo)'}
                                                 </div>
                                                 {user.isGuest && (
                                                     <div style={{
                                                         fontSize: '0.6rem',
                                                         opacity: 0.6,
-                                                        marginTop: '0.5rem',
-                                                        padding: '0.3rem 0.5rem',
+                                                        marginTop: '0.4rem',
+                                                        padding: '0.2rem 0.4rem',
                                                         background: 'var(--bg-inset)',
                                                         borderRadius: '4px',
                                                         display: 'inline-block'
@@ -335,8 +338,8 @@ const Navbar = () => {
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <Link to="/login" className="btn btn-primary" style={{ padding: '0.6rem 1.4rem', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem' }}>
-                                PORTAL ACCESS
+                            <Link to="/login" className="btn btn-primary" style={{ padding: '0.6rem 2rem', borderRadius: '12px', fontWeight: 900, fontSize: '0.85rem', letterSpacing: '1px' }}>
+                                LOGIN
                             </Link>
                         )}
 
@@ -393,7 +396,7 @@ const Navbar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </header>
+        </header >
     );
 };
 

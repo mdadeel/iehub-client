@@ -19,7 +19,7 @@ const SectionHeader = ({ title, highlight, subtitle }) => (
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                style={{ opacity: 0.5, maxWidth: '600px', margin: '0 auto', fontSize: '1rem', fontWeight: 600, lineHeight: 1.6 }}
+                style={{ opacity: 0.5, maxWidth: '600px', margin: '0 auto', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)', fontWeight: 600, lineHeight: 1.6 }}
             >
                 {subtitle}
             </motion.p>
@@ -199,7 +199,7 @@ const HomePage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="container" style={{ paddingBottom: '8rem', paddingTop: '1rem' }}>
+            <div className="container" style={{ paddingBottom: '8rem', paddingTop: 'var(--hero-padding-top)' }}>
                 <Hero />
             </div>
             <LatestProducts />

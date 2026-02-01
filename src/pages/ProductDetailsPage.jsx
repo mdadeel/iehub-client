@@ -108,18 +108,19 @@ const ImportModal = ({ product, user, onClose, onSuccess }) => {
                         {isOverLimit && <span style={{ color: 'var(--danger)', fontSize: '0.75rem', textAlign: 'center', fontWeight: 700 }}>EXCEEDS QUOTA LIMIT</span>}
                     </div>
 
-                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                        <button
+                    <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <motion.button
+                            whileTap={{ scale: 0.98 }}
                             type="submit"
                             disabled={isOverLimit || qty < 1 || submitting}
                             className="btn btn-primary"
-                            style={{ width: '100%', justifyContent: 'center', padding: '0.8rem', borderRadius: '12px' }}
+                            style={{ width: '100%', justifyContent: 'center', padding: '1rem', borderRadius: '12px', minHeight: '52px' }}
                         >
                             {submitting ? 'EXECUTING...' : 'AUTHORIZE TRADE'}
-                        </button>
+                        </motion.button>
                         <button type="button" onClick={onClose} style={{
                             background: 'transparent', border: 'none', color: 'var(--text-muted)',
-                            fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer'
+                            fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', padding: '0.5rem'
                         }}>
                             ABORT TRANSACTION
                         </button>
@@ -172,19 +173,21 @@ const ProductDetailsPage = () => {
                 pointerEvents: 'none', zIndex: 0
             }}></div>
 
-            <main className="container" style={{ position: 'relative', zIndex: 1, paddingTop: '80px', paddingBottom: '4rem' }}>
+            <main className="container" style={{ paddingTop: 'var(--hero-padding-top)', position: 'relative', zIndex: 1, paddingBottom: '4rem' }}>
                 {/* Header/Back Link */}
-                <button
+                <motion.button
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => navigate('/products')}
                     className="flex items-center gap-2"
                     style={{
                         background: 'transparent', border: 'none', color: 'var(--text-muted)',
-                        marginBottom: '1rem', fontWeight: 800, fontSize: '0.7rem',
-                        textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer'
+                        marginBottom: '1rem', fontWeight: 800, fontSize: '0.8rem',
+                        textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer',
+                        padding: '0.75rem 0', minHeight: '44px'
                     }}
                 >
                     <HiArrowLeft /> Terminal Index
-                </button>
+                </motion.button>
 
                 <div className="grid main-layout-grid" style={{ gridTemplateColumns: '0.85fr 1.15fr', gap: '2.5rem', alignItems: 'start' }}>
                     {/* Left: Product Visuals */}
@@ -243,13 +246,14 @@ const ProductDetailsPage = () => {
                                     key={idx}
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
+                                    whileTap={{ scale: 0.98 }}
                                     transition={{ delay: 0.1 * idx }}
                                     className="card"
-                                    style={{ padding: '0.75rem', textAlign: 'left', borderRadius: '14px', background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}
+                                    style={{ padding: '1rem 0.75rem', textAlign: 'left', borderRadius: '14px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', cursor: 'default' }}
                                 >
-                                    <div style={{ fontSize: '1rem', color: item.color, marginBottom: '0.35rem' }}>{item.icon}</div>
-                                    <div style={{ fontSize: '0.5rem', fontWeight: 900, textTransform: 'uppercase', opacity: 0.4, letterSpacing: '0.5px' }}>{item.label}</div>
-                                    <div style={{ fontSize: '0.75rem', fontWeight: 800, marginTop: '1px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.value}</div>
+                                    <div style={{ fontSize: '1.25rem', color: item.color, marginBottom: '0.35rem' }}>{item.icon}</div>
+                                    <div style={{ fontSize: '0.6rem', fontWeight: 900, textTransform: 'uppercase', opacity: 0.5, letterSpacing: '0.5px' }}>{item.label}</div>
+                                    <div style={{ fontSize: '0.85rem', fontWeight: 800, marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.value}</div>
                                 </motion.div>
                             ))}
                         </div>
@@ -283,15 +287,15 @@ const ProductDetailsPage = () => {
                                 border: '1px solid var(--border-color)', marginBottom: '1.5rem'
                             }}>
                                 <div>
-                                    <div style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.4, letterSpacing: '1px' }}>Market Value</div>
+                                    <div style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.5, letterSpacing: '1px' }}>Market Value</div>
                                     <div className="flex items-baseline gap-1" style={{ marginTop: '0.2rem' }}>
                                         <span style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--primary)' }}>${product.price.toLocaleString()}</span>
                                         <span style={{ fontSize: '0.75rem', fontWeight: 700, opacity: 0.4 }}>USD/U</span>
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-center border-l" style={{ paddingLeft: '1.5rem', borderColor: 'var(--border-color)' }}>
-                                    <div style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.4 }}>Availability</div>
-                                    <div style={{ fontSize: '0.8rem', fontWeight: 800, marginTop: '0.2rem' }}>{product.quantity} In Stock</div>
+                                    <div style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.5 }}>Availability</div>
+                                    <div style={{ fontSize: '0.9rem', fontWeight: 800, marginTop: '0.2rem' }}>{product.quantity} In Stock</div>
                                 </div>
                             </div>
 
@@ -303,7 +307,7 @@ const ProductDetailsPage = () => {
                                 }}>
                                     <HiInformationCircle /> Asset Intelligence
                                 </h3>
-                                <p style={{ fontSize: '0.85rem', lineHeight: 1.6, opacity: 0.6, fontWeight: 500 }}>
+                                <p style={{ fontSize: '1rem', lineHeight: 1.6, opacity: 0.7, fontWeight: 500 }}>
                                     {product.description || "Sophisticated commodity listing with verified supply chain origin. Rigorously tested for international compliance standards."}
                                 </p>
                             </section>
@@ -316,16 +320,21 @@ const ProductDetailsPage = () => {
                                     { title: 'Custody', desc: 'E2E Tracking', icon: <HiShieldCheck /> },
                                     { title: 'Protocol', desc: 'Algo Ready', icon: <HiLightningBolt /> }
                                 ].map((cert, idx) => (
-                                    <div key={idx} style={{
-                                        padding: '0.75rem', border: '1px solid var(--border-color)',
-                                        borderRadius: '12px', display: 'flex', gap: '10px', alignItems: 'center'
-                                    }}>
-                                        <div style={{ color: 'var(--primary)', fontSize: '1rem' }}>{cert.icon}</div>
+                                    <motion.div
+                                        key={idx}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{
+                                            padding: '1rem', border: '1px solid var(--border-color)',
+                                            borderRadius: '12px', display: 'flex', gap: '12px', alignItems: 'center',
+                                            background: 'rgba(255,255,255,0.02)'
+                                        }}
+                                    >
+                                        <div style={{ color: 'var(--primary)', fontSize: '1.25rem' }}>{cert.icon}</div>
                                         <div>
-                                            <div style={{ fontSize: '0.7rem', fontWeight: 900 }}>{cert.title}</div>
-                                            <div style={{ fontSize: '0.6rem', fontWeight: 600, opacity: 0.4 }}>{cert.desc}</div>
+                                            <div style={{ fontSize: '0.75rem', fontWeight: 900 }}>{cert.title}</div>
+                                            <div style={{ fontSize: '0.65rem', fontWeight: 600, opacity: 0.5 }}>{cert.desc}</div>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
 
@@ -342,7 +351,8 @@ const ProductDetailsPage = () => {
                                     <div style={{ fontSize: '0.55rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.5 }}>Execution Volume</div>
                                     <div style={{ fontSize: '0.85rem', fontWeight: 900 }}>${product.price.toLocaleString()} Base Unit</div>
                                 </div>
-                                <button
+                                <motion.button
+                                    whileTap={{ scale: 0.96 }}
                                     onClick={() => {
                                         if (!user) {
                                             toast.error("Security Bypass Blocked: Login Required");
@@ -354,13 +364,14 @@ const ProductDetailsPage = () => {
                                     disabled={product.quantity < 1}
                                     className="btn btn-primary"
                                     style={{
-                                        padding: '0.75rem 1.5rem', borderRadius: '10px',
-                                        fontWeight: 900, fontSize: '0.8rem', flex: 1,
-                                        boxShadow: '0 10px 20px rgba(37,99,235,0.4)'
+                                        padding: '0.85rem 1.5rem', borderRadius: '12px',
+                                        fontWeight: 900, fontSize: '0.85rem', flex: 1,
+                                        boxShadow: '0 10px 20px rgba(37,99,235,0.4)',
+                                        minHeight: '48px'
                                     }}
                                 >
                                     {product.quantity < 1 ? 'STOCK DEPLETED' : 'SECURE IMPORT CHANNEL'}
-                                </button>
+                                </motion.button>
                             </div>
                         </motion.div>
                     </div>

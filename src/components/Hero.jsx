@@ -53,7 +53,7 @@ const Hero = () => {
                         Global Trade Hub v2.0
                     </motion.div>
 
-                    <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', lineHeight: '1.2', fontWeight: 800, color: 'white' }}>
+                    <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', marginBottom: '1rem', lineHeight: '1.2', fontWeight: 800, color: 'white' }}>
                         Connect the World <br />
                         <span style={{
                             background: 'linear-gradient(to right, var(--secondary), #fff)',
