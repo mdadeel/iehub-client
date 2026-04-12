@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { HiGlobeAlt, HiShieldCheck, HiTrendingUp, HiUsers } from 'react-icons/hi';
+import { Card, CardContent } from '../components/ui/Card';
 
 const AboutUsPage = () => {
     const stats = [
@@ -13,80 +14,65 @@ const AboutUsPage = () => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="container"
-            style={{ padding: '2.4rem 0 8rem 0' }}
+            className="container py-24"
         >
-            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+            <div className="max-w-5xl mx-auto">
+                <div className="text-center mb-24">
                     <motion.h1
-                        initial={{ y: 30, opacity: 0 }}
+                        initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        style={{ fontSize: '3.5rem', fontWeight: 900, marginBottom: '1.2rem', letterSpacing: '-2px' }}
+                        className="text-5xl md:text-7xl font-black tracking-tighter mb-6"
                     >
-                        Our Digital <span style={{ color: 'var(--primary)' }}>Heritage</span>
+                        Our Digital <span className="text-figma-blue">Heritage</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        style={{ fontSize: '1.1rem', opacity: 0.5, maxWidth: '700px', margin: '0 auto', lineHeight: 1.6, fontWeight: 600 }}
+                        className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed"
                     >
-                        ExportHub is a sophisticated ecosystem designed to empower enterprises
-                        to transcend borders through verified technology and global trust.
+                        ExportHub is a professional ecosystem designed to empower global enterprises
+                        to transcend borders through verified technology and decentralized trust.
                     </motion.p>
                 </div>
 
-                <div className="grid" style={{ gridTemplateColumns: '1.2fr 0.8fr', gap: '8rem', marginBottom: '10rem', alignItems: 'center' }}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
                     <motion.div
-                        initial={{ x: -40, opacity: 0 }}
+                        initial={{ x: -20, opacity: 0 }}
                         whileInView={{ x: 0, opacity: 1 }}
                         viewport={{ once: true }}
+                        className="space-y-6"
                     >
-                        <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', fontWeight: 900, letterSpacing: '-1px' }}>The Central <span style={{ color: 'var(--primary)' }}>Mission</span></h2>
-                        <p style={{ opacity: 0.6, fontSize: '1rem', lineHeight: 1.7, marginBottom: '2rem', fontWeight: 500 }}>
-                            Founded in 2024, ExportHub was architected to solve the multi-layered complexities of international logistics and sector verification.
-                            We believe transparency is the fundamental currency of global commerce.
-                        </p>
-                        <p style={{ opacity: 0.6, fontSize: '1rem', lineHeight: 1.7, fontWeight: 500 }}>
-                            Our infrastructure bridges the gap between artisan exporters and international corporate buyers
-                            through a highly automated, secure network that ensures every transaction is verified at the source.
-                        </p>
+                        <h2 className="text-4xl font-black tracking-tight">The Central <span className="text-figma-blue">Mission</span></h2>
+                        <div className="space-y-4 text-muted-foreground font-medium text-lg leading-relaxed">
+                            <p>
+                                Founded in 2024, ExportHub was architected to solve the multi-layered complexities of international logistics and sector verification.
+                                We believe transparency is the fundamental currency of global commerce.
+                            </p>
+                            <p>
+                                Our infrastructure bridges the gap between artisan exporters and international corporate buyers
+                                through a highly automated, secure network that ensures every transaction is verified at the source.
+                            </p>
+                        </div>
                     </motion.div>
 
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         whileInView={{ scale: 1, opacity: 1 }}
                         viewport={{ once: true }}
-                        style={{ position: 'relative' }}
+                        className="relative"
                     >
-                        <div style={{
-                            width: '100%',
-                            aspectRatio: '1',
-                            background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                            borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
-                            opacity: 0.15,
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            zIndex: -1,
-                            filter: 'blur(40px)'
-                        }}></div>
-                        <div style={{
-                            padding: '3rem',
-                            background: 'var(--bg-glass)',
-                            backdropFilter: 'blur(20px)',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: '32px',
-                            textAlign: 'center',
-                            boxShadow: 'var(--shadow-lg)'
-                        }}>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', fontWeight: 900 }}>Global Vision</h3>
-                            <p style={{ opacity: 0.5, fontSize: '0.95rem', fontWeight: 600 }}>"Empowering every local entity to become a verified global leader."</p>
-                        </div>
+                        <div className="absolute inset-0 bg-figma-blue/10 blur-[100px] rounded-full" />
+                        <Card className="border-2 shadow-2xl relative z-10 bg-background/80 backdrop-blur-xl p-12 text-center rounded-[40px]">
+                            <h3 className="text-2xl font-black mb-4">Global Vision</h3>
+                            <p className="text-muted-foreground italic font-bold">
+                                "Empowering every local entity to become a verified global leader through algorithmic trust."
+                            </p>
+                        </Card>
                     </motion.div>
                 </div>
 
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '3rem' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((s, i) => (
                         <motion.div
                             key={i}
@@ -94,20 +80,17 @@ const AboutUsPage = () => {
                             whileInView={{ y: 0, opacity: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className="card"
-                            style={{
-                                padding: '2.5rem',
-                                textAlign: 'center',
-                                background: 'var(--bg-glass)',
-                                border: '1px solid var(--border-color)',
-                                borderRadius: '28px',
-                                boxShadow: 'var(--shadow)'
-                            }}
                         >
-                            <div style={{ color: 'var(--primary)', fontSize: '2.5rem', marginBottom: '1.25rem' }}>{s.icon}</div>
-                            <div style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-0.5px' }}>{s.value}</div>
-                            <div style={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1rem', opacity: 0.4 }}>{s.label}</div>
-                            <p style={{ fontSize: '0.9rem', opacity: 0.5, fontWeight: 600, lineHeight: 1.5 }}>{s.desc}</p>
+                            <Card className="h-full border-2 hover:border-figma-blue/20 transition-all group">
+                                <CardContent className="p-8 text-center">
+                                    <div className="text-figma-blue text-3xl mb-4 group-hover:scale-110 transition-transform flex justify-center">
+                                        {s.icon}
+                                    </div>
+                                    <div className="text-3xl font-black mb-1 tracking-tighter">{s.value}</div>
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">{s.label}</div>
+                                    <p className="text-xs text-muted-foreground font-bold leading-relaxed">{s.desc}</p>
+                                </CardContent>
+                            </Card>
                         </motion.div>
                     ))}
                 </div>

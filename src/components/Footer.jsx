@@ -5,75 +5,74 @@ import { FaXTwitter } from 'react-icons/fa6';
 
 const Footer = () => {
     return (
-        <footer style={{
-            background: 'var(--bg-dark)',
-            color: 'white',
-            padding: '4rem 0 2rem 0',
-            marginTop: '4rem',
-            borderTop: '1px solid var(--border-color)'
-        }}>
-            <div className="container grid" style={{
-                gridTemplateColumns: '1.5fr 1fr 1fr 1.2fr',
-                gap: '2.5rem'
-            }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.8px' }}>
-                        IE <span style={{ color: 'var(--primary)' }}>HUB</span>
+        <footer className="bg-figma-black text-white pt-20 pb-10">
+            <div className="container">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                    <div className="flex flex-col gap-6">
+                        <Link to="/" className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-figma-blue rounded-lg flex items-center justify-center p-1.5 shadow-lg shadow-figma-blue/20">
+                                <img src="/logo.png" alt="IEHUB" className="w-full h-full object-contain brightness-0 invert" />
+                            </div>
+                            <span className="font-black text-xl tracking-tighter">
+                                IE<span className="text-figma-blue">HUB</span>
+                            </span>
+                        </Link>
+                        <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+                            The ultimate ecosystem for global business connectivity. We bridge the gap between international suppliers and local markets with verified security.
+                        </p>
+                        <div className="flex gap-4">
+                            {[FaFacebook, FaXTwitter, FaGithub, FaLinkedin].map((Icon, i) => (
+                                <motion.a
+                                    key={i}
+                                    href="#"
+                                    whileHover={{ y: -3, color: '#0D99FF' }}
+                                    className="text-muted-foreground hover:text-white transition-colors"
+                                >
+                                    <Icon size={20} />
+                                </motion.a>
+                            ))}
+                        </div>
                     </div>
-                    <p style={{ opacity: 0.6, lineHeight: 1.6, fontSize: '0.9rem' }}>
-                        The ultimate ecosystem for global business connectivity. We bridge the gap between international suppliers and local markets with verified security and real-time synchronization.
-                    </p>
-                    <div className="flex gap-4" style={{ marginTop: '0.5rem' }}>
-                        {[FaFacebook, FaXTwitter, FaGithub, FaLinkedin].map((Icon, i) => (
-                            <motion.a
-                                key={i}
-                                href="#"
-                                whileHover={{ y: -3, color: 'var(--primary)' }}
-                                style={{ color: 'rgba(255,255,255,0.4)', transition: 'color 0.3s' }}
-                            >
-                                <Icon size={20} />
-                            </motion.a>
-                        ))}
+
+                    <div>
+                        <h4 className="text-sm font-black uppercase tracking-widest mb-6">Marketplace</h4>
+                        <ul className="flex flex-col gap-4 text-sm text-muted-foreground font-medium">
+                            <li><Link to="/products" className="hover:text-figma-blue transition-colors">All Products</Link></li>
+                            <li><Link to="/categories" className="hover:text-figma-blue transition-colors">Browse Categories</Link></li>
+                            <li><Link to="/trades" className="hover:text-figma-blue transition-colors">Latest Trades</Link></li>
+                            <li><Link to="/shipping" className="hover:text-figma-blue transition-colors">Global Logistics</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="text-sm font-black uppercase tracking-widest mb-6">Company</h4>
+                        <ul className="flex flex-col gap-4 text-sm text-muted-foreground font-medium">
+                            <li><Link to="/about" className="hover:text-figma-blue transition-colors">Our Story</Link></li>
+                            <li><Link to="/careers" className="hover:text-figma-blue transition-colors">Trade Experts</Link></li>
+                            <li><Link to="/news" className="hover:text-figma-blue transition-colors">Market Insights</Link></li>
+                            <li><Link to="/contact" className="hover:text-figma-blue transition-colors">Contact Support</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="text-sm font-black uppercase tracking-widest mb-6">Global HQ</h4>
+                        <div className="flex flex-col gap-4 text-sm text-muted-foreground font-medium">
+                            <p>123 Trade Center Plaza<br />New York, NY 10001, USA</p>
+                            <p>support@iehub.global</p>
+                            <p>+1 (888) TRADE-HUB</p>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <h4 style={{ marginBottom: '1.5rem', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--primary)' }}>Marketplace</h4>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem', opacity: 0.7, fontSize: '0.85rem' }}>
-                        <li><Link to="/products" className="hover-link">All Products</Link></li>
-                        <li><Link to="/categories" className="hover-link">Browse Categories</Link></li>
-                        <li><Link to="/trades" className="hover-link">Latest Trades</Link></li>
-                        <li><Link to="/shipping" className="hover-link">Global Logistics</Link></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 style={{ marginBottom: '1.5rem', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--primary)' }}>Company</h4>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem', opacity: 0.7, fontSize: '0.85rem' }}>
-                        <li><Link to="/about" className="hover-link">Our Story</Link></li>
-                        <li><Link to="/careers" className="hover-link">Trade Experts</Link></li>
-                        <li><Link to="/news" className="hover-link">Market Insights</Link></li>
-                        <li><Link to="/contact" className="hover-link">Contact Support</Link></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 style={{ marginBottom: '1.5rem', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--primary)' }}>Global HQ</h4>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', opacity: 0.7, fontSize: '0.9rem' }}>
-                        <p>123 Trade Center Plaza<br />New York, NY 10001, USA</p>
-                        <p>support@iehub.global</p>
-                        <p>+1 (888) TRADE-HUB</p>
+                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-muted-foreground tracking-widest uppercase">
+                    <div>© 2026 IEHUB GLOBAL NETWORK. ALL RIGHTS RESERVED.</div>
+                    <div className="flex gap-8">
+                        <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                        <a href="#" className="hover:text-white transition-colors">Compliance</a>
                     </div>
                 </div>
             </div>
-
-            <style>{`
-                .hover-link:hover { color: var(--primary); padding-left: 5px; }
-                .hover-link { transition: all 0.3s ease; display: block; }
-                @media (max-width: 768px) {
-                    footer .grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
-                }
-            `}</style>
         </footer>
     );
 };

@@ -1,29 +1,61 @@
 import { motion } from 'framer-motion';
+import { Card, CardContent } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
+import { HiArrowRight } from 'react-icons/hi';
 
 const MarketInsightsPage = () => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            style={{ paddingBottom: '160px', paddingTop: 'var(--hero-padding-top)' }}
-            className="container"
+            className="container py-24"
         >
-            <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)', fontWeight: 900, marginBottom: '3rem', letterSpacing: '-2.5px' }}>Market <span style={{ color: 'var(--primary)' }}>Insights</span></h1>
+            <div className="mb-20">
+                <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+                    Market <span className="text-figma-blue">Insights</span>
+                </h1>
+                <p className="text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
+                    In-depth analysis of global trade patterns, logistics innovation, and macroeconomic signals.
+                </p>
+            </div>
 
-            <div className="flex flex-col gap-12">
-                {[1, 2, 3].map((_, i) => (
+            <div className="grid gap-12">
+                {[
+                    { date: "JAN 2026", title: "Predictive Logistics: AI Impact on Shipping", desc: "How machine learning is revolutionizing port congestion calculations and optimizing trans-pacific trade lanes." },
+                    { date: "DEC 2025", title: "The Decoupling Debate: Supply Chain Resilience", desc: "Analyzing the shift from global efficiency to regional reliability in the wake of geopolitical volatility." },
+                    { date: "NOV 2025", title: "Blockchain Manifests: Zero-Trust Trading", desc: "The technical implementation of smart contracts in high-value commodity verification protocols." }
+                ].map((post, i) => (
                     <motion.div
                         key={i}
-                        className="flex-stack"
-                        style={{ padding: '2rem', background: 'var(--bg-glass)', borderRadius: '32px', border: '1px solid var(--border-color)' }}
+                        initial={{ y: 20, opacity: 0 }}
+                        whileInView={{ y: 0, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
                     >
-                        <div style={{ width: '100%', maxWidth: '400px', height: '240px', background: 'var(--bg-inset)', borderRadius: '24px', flexShrink: 0 }}></div>
-                        <div style={{ flex: 1 }}>
-                            <div style={{ opacity: 0.4, fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '1rem' }}>Trade Analysis • Jan 2026</div>
-                            <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '1rem', lineHeight: 1.2 }}>Predictive Logistics: The Impact of AI on Global Shipping Fees</h2>
-                            <p style={{ opacity: 0.6, fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>How machine learning is revolutionizing the way we calculate port congestion surcharges and optimizing international trade lanes.</p>
-                            <button style={{ color: 'var(--primary)', fontWeight: 900, background: 'transparent', border: 'none', fontSize: '1rem', cursor: 'pointer' }}>READ ANALYSIS →</button>
-                        </div>
+                        <Card className="border-2 overflow-hidden hover:border-figma-blue/20 transition-all group">
+                            <CardContent className="p-0 flex flex-col md:flex-row">
+                                <div className="md:w-1/3 aspect-video md:aspect-auto bg-muted relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-figma-blue/5 group-hover:bg-transparent transition-colors" />
+                                    <div className="absolute top-6 left-6 bg-figma-black text-white text-[10px] font-black px-3 py-1.5 rounded uppercase tracking-widest">
+                                        Analysis
+                                    </div>
+                                </div>
+                                <div className="md:w-2/3 p-8 md:p-12 space-y-6">
+                                    <div className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                                        Trade Intelligence • {post.date}
+                                    </div>
+                                    <h2 className="text-3xl font-black tracking-tight group-hover:text-figma-blue transition-colors">
+                                        {post.title}
+                                    </h2>
+                                    <p className="text-muted-foreground font-medium text-lg leading-relaxed">
+                                        {post.desc}
+                                    </p>
+                                    <Button variant="ghost" className="p-0 hover:bg-transparent text-figma-blue font-black uppercase tracking-widest text-xs group/btn">
+                                        READ ANALYSIS <HiArrowRight className="ml-2 group-hover/btn:translate-x-2 transition-transform" />
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </motion.div>
                 ))}
             </div>

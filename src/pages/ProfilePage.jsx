@@ -1,17 +1,18 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { HiUserCircle, HiMail, HiBriefcase, HiCheckCircle } from 'react-icons/hi';
+import { HiMail, HiBriefcase, HiCheckCircle, HiMap, HiGlobeAlt } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
 
 const ProfilePage = () => {
     const { user } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
 
-    // Check if user is a guest
     const isGuestUser = user?.isGuest;
 
-    // Mock user data extension since actual auth might just have basic info
     const [formData, setFormData] = useState({
         displayName: user?.displayName || (isGuestUser ? 'Demo User' : 'Trade Merchant'),
         email: user?.email || (isGuestUser ? 'demo@importexport.com' : ''),
@@ -22,13 +23,12 @@ const ProfilePage = () => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        // In a real app, API call to update profile
         toast.promise(
             new Promise((resolve) => setTimeout(resolve, 1000)),
             {
-                loading: 'Updating profile...',
-                success: 'Profile updated successfully!',
-                error: 'Could not update profile.',
+                loading: 'Synchronizing profile...',
+                success: 'System updated successfully!',
+                error: 'Update failed.',
             }
         );
         setIsEditing(false);
@@ -36,190 +36,161 @@ const ProfilePage = () => {
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container"
-            style={{ paddingTop: '2.5rem', paddingBottom: '6rem', maxWidth: '900px' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-10"
         >
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                <motion.h1
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem' }}
-                >
-                    User <span style={{ color: 'var(--secondary)' }}>Profile</span>
-                </motion.h1>
-                <p style={{ opacity: 0.6 }}>Manage your account settings and business preferences.</p>
-
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                <div>
+                    <h1 className="text-4xl font-black tracking-tighter mb-2">Corporate <span className="text-figma-blue">Settings</span></h1>
+                    <p className="text-muted-foreground font-medium">Manage your corporate identity and trade parameters.</p>
+                </div>
                 {isGuestUser && (
-                    <div style={{
-                        marginTop: '1rem',
-                        padding: '0.8rem',
-                        background: 'var(--bg-inset)',
-                        borderRadius: 'var(--radius-md)',
-                        fontSize: '0.85rem',
-                        border: '1px solid var(--border-color)'
-                    }}>
-                        <p style={{ color: 'var(--secondary)', fontWeight: 600 }}>
-                            You are currently using a demo account. Data may not be saved permanently.
-                        </p>
+                    <div className="bg-figma-orange/10 text-figma-orange text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border border-figma-orange/20">
+                        Sandboxed Entity Profile
                     </div>
                 )}
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Profile Card */}
-                <motion.div
-                    className="card md:col-span-1"
-                    style={{
-                        padding: '2rem',
-                        background: 'var(--bg-glass)',
-                        textAlign: 'center',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '24px'
-                    }}
-                >
-                    <div style={{ width: '120px', height: '120px', margin: '0 auto 1.5rem', borderRadius: '50%', background: 'var(--bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--secondary)', position: 'relative' }}>
-                        {user?.photoURL ? (
-                            <img src={user.photoURL} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                        ) : (
-                            <span style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--secondary)' }}>
-                                {formData.displayName.charAt(0)}
-                            </span>
-                        )}
-                        <div style={{ position: 'absolute', bottom: '0', right: '0', background: '#10b981', color: 'white', padding: '0.25rem', borderRadius: '50%', border: '2px solid var(--bg-card)' }}>
-                            <HiCheckCircle size={20} />
+                <div className="lg:col-span-4 space-y-6">
+                    <Card className="border-2 shadow-xl overflow-hidden">
+                        <div className="h-24 bg-figma-blue/10 relative">
+                            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
+                                <div className="w-24 h-24 rounded-[32px] bg-background border-4 border-background shadow-xl overflow-hidden flex items-center justify-center relative">
+                                    {user?.photoURL ? (
+                                        <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full bg-figma-blue text-white flex items-center justify-center text-3xl font-black">
+                                            {formData.displayName.charAt(0)}
+                                        </div>
+                                    )}
+                                    <div className="absolute bottom-0 right-0 bg-figma-green text-white p-1 rounded-full border-2 border-background">
+                                        <HiCheckCircle className="w-4 h-4" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.25rem' }}>{formData.displayName}</h2>
-                    <p style={{ opacity: 0.5, fontSize: '0.9rem', marginBottom: '1.5rem' }}>{formData.role}</p>
+                        <CardContent className="pt-16 pb-8 text-center">
+                            <h2 className="text-2xl font-black tracking-tight">{formData.displayName}</h2>
+                            <p className="text-muted-foreground font-bold text-xs uppercase tracking-widest mt-1">{formData.role}</p>
+                            
+                            <div className="mt-8 space-y-3">
+                                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border">
+                                    <HiMail className="text-figma-blue w-5 h-5 shrink-0" />
+                                    <div className="text-left overflow-hidden">
+                                        <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Secure Channel</div>
+                                        <div className="text-xs font-bold truncate">{formData.email}</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border">
+                                    <HiBriefcase className="text-figma-purple w-5 h-5 shrink-0" />
+                                    <div className="text-left overflow-hidden">
+                                        <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Entity Name</div>
+                                        <div className="text-xs font-bold truncate">{formData.company}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-                        <div className="flex items-center gap-3 opacity-70">
-                            <HiMail className="text-xl" />
-                            <span style={{ fontSize: '0.9rem' }}>{formData.email}</span>
-                        </div>
-                        <div className="flex items-center gap-3 opacity-70">
-                            <HiBriefcase className="text-xl" />
-                            <span style={{ fontSize: '0.9rem' }}>{formData.company}</span>
-                        </div>
-                    </div>
-                </motion.div>
+                    <Card className="border-2 border-dashed bg-muted/20">
+                        <CardContent className="p-6">
+                            <h3 className="text-xs font-black uppercase tracking-widest mb-4">Security Protocol</h3>
+                            <Button variant="outline" className="w-full font-bold border-2 h-11">
+                                ROTATE ACCESS KEY
+                            </Button>
+                        </CardContent>
+                    </Card>
+                </div>
 
                 {/* Edit Form */}
-                <motion.div
-                    className="card md:col-span-2"
-                    style={{
-                        padding: '2.5rem',
-                        background: 'var(--bg-glass)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '24px'
-                    }}
-                >
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Account Details</h3>
-                        <button
-                            onClick={() => setIsEditing(!isEditing)}
-                            className="btn btn-sm"
-                            style={{ background: isEditing ? 'var(--bg-inset)' : 'var(--primary)', border: 'none' }}
-                        >
-                            {isEditing ? 'Cancel Edit' : 'Edit Profile'}
-                        </button>
-                    </div>
-
-                    <form onSubmit={handleSave} className="flex flex-col gap-6">
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="form-group">
-                                <label className="label">Display Name</label>
-                                <input
-                                    type="text"
-                                    disabled={!isEditing}
-                                    value={formData.displayName}
-                                    onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
-                                    className="input-field"
-                                />
+                <div className="lg:col-span-8">
+                    <Card className="border-2 shadow-xl">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b pb-6">
+                            <div>
+                                <CardTitle className="text-xl font-black tracking-tight">Identity Parameters</CardTitle>
+                                <CardDescription className="font-bold text-xs uppercase tracking-widest mt-1">H-Fidelity Specification</CardDescription>
                             </div>
-                            <div className="form-group">
-                                <label className="label">Job Title / Role</label>
-                                <input
-                                    type="text"
-                                    disabled={!isEditing}
-                                    value={formData.role}
-                                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                                    className="input-field"
-                                />
-                            </div>
-                        </div>
+                            <Button
+                                onClick={() => setIsEditing(!isEditing)}
+                                variant={isEditing ? "outline" : "default"}
+                                className={isEditing ? "border-2 font-black" : "bg-figma-blue font-black"}
+                            >
+                                {isEditing ? 'ABORT EDIT' : 'MODIFY SPECS'}
+                            </Button>
+                        </CardHeader>
 
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="form-group">
-                                <label className="label">Company Name</label>
-                                <input
-                                    type="text"
-                                    disabled={!isEditing}
-                                    value={formData.company}
-                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                    className="input-field"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label className="label">Location</label>
-                                <input
-                                    type="text"
-                                    disabled={!isEditing}
-                                    value={formData.location}
-                                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                    className="input-field"
-                                />
-                            </div>
-                        </div>
+                        <CardContent className="p-8">
+                            <form onSubmit={handleSave} className="grid gap-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid gap-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Legal Representative</label>
+                                        <Input
+                                            disabled={!isEditing}
+                                            value={formData.displayName}
+                                            onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                                            className="h-12 border-2 focus-visible:ring-figma-blue disabled:opacity-70 disabled:bg-muted/30 font-bold"
+                                        />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Trade Designation</label>
+                                        <Input
+                                            disabled={!isEditing}
+                                            value={formData.role}
+                                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                                            className="h-12 border-2 focus-visible:ring-figma-blue disabled:opacity-70 disabled:bg-muted/30 font-bold"
+                                        />
+                                    </div>
+                                </div>
 
-                        <div className="form-group">
-                            <label className="label">Email Address</label>
-                            <input
-                                type="email"
-                                disabled={true} // Usually email is managed via auth provider
-                                value={formData.email}
-                                className="input-field"
-                                style={{ opacity: 0.5, cursor: 'not-allowed' }}
-                            />
-                        </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid gap-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Corporate Entity</label>
+                                        <Input
+                                            disabled={!isEditing}
+                                            value={formData.company}
+                                            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                            className="h-12 border-2 focus-visible:ring-figma-blue disabled:opacity-70 disabled:bg-muted/30 font-bold"
+                                        />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Geographic Node</label>
+                                        <div className="relative">
+                                            <HiMap className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                                            <Input
+                                                disabled={!isEditing}
+                                                value={formData.location}
+                                                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                                className="pl-10 h-12 border-2 focus-visible:ring-figma-blue disabled:opacity-70 disabled:bg-muted/30 font-bold"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
-                        {isEditing && (
-                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: '1rem' }}>
-                                <button type="submit" className="btn btn-primary" style={{ padding: '0.8rem 2rem' }}>
-                                    Save Changes
-                                </button>
-                            </motion.div>
-                        )}
-                    </form>
-                </motion.div>
+                                <div className="grid gap-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">System Identifier (Email)</label>
+                                    <Input
+                                        disabled={true}
+                                        value={formData.email}
+                                        className="h-12 border-2 opacity-50 bg-muted/30 cursor-not-allowed font-bold"
+                                    />
+                                    <p className="text-[9px] text-muted-foreground font-medium ml-1">Primary identifier cannot be modified without re-verification.</p>
+                                </div>
+
+                                {isEditing && (
+                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-4 border-t">
+                                        <Button type="submit" className="h-14 px-10 rounded-2xl font-black bg-figma-blue hover:bg-figma-blue/90 shadow-xl shadow-figma-blue/20">
+                                            COMMIT UPDATES
+                                        </Button>
+                                    </motion.div>
+                                )}
+                            </form>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
-
-            <style>{`
-                .label { font-size: 0.8rem; font-weight: 700; opacity: 0.6; margin-bottom: 0.5rem; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
-                .input-field {
-                    width: 100%;
-                    padding: 0.9rem 1.1rem;
-                    border-radius: 12px;
-                    border: 1px solid var(--border-color);
-                    background: var(--bg-inset);
-                    color: var(--text-body);
-                    outline: none;
-                    transition: all 0.2s;
-                }
-                .input-field:focus:not(:disabled) {
-                    border-color: var(--secondary);
-                    background: var(--bg-card);
-                    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-                }
-                .input-field:disabled {
-                    opacity: 0.7;
-                    background: transparent;
-                    border-color: transparent;
-                    padding-left: 0;
-                }
-            `}</style>
         </motion.div>
     );
 };

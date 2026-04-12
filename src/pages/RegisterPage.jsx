@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
 
 const RegisterPage = () => {
     const { registerUser } = useAuth();
@@ -40,136 +43,83 @@ const RegisterPage = () => {
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container"
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '90vh',
-                paddingTop: '2rem',
-                paddingBottom: '2rem'
-            }}
-        >
+        <div className="min-h-[90vh] flex items-center justify-center container py-12 relative overflow-hidden">
+            {/* Background Mesh */}
+            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-figma-blue/5 blur-[150px] rounded-full pointer-events-none" />
+            
             <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="card"
-                style={{
-                    maxWidth: '460px',
-                    width: '100%',
-                    padding: '2rem',
-                    background: 'var(--bg-glass)',
-                    backdropFilter: 'blur(24px)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: 'var(--shadow-lg)',
-                    position: 'relative',
-                    overflow: 'hidden'
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="w-full max-w-[460px] z-10"
             >
-                {/* Decorative background glow */}
-                <div style={{
-                    position: 'absolute',
-                    bottom: '-50px',
-                    left: '-50px',
-                    width: '200px',
-                    height: '200px',
-                    background: 'var(--primary)',
-                    filter: 'blur(100px)',
-                    opacity: 0.1,
-                    zIndex: 0
-                }}></div>
-
-                <div style={{ position: 'relative', zIndex: 1 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '0.4rem', letterSpacing: '-0.5px' }}>
-                            Join the <span style={{ color: 'var(--primary)' }}>Network</span>
-                        </h2>
-                        <p style={{ opacity: 0.5, fontSize: '0.9rem' }}>Start trading worldwide with IE HUB</p>
-                    </div>
-
-                    <form onSubmit={handleRegister} className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-2">
-                            <label style={{ fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>Full Name</label>
-                            <input
-                                type="text" required
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                placeholder="Example: Global Traders Ltd"
-                                className="auth-input"
-                            />
+                <Card className="border-2 shadow-2xl">
+                    <CardHeader className="text-center pb-8">
+                        <div className="w-12 h-12 bg-figma-blue rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-figma-blue/20">
+                            <img src="/logo.png" alt="" className="w-6 h-6 brightness-0 invert" />
                         </div>
+                        <CardTitle className="text-3xl font-black tracking-tighter">Join the <span className="text-figma-blue">Network</span></CardTitle>
+                        <CardDescription className="font-medium">Establish your global trade identity.</CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="grid gap-6">
+                        <form onSubmit={handleRegister} className="grid gap-4">
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Entity Name</label>
+                                <Input 
+                                    type="text" 
+                                    placeholder="e.g. Global Traders Ltd" 
+                                    required 
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    className="h-12 border-2 focus-visible:ring-figma-blue"
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Corporate Email</label>
+                                <Input 
+                                    type="email" 
+                                    placeholder="admin@enterprise.com" 
+                                    required 
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    className="h-12 border-2 focus-visible:ring-figma-blue"
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Logo / Photo URL</label>
+                                <Input 
+                                    type="url" 
+                                    placeholder="https://logo.com/my-company.jpg" 
+                                    value={formData.photo}
+                                    onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
+                                    className="h-12 border-2 focus-visible:ring-figma-blue"
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Master Password</label>
+                                <Input 
+                                    type="password" 
+                                    placeholder="••••••••" 
+                                    required 
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    className="h-12 border-2 focus-visible:ring-figma-blue"
+                                />
+                                <p className="text-[10px] text-muted-foreground font-medium ml-1">Requires 6+ characters with mixed casing.</p>
+                            </div>
+                            <Button type="submit" className="h-12 font-black bg-figma-blue hover:bg-figma-blue/90 mt-4">
+                                BUILD NETWORK ACCESS
+                            </Button>
+                        </form>
 
-                        <div className="flex flex-col gap-2">
-                            <label style={{ fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>Corporate Email</label>
-                            <input
-                                type="email" required
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="admin@enterprise.com"
-                                className="auth-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label style={{ fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>Company Logo / Photo URL</label>
-                            <input
-                                type="url"
-                                value={formData.photo}
-                                onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
-                                placeholder="https://logo.com/my-company.jpg"
-                                className="auth-input"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label style={{ fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>Master Password</label>
-                            <input
-                                type="password" required
-                                value={formData.password}
-                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                placeholder="••••••••"
-                                className="auth-input"
-                            />
-                            <p style={{ fontSize: '0.75rem', opacity: 0.4, margin: 0 }}>Must be 6+ characters with mixed casing</p>
-                        </div>
-
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            className="btn btn-primary"
-                            style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem', padding: '0.8rem', fontWeight: 900 }}
-                        >
-                            Build Network Access
-                        </motion.button>
-                    </form>
-
-                    <p style={{ textAlign: 'center', marginTop: '2.5rem', fontSize: '0.95rem', opacity: 0.7 }}>
-                        Already have access? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 800 }}>Login to Portal</Link>
-                    </p>
-                </div>
+                        <p className="text-center text-xs font-medium text-muted-foreground">
+                            Already have access? <Link to="/login" className="text-figma-blue font-bold hover:underline">Login to Portal</Link>
+                        </p>
+                    </CardContent>
+                </Card>
             </motion.div>
-
-            <style>{`
-                .auth-input {
-                    padding: 0.8rem 1rem;
-                    border-radius: var(--radius-md);
-                    border: 1px solid var(--border-color);
-                    background: var(--bg-card);
-                    color: var(--text-body);
-                    width: 100%;
-                    outline: none;
-                    transition: all 0.3s;
-                    font-size: 0.95rem;
-                }
-                .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-            `}</style>
-        </motion.div>
+        </div>
     );
 };
 

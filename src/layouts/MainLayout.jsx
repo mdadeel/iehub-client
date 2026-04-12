@@ -4,9 +4,9 @@ import Footer from '../components/Footer';
 
 const MainLayout = () => {
     return (
-        <div className="app">
+        <div className="flex flex-col min-h-screen">
             <Navbar />
-            <main className="flex-grow pt-20 w-full" style={{ maxWidth: '100vw', overflowX: 'hidden' }}>
+            <main className="flex-1 w-full overflow-x-hidden">
                 <Outlet />
             </main>
             <Footer />

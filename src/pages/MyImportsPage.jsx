@@ -2,39 +2,34 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { HiEye, HiTrash, HiSearch, HiGlobeAlt, HiCube } from 'react-icons/hi';
+import { HiEye, HiSearch, HiGlobeAlt, HiCube, HiTrendingUp } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
 
 const MyImportsPage = () => {
     const { user } = useAuth();
 
-    // Handle guest users
     if (user?.isGuest) {
         return (
-            <div className="container" style={{ paddingTop: '120px', textAlign: 'center', paddingBottom: '6rem' }}>
-                <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem' }}>
-                        My <span style={{ color: 'var(--primary)' }}>Imports</span>
-                    </h1>
-                    <div style={{
-                        padding: '2rem',
-                        background: 'var(--bg-glass)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '24px',
-                        marginBottom: '2rem'
-                    }}>
-                        <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>
-                            You are currently using a demo account.
-                        </p>
-                        <p style={{ opacity: 0.7, marginBottom: '1.5rem' }}>
-                            Import tracking is not available in demo mode. Please create an account to access this feature.
-                        </p>
-                        <div className="flex gap-3 justify-center">
-                            <Link to="/register" className="btn btn-primary">Create Account</Link>
-                            <Link to="/dashboard" className="btn">Back to Dashboard</Link>
-                        </div>
-                    </div>
+            <div className="max-w-2xl mx-auto py-20 text-center">
+                <div className="w-20 h-20 bg-figma-blue/10 text-figma-blue rounded-3xl flex items-center justify-center mx-auto mb-6">
+                    <HiGlobeAlt className="w-10 h-10" />
+                </div>
+                <h1 className="text-4xl font-black tracking-tighter mb-4">Demo <span className="text-figma-blue">Environment</span></h1>
+                <p className="text-muted-foreground font-medium mb-10 leading-relaxed">
+                    Import tracking and acquisition history are not available in the demo sandbox. 
+                    Please establish a verified corporate identity to access global trade records.
+                </p>
+                <div className="flex gap-4 justify-center">
+                    <Button asChild size="lg" className="rounded-full font-black bg-figma-blue hover:bg-figma-blue/90 h-14 px-8">
+                        <Link to="/register">Create Account</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="rounded-full font-black border-2 h-14 px-8">
+                        <Link to="/dashboard">Back to Overview</Link>
+                    </Button>
                 </div>
             </div>
         );
@@ -49,15 +44,13 @@ const MyImportsPage = () => {
         if (!user?.email) return;
         setLoading(true);
         try {
-            // Using products endpoint to simulate imports (products from others)
             const { data } = await api.get('/products');
             const otherProducts = data.filter(p => p.exporterEmail !== user.email);
             setImports(otherProducts);
             setFilteredImports(otherProducts);
         } catch (error) {
             console.error("Failed to fetch imports", error);
-            const errorMessage = error.response?.data?.message || error.message || "Critical error retrieving imports.";
-            toast.error(errorMessage);
+            toast.error("Telemetry failure: Could not retrieve acquisition logs.");
         } finally {
             setLoading(false);
         }
@@ -76,52 +69,46 @@ const MyImportsPage = () => {
     }, [searchTerm, imports]);
 
     if (loading) return (
-        <div className="container" style={{ paddingTop: '120px', textAlign: 'center' }}>
-            <div className="spinner" style={{ margin: 'auto' }}></div>
+        <div className="py-40 text-center">
+            <div className="w-12 h-12 border-4 border-muted border-t-figma-blue rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Retrieving Acquisition Logs...</p>
         </div>
     );
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container"
-            style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-10"
         >
-            <div className="flex flex-col md:flex-row justify-between items-end gap-6" style={{ marginBottom: '3rem' }}>
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
                 <div>
-                    <motion.h1
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-1px' }}
-                    >
-                        My <span style={{ color: 'var(--primary)' }}>Imports</span>
-                    </motion.h1>
-                    <p style={{ opacity: 0.6, fontWeight: 500 }}>Track incoming shipments and global acquisitions.</p>
+                    <h1 className="text-4xl font-black tracking-tighter mb-2">My <span className="text-figma-blue">Imports</span></h1>
+                    <p className="text-muted-foreground font-medium">Track incoming shipments and verify global acquisitions.</p>
                 </div>
                 
-                <div className="flex gap-4 w-full md:w-auto">
-                    <div style={{ position: 'relative', flex: 1, minWidth: '250px' }}>
-                        <HiSearch style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
-                        <input 
-                            type="text" 
-                            placeholder="Search by name or origin..." 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="input-field w-full"
-                            style={{ paddingLeft: '2.5rem' }}
-                        />
-                    </div>
+                <div className="relative w-full md:w-80">
+                    <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Input 
+                        placeholder="Search acquisition records..." 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 h-12 border-2 focus-visible:ring-figma-blue"
+                    />
                 </div>
             </div>
 
             {imports.length === 0 ? (
-                <div className="card text-center p-12" style={{ border: '1px dashed var(--border-color)', opacity: 0.7 }}>
-                    <h3 className="text-xl font-bold mb-2">No active imports</h3>
-                    <p className="opacity-70">Browse the global marketplace to start importing assets.</p>
+                <div className="py-32 text-center border-4 border-dashed rounded-[32px] bg-muted/20">
+                    <HiGlobeAlt className="w-16 h-16 text-muted mx-auto mb-6" />
+                    <h3 className="text-2xl font-black tracking-tight mb-2">Zero Active Imports</h3>
+                    <p className="text-muted-foreground font-medium mb-8">You haven't initiated any acquisition protocols yet.</p>
+                    <Button asChild size="lg" className="rounded-full font-black bg-figma-blue h-14 px-8">
+                        <Link to="/products">EXPLORE MARKETPLACE</Link>
+                    </Button>
                 </div>
             ) : filteredImports.length === 0 ? (
-                <div className="text-center opacity-50 py-12">No matching imports found.</div>
+                <div className="py-20 text-center text-muted-foreground font-bold">No matching records detected.</div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <AnimatePresence mode='popLayout'>
@@ -133,87 +120,64 @@ const MyImportsPage = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="card group"
-                                style={{
-                                    padding: '0',
-                                    border: '1px solid var(--border-color)',
-                                    borderRadius: '20px',
-                                    overflow: 'hidden',
-                                    background: 'var(--bg-glass)',
-                                    display: 'flex', flexDirection: 'column'
-                                }}
                             >
-                                <div style={{ position: 'relative', height: '180px', overflow: 'hidden' }}>
-                                    <img 
-                                        src={item.image || 'https://via.placeholder.com/300'} 
-                                        alt={item.name} 
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(20%)', transition: 'filter 0.3s' }}
-                                        className="group-hover:grayscale-0"
-                                    />
-                                    <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(59, 130, 246, 0.9)', backdropFilter: 'blur(4px)', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: 'white' }}>
-                                        {item.status || 'In Transit'}
-                                    </div>
-                                    <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', padding: '1.5rem 1.5rem 0.5rem', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}>
-                                        <div className="flex items-center gap-2 text-white">
-                                            <HiGlobeAlt className="text-blue-400" />
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{item.origin}</span>
+                                <Card className="overflow-hidden border-2 hover:border-figma-blue transition-all group flex flex-col h-full shadow-lg">
+                                    <div className="relative aspect-[16/10] overflow-hidden">
+                                        <img 
+                                            src={item.image || 'https://via.placeholder.com/300'} 
+                                            alt={item.name} 
+                                            className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                                        />
+                                        <div className="absolute top-3 right-3 bg-figma-blue text-white text-[9px] font-black px-2 py-1 rounded uppercase tracking-[0.1em] shadow-lg">
+                                            {item.status || 'IN_TRANSIT'}
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                                            <div className="flex items-center gap-2 text-white font-black text-[10px] uppercase tracking-widest">
+                                                <HiGlobeAlt className="text-figma-blue" />
+                                                {item.origin}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, lineHeight: 1.2, marginBottom: '0.5rem' }}>{item.name}</h3>
                                     
-                                    <div className="grid grid-cols-2 gap-4 mb-4 mt-2">
-                                        <div className="flex flex-col p-2 rounded-lg" style={{ background: 'var(--bg-inset)' }}>
-                                            <span style={{ fontSize: '0.7rem', opacity: 0.6, fontWeight: 700, textTransform: 'uppercase' }}>Quantity</span>
-                                            <span style={{ fontWeight: 800 }}>{item.quantity} Units</span>
+                                    <CardContent className="p-6 flex-1">
+                                        <h3 className="text-xl font-black leading-tight mb-4 group-hover:text-figma-blue transition-colors truncate">{item.name}</h3>
+                                        
+                                        <div className="grid grid-cols-2 gap-3 mb-4">
+                                            <div className="p-3 bg-muted/50 rounded-xl border">
+                                                <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Volume</div>
+                                                <div className="text-sm font-black flex items-center gap-1.5">
+                                                    <HiCube className="text-figma-blue w-3 h-3" /> {item.quantity} U
+                                                </div>
+                                            </div>
+                                            <div className="p-3 bg-muted/50 rounded-xl border">
+                                                <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Value</div>
+                                                <div className="text-sm font-black flex items-center gap-1">
+                                                    <span className="text-figma-blue">$</span>{item.price.toLocaleString()}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col p-2 rounded-lg" style={{ background: 'var(--bg-inset)' }}>
-                                            <span style={{ fontSize: '0.7rem', opacity: 0.6, fontWeight: 700, textTransform: 'uppercase' }}>Value</span>
-                                            <span style={{ fontWeight: 800 }}>${item.price.toFixed(2)}</span>
-                                        </div>
-                                    </div>
 
-                                    <div className="mt-auto pt-4 border-t border-[var(--border-color)] flex justify-between items-center">
-                                        <span style={{ fontSize: '0.8rem', opacity: 0.5, fontStyle: 'italic' }}>
-                                            ETA: 14 Days
-                                        </span>
-                                        <Link 
-                                            to={`/products/${item._id}`}
-                                            className="btn btn-sm"
-                                            style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.2)' }}
-                                        >
-                                            <HiEye className="mr-1" /> Track
-                                        </Link>
-                                    </div>
-                                </div>
+                                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-dashed">
+                                            <div className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Est. Synchronization</div>
+                                            <div className="text-[10px] font-black text-figma-green uppercase tracking-widest flex items-center gap-1">
+                                                <HiTrendingUp className="w-3 h-3" /> 14 DAYS
+                                            </div>
+                                        </div>
+                                    </CardContent>
+
+                                    <CardFooter className="p-6 pt-0">
+                                        <Button asChild variant="outline" className="w-full font-black border-2 hover:bg-figma-blue hover:text-white hover:border-figma-blue group/btn">
+                                            <Link to={`/products/${item._id}`} className="flex items-center justify-center gap-2">
+                                                <HiEye className="w-4 h-4" /> TRACK CHANNEL
+                                            </Link>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
                             </motion.div>
                         ))}
                     </AnimatePresence>
                 </div>
             )}
-
-            <style>{`
-                .input-field {
-                    padding: 0.8rem 1rem;
-                    border-radius: 12px;
-                    border: 1px solid var(--border-color);
-                    background: var(--bg-inset);
-                    color: var(--text-heading);
-                    outline: none;
-                    transition: all 0.2s;
-                }
-                .input-field:focus {
-                    border-color: var(--primary);
-                    background: var(--bg-card);
-                }
-                .spinner {
-                    width: 40px; height: 40px;
-                    border: 3px solid var(--border-color); border-top-color: var(--primary);
-                    border-radius: 50%; animation: spin 0.8s linear infinite;
-                }
-            `}</style>
         </motion.div>
     );
 };

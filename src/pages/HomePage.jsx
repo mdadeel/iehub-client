@@ -3,53 +3,56 @@ import LatestProducts from '../components/LatestProducts';
 import { HiLightningBolt, HiShieldCheck, HiGlobeAlt, HiChartBar } from 'react-icons/hi';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent } from '../components/ui/Card';
 
 const SectionHeader = ({ title, highlight, subtitle }) => (
-    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <motion.h2
+    <div className="text-center mb-16">
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.6rem', letterSpacing: '-1.2px' }}
         >
-            {title} <span style={{ color: 'var(--primary)' }}>{highlight}</span>
-        </motion.h2>
-        {subtitle && (
-            <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                style={{ opacity: 0.5, maxWidth: '600px', margin: '0 auto', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)', fontWeight: 600, lineHeight: 1.6 }}
-            >
-                {subtitle}
-            </motion.p>
-        )}
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">
+                {title} <span className="text-figma-blue">{highlight}</span>
+            </h2>
+            {subtitle && (
+                <p className="text-muted-foreground font-medium text-lg max-w-2xl mx-auto">
+                    {subtitle}
+                </p>
+            )}
+        </motion.div>
     </div>
 );
 
 const Features = () => {
     const features = [
-        { icon: <HiLightningBolt />, title: "Fast Sync", desc: "Real-time updates on your global trade activities." },
-        { icon: <HiShieldCheck />, title: "Secure Trade", desc: "Verified exporters and secure payment gateways." },
-        { icon: <HiGlobeAlt />, title: "Global Network", desc: "Access markets in over 150+ countries worldwide." },
-        { icon: <HiChartBar />, title: "Advanced Analytics", desc: "Insightful data to help you grow your export business." },
+        { icon: <HiLightningBolt />, title: "Live Updates", desc: "Get instant information about your global supply chain.", color: "bg-figma-blue" },
+        { icon: <HiShieldCheck />, title: "Trusted Sellers", desc: "Every exporter is checked through our trust network.", color: "bg-figma-green" },
+        { icon: <HiGlobeAlt />, title: "Global Reach", desc: "Buy and sell in over 150+ countries worldwide.", color: "bg-figma-purple" },
+        { icon: <HiChartBar />, title: "Business Data", desc: "Easy-to-read data to help grow your business.", color: "bg-figma-orange" },
     ];
 
     return (
-        <section style={{ background: 'var(--bg-surface)' }}>
+        <section className="py-24">
             <div className="container">
-                <SectionHeader title="Why Choose" highlight="ExportHub?" subtitle="We provide the tools you need to succeed in the international marketplace." />
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem' }}>
+                <SectionHeader title="Built for" highlight="Success" subtitle="We provide the tools you need for high-quality international trade." />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {features.map((f, i) => (
                         <motion.div
                             key={i}
-                            whileHover={{ y: -5 }}
-                            className="card"
-                            style={{ padding: '1.5rem', textAlign: 'center', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
+                            whileHover={{ y: -10 }}
+                            transition={{ duration: 0.3 }}
                         >
-                            <div style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '1rem', opacity: 0.8 }}>{f.icon}</div>
-                            <h3 style={{ marginBottom: '1rem', fontWeight: 700 }}>{f.title}</h3>
-                            <p style={{ opacity: 0.7, fontSize: '0.95rem', lineHeight: 1.6 }}>{f.desc}</p>
+                            <Card className="h-full border-2 hover:border-primary/20 transition-colors">
+                                <CardContent className="p-8">
+                                    <div className={`w-12 h-12 ${f.color} text-white rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg`}>
+                                        {f.icon}
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-3">{f.title}</h3>
+                                    <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
+                                </CardContent>
+                            </Card>
                         </motion.div>
                     ))}
                 </div>
@@ -67,20 +70,25 @@ const Stats = () => {
     ];
 
     return (
-        <section style={{ background: 'var(--bg-dark)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(45deg, var(--primary-dark), transparent)', opacity: 0.3 }}></div>
-            <div className="container grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2rem', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-                {stats.map((s, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                    >
-                        <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--secondary)', marginBottom: '0.25rem' }}>{s.value}</div>
-                        <div style={{ fontSize: '0.85rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 600 }}>{s.label}</div>
-                    </motion.div>
-                ))}
+        <section className="py-20 bg-figma-black text-white overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                <div className="absolute top-[-50%] left-[-10%] w-[100%] h-[100%] bg-figma-blue blur-[150px] rounded-full" />
+            </div>
+            <div className="container relative z-10">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    {stats.map((s, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                        >
+                            <div className="text-4xl md:text-5xl font-black text-figma-blue mb-2 tracking-tighter">{s.value}</div>
+                            <div className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{s.label}</div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );
@@ -88,17 +96,17 @@ const Stats = () => {
 
 const HowItWorks = () => {
     const steps = [
-        { num: "01", title: "Join Hub", desc: "Create your account and define your trade role." },
-        { num: "02", title: "List Products", desc: "Add your exports with detailed specs and media." },
-        { num: "03", title: "Global Search", desc: "Browse international goods for your local market." },
-        { num: "04", title: "One-Click Import", desc: "Import any product into your personal dashboard." },
+        { num: "01", title: "Join Hub", desc: "Create your account and verify your business details." },
+        { num: "02", title: "List Products", desc: "Add your items to the site with clear descriptions." },
+        { num: "03", title: "Find Goods", desc: "Use our search to find top-quality international products." },
+        { num: "04", title: "Order Safely", desc: "Start a secure purchase with easy order tracking." },
     ];
 
     return (
-        <section>
+        <section className="py-24 bg-muted/20">
             <div className="container">
-                <SectionHeader title="Streamlined" highlight="Workflow" subtitle="Getting started with global trade has never been easier." />
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem' }}>
+                <SectionHeader title="How it" highlight="Works" subtitle="Easily manage global trade with our simple four-step process." />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {steps.map((s, i) => (
                         <motion.div
                             key={i}
@@ -106,23 +114,18 @@ const HowItWorks = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            style={{ textAlign: 'center', position: 'relative' }}
+                            className="relative"
                         >
-                            <div style={{
-                                fontSize: '4rem',
-                                fontWeight: 900,
-                                background: 'linear-gradient(to bottom, var(--primary), transparent)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                opacity: 0.1,
-                                position: 'absolute',
-                                top: '-30px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                zIndex: -1
-                            }}>{s.num}</div>
-                            <h3 style={{ marginBottom: '1rem', color: 'var(--text-body)', fontWeight: 700 }}>{s.title}</h3>
-                            <p style={{ opacity: 0.7, lineHeight: 1.6 }}>{s.desc}</p>
+                            <div className="text-8xl font-black text-primary/5 absolute -top-10 left-0 leading-none select-none">
+                                {s.num}
+                            </div>
+                            <div className="relative pt-4">
+                                <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
+                                    <span className="w-8 h-8 rounded-full bg-primary text-white text-xs flex items-center justify-center font-black">{s.num}</span>
+                                    {s.title}
+                                </h3>
+                                <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
@@ -133,33 +136,34 @@ const HowItWorks = () => {
 
 const Testimonials = () => {
     const reviews = [
-        { name: "John Doe", role: "CEO, TradeCo", text: "ExportHub transformed how we handle international shipping. Exceptional platform!" },
-        { name: "Sarah Lee", role: "Global Importer", text: "Finding reliable products from abroad has never been this easy and transparent." },
-        { name: "Ahmed Khan", role: "Artisan Exporter", text: "Finally a platform that respects local craftsmanship while providing global visibility." },
+        { name: "Marcus Thorne", role: "Director, Global Logistics", text: "IEHUB has changed how we handle international shipping. The accuracy is the best in the industry.", avatar: "MT" },
+        { name: "Elena Rossi", role: "Supply Chain Architect", text: "Finding reliable top-level suppliers used to take months. With IEHUB, we can do it in hours. A real game-changer.", avatar: "ER" },
+        { name: "David Chen", role: "Export Specialist", text: "The most easy-to-use trade site I've tried. It connects local products with global buyers perfectly.", avatar: "DC" },
     ];
 
     return (
-        <section style={{ background: 'var(--bg-surface)' }}>
+        <section className="py-24">
             <div className="container">
-                <SectionHeader title="Trusted by" highlight="Global Leaders" />
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                <SectionHeader title="Trusted by" highlight="Business Leaders" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {reviews.map((r, i) => (
-                        <motion.div
-                            key={i}
-                            whileHover={{ scale: 1.02 }}
-                            className="card"
-                            style={{ padding: '1.5rem', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}
-                        >
-                            <div style={{ color: 'var(--primary)', fontSize: '1.5rem', marginBottom: '0.5rem' }}>"</div>
-                            <p style={{ marginBottom: '1.5rem', fontSize: '0.95rem', lineHeight: 1.7, opacity: 0.9 }}>{r.text}</p>
-                            <div className="flex items-center gap-3">
-                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>{r.name[0]}</div>
-                                <div>
-                                    <div style={{ fontWeight: 700 }}>{r.name}</div>
-                                    <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>{r.role}</div>
+                        <Card key={i} className="bg-muted/30 border-none shadow-none">
+                            <CardContent className="p-8">
+                                <div className="text-figma-blue text-4xl font-serif mb-4">"</div>
+                                <p className="text-lg font-medium italic mb-8 leading-relaxed">
+                                    {r.text}
+                                </p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-figma-blue/20 text-figma-blue flex items-center justify-center font-black">
+                                        {r.avatar}
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-sm">{r.name}</div>
+                                        <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{r.role}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
             </div>
@@ -167,25 +171,20 @@ const Testimonials = () => {
     );
 };
 
-const Newsletter = () => (
-    <section>
+const CTA = () => (
+    <section className="py-24 bg-figma-blue">
         <div className="container">
-            <div className="card" style={{
-                background: 'var(--bg-dark)', color: 'white', padding: '4rem 2rem', textAlign: 'center',
-                borderRadius: 'var(--radius-lg)', overflow: 'hidden', position: 'relative'
-            }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, var(--primary) 0%, transparent 100%)', opacity: 0.2 }}></div>
-                <div style={{ position: 'relative', zIndex: 1, maxWidth: '550px', margin: '0 auto' }}>
-                    <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Stay Informed</h2>
-                    <p style={{ opacity: 0.7, marginBottom: '2.5rem' }}>Subscribe to get the latest trade opportunities and market insights.</p>
-                    <div className="flex" style={{ gap: '1rem', maxWidth: '500px', margin: '0 auto' }}>
-                        <input
-                            type="email"
-                            placeholder="your@email.com"
-                            style={{ flex: 1, padding: '0.75rem 1.25rem', borderRadius: '12px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '0.9rem' }}
-                        />
-                        <button className="btn btn-primary" style={{ padding: '0 2rem', borderRadius: '12px', fontSize: '0.9rem' }}>Subscribe</button>
-                    </div>
+            <div className="max-w-4xl mx-auto text-center text-white">
+                <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-[0.9]">
+                    Ready to start trading with <br /> the world?
+                </h2>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <Button size="lg" asChild className="h-14 px-10 rounded-full text-base font-bold bg-white text-figma-blue hover:bg-white/90">
+                        <Link to="/register">Create Account</Link>
+                    </Button>
+                    <Button size="lg" variant="outline" asChild className="h-14 px-10 rounded-full text-base font-bold border-white/30 text-white hover:bg-white/10">
+                        <Link to="/about">Learn More</Link>
+                    </Button>
                 </div>
             </div>
         </div>
@@ -198,27 +197,15 @@ const HomePage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
+            className="flex flex-col"
         >
-            <div className="container" style={{ paddingBottom: '8rem', paddingTop: 'var(--hero-padding-top)' }}>
-                <Hero />
-            </div>
+            <Hero />
             <LatestProducts />
             <Stats />
             <HowItWorks />
             <Features />
             <Testimonials />
-            <Newsletter />
-
-            <section style={{ background: 'var(--bg-surface)' }}>
-                <div className="container" style={{ textAlign: 'center', padding: '3rem 0' }}>
-                    <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.6rem', letterSpacing: '-1.2px' }}>Start Your Trade <span style={{ color: 'var(--primary)' }}>Journey</span></h2>
-                    <p style={{ opacity: 0.5, marginBottom: '2rem', fontSize: '1rem', fontWeight: 600 }}>Connect with a worldwide network of trusted business partners.</p>
-                    <div className="flex justify-center gap-4">
-                        <Link to="/register" className="btn btn-primary" style={{ padding: '0.6rem 2rem', fontSize: '0.9rem', borderRadius: '12px' }}>Create Account</Link>
-                        <Link to="/about" className="btn" style={{ border: '1px solid var(--border-color)', padding: '0.6rem 2rem', fontSize: '0.9rem', borderRadius: '12px' }}>Learn More</Link>
-                    </div>
-                </div>
-            </section>
+            <CTA />
         </motion.div>
     );
 };

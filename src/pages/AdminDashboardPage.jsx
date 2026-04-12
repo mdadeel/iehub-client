@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { HiUsers, HiCube, HiBriefcase, HiCheckCircle, HiLogout } from 'react-icons/hi';
+import { HiUsers, HiCube, HiBriefcase, HiCheckCircle, HiLogout, HiDownload } from 'react-icons/hi';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
 
 const AdminDashboardPage = () => {
     const navigate = useNavigate();
@@ -19,172 +21,133 @@ const AdminDashboardPage = () => {
     };
 
     const stats = [
-        { label: "Total Users", value: "1,245", icon: <HiUsers />, color: "var(--primary)" },
-        { label: "Active Products", value: "8,500", icon: <HiCube />, color: "var(--secondary)" },
-        { label: "Pending Approvals", value: "42", icon: <HiBriefcase />, color: "var(--accent)" },
-        { label: "Completed Trades", value: "3.2M", icon: <HiCheckCircle />, color: "#8b5cf6" },
+        { label: "Verified Entities", value: "1,245", icon: <HiUsers />, color: "text-figma-blue" },
+        { label: "Active Assets", value: "8,500", icon: <HiCube />, color: "text-figma-purple" },
+        { label: "Pending Validation", value: "42", icon: <HiBriefcase />, color: "text-figma-orange" },
+        { label: "Trade Throughput", value: "3.2M", icon: <HiCheckCircle />, color: "text-figma-green" },
     ];
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-body)' }}>
+        <div className="min-h-screen bg-background flex flex-col">
             {/* Admin Header */}
-            <header style={{
-                background: 'var(--bg-glass)',
-                backdropFilter: 'blur(12px)',
-                padding: '1rem 3rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid var(--border-color)',
-                position: 'sticky',
-                top: 0,
-                zIndex: 100
-            }}>
-                <div style={{ fontWeight: '900', fontSize: '1.4rem', color: 'var(--text-body)', letterSpacing: '-0.5px' }}>
-                    IE HUB <span style={{ color: 'var(--primary)' }}>SYSTEM CONTROL</span>
+            <header className="h-20 bg-background/80 backdrop-blur-md border-b flex items-center justify-between px-8 sticky top-0 z-[50]">
+                <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-figma-blue rounded flex items-center justify-center p-1.5 shadow-lg shadow-figma-blue/20">
+                        <img src="/logo.png" alt="" className="w-full h-full object-contain brightness-0 invert" />
+                    </div>
+                    <div className="font-black text-lg tracking-tighter uppercase">
+                        IE HUB <span className="text-figma-blue">Command Center</span>
+                    </div>
                 </div>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                
+                <Button 
+                    variant="outline" 
                     onClick={handleLogout}
-                    className="btn"
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        color: 'var(--danger)',
-                        background: 'rgba(239, 68, 68, 0.1)',
-                        padding: '0.6rem 1.2rem',
-                        fontWeight: 700,
-                        fontSize: '0.9rem'
-                    }}>
-                    <HiLogout /> TERMINATE SESSION
-                </motion.button>
+                    className="border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive font-black text-xs h-10 px-6 rounded-full"
+                >
+                    <HiLogout className="mr-2 w-4 h-4" /> TERMINATE SESSION
+                </Button>
             </header>
 
-            <main className="container" style={{ padding: '3rem 2rem' }}>
-                <div style={{ marginBottom: '3rem' }}>
-                    <motion.h1
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem', color: 'var(--text-body)' }}
-                    >
-                        Global <span style={{ color: 'var(--primary)' }}>Overview</span>
-                    </motion.h1>
-                    <p style={{ opacity: 0.5, fontWeight: 600 }}>Real-time telemetry from across the trade network</p>
+            <main className="flex-1 container py-12 space-y-12">
+                <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                    <div>
+                        <h1 className="text-4xl font-black tracking-tighter mb-2 italic">Global <span className="text-figma-blue">Telemetry</span></h1>
+                        <p className="text-muted-foreground font-medium">Real-time infrastructure monitoring across the global trade network.</p>
+                    </div>
+                    <div className="flex items-center gap-2 px-4 py-2 bg-figma-blue/10 text-figma-blue rounded-full border border-figma-blue/20">
+                        <span className="text-[10px] font-black uppercase tracking-widest">Master Node v4.2.0</span>
+                    </div>
                 </div>
 
                 {/* Stat Grid */}
-                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((s, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            whileHover={{ y: -5 }}
-                            className="card"
-                            style={{
-                                padding: '2rem',
-                                background: 'var(--bg-card)',
-                                border: '1px solid var(--border-color)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '1.5rem',
-                                borderRadius: '20px'
-                            }}
-                        >
-                            <div style={{
-                                width: '64px',
-                                height: '64px',
-                                background: 'var(--bg-inset)',
-                                color: s.color,
-                                borderRadius: '16px',
-                                fontSize: '1.8rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                                {s.icon}
-                            </div>
-                            <div>
-                                <div style={{ opacity: 0.5, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>{s.label}</div>
-                                <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--text-body)' }}>{s.value}</div>
-                            </div>
-                        </motion.div>
+                        <Card key={i} className="border-2 shadow-lg hover:border-figma-blue/20 transition-all group overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-16 h-16 bg-muted/50 -mr-8 -mt-8 rounded-full transition-transform group-hover:scale-150" />
+                            <CardContent className="p-6 flex items-center gap-4 relative z-10">
+                                <div className={`w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl group-hover:bg-background transition-colors ${s.color}`}>
+                                    {s.icon}
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">{s.label}</div>
+                                    <div className="text-3xl font-black tracking-tighter">{s.value}</div>
+                                </div>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
 
                 {/* User Management */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="card"
-                    style={{
-                        background: 'var(--bg-card)',
-                        padding: '3rem',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '24px'
-                    }}
-                >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+                <Card className="border-2 shadow-2xl overflow-hidden">
+                    <CardHeader className="bg-muted/30 border-b p-8 flex flex-row items-center justify-between space-y-0">
                         <div>
-                            <h3 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--text-body)' }}>Infrastructure Management</h3>
-                            <p style={{ opacity: 0.5, fontWeight: 600, fontSize: '0.9rem' }}>Comprehensive database of registered entities</p>
+                            <CardTitle className="text-2xl font-black tracking-tight">Infrastructure Registry</CardTitle>
+                            <CardDescription className="font-bold text-xs uppercase tracking-widest mt-1">Comprehensive node management protocol</CardDescription>
                         </div>
-                        <button className="btn btn-primary" style={{ padding: '0.7rem 1.4rem', fontWeight: 800 }}>EXPORT LOGS</button>
-                    </div>
+                        <Button className="font-black bg-figma-black hover:bg-figma-black/90 h-11 px-6 rounded-xl">
+                            <HiDownload className="mr-2 w-4 h-4" /> EXPORT LOGS
+                        </Button>
+                    </CardHeader>
 
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.75rem', textAlign: 'left' }}>
-                            <thead>
-                                <tr style={{ color: 'var(--text-muted)', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '1.5px' }}>
-                                    <th style={{ padding: '1rem 1.5rem' }}>Entity / Identifier</th>
-                                    <th style={{ padding: '1rem 1.5rem' }}>Sector Role</th>
-                                    <th style={{ padding: '1rem 1.5rem' }}>Core Status</th>
-                                    <th style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>Management</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {[1, 2, 3, 4, 5].map((_, i) => (
-                                    <motion.tr
-                                        key={i}
-                                        whileHover={{ background: 'var(--bg-inset)' }}
-                                        style={{
-                                            background: 'var(--bg-surface)',
-                                            borderRadius: '16px',
-                                            transition: 'all 0.2s'
-                                        }}
-                                    >
-                                        <td style={{ padding: '1.25rem 1.5rem', borderRadius: '16px 0 0 16px', fontWeight: 700, color: 'var(--text-body)' }}>
-                                            Global Logistics Corp_{400 + i}
-                                        </td>
-                                        <td style={{ padding: '1.25rem 1.5rem', opacity: 0.6, fontWeight: 600 }}>EXPORTER_PREMIUM</td>
-                                        <td style={{ padding: '1.25rem 1.5rem' }}>
-                                            <span style={{
-                                                color: 'var(--secondary)',
-                                                background: 'rgba(16, 185, 129, 0.1)',
-                                                padding: '0.4rem 0.8rem',
-                                                borderRadius: '8px',
-                                                fontSize: '0.7rem',
-                                                fontWeight: 900,
-                                                letterSpacing: '0.5px'
-                                            }}>SYNCHRONIZED</span>
-                                        </td>
-                                        <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right', borderRadius: '0 16px 16px 0' }}>
-                                            <button style={{ color: 'var(--primary)', background: 'transparent', fontWeight: 800, fontSize: '0.85rem', border: 'none', cursor: 'pointer' }}>OVERRIDE</button>
-                                        </td>
-                                    </motion.tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <CardContent className="p-0">
+                        <div className="overflow-x-auto">
+                            <table className="w-full border-collapse">
+                                <thead>
+                                    <tr className="bg-muted/50 text-[10px] uppercase font-black tracking-widest text-muted-foreground text-left">
+                                        <th className="px-8 py-4">Entity Identifier</th>
+                                        <th className="px-8 py-4">Sector Protocol</th>
+                                        <th className="px-8 py-4">Sync Status</th>
+                                        <th className="px-8 py-4 text-right">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y">
+                                    {[1, 2, 3, 4, 5, 6, 7].map((_, i) => (
+                                        <tr key={i} className="hover:bg-muted/30 transition-colors group">
+                                            <td className="px-8 py-5">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center font-black text-[10px] text-figma-blue">
+                                                        GL
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-bold">Global_Logistics_Node_{400 + i}</div>
+                                                        <div className="text-[10px] text-muted-foreground font-medium">UID: 8829-XQ-{i}21</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <span className="px-2 py-1 bg-muted rounded font-black text-[9px] uppercase tracking-widest text-muted-foreground">
+                                                    EXPORTER_PREMIUM
+                                                </span>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-figma-green shadow-[0_0_8px_rgba(10,207,131,0.5)]" />
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-figma-green">Synchronized</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-5 text-right">
+                                                <Button variant="ghost" className="text-[10px] font-black text-figma-blue hover:text-figma-blue hover:bg-figma-blue/10">
+                                                    EXECUTE OVERRIDE
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </CardContent>
+                    <div className="bg-muted/30 border-t p-4 px-8 flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                        <div>Displaying 7 of 1,245 Registry Entries</div>
+                        <div className="flex gap-2">
+                            <Button variant="outline" size="sm" disabled className="h-8 border-2 font-black">PREV</Button>
+                            <Button variant="outline" size="sm" className="h-8 border-2 font-black">NEXT</Button>
+                        </div>
                     </div>
-                </motion.div>
+                </Card>
             </main>
         </div>
     );
 };
 
 export default AdminDashboardPage;
-

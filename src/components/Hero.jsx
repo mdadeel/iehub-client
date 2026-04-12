@@ -1,88 +1,73 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Button } from './ui/Button';
+import { HiArrowRight } from 'react-icons/hi';
 
 const Hero = () => {
     return (
-        <div style={{
-            position: 'relative',
-            height: '70vh',
-            minHeight: '500px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'var(--bg-dark)',
-            borderRadius: 'var(--radius-lg)',
-            overflow: 'hidden',
-            marginBottom: '3rem',
-            boxShadow: 'var(--shadow-lg)',
-            width: '100%'
-        }}>
-            {/* Animated Background Overlay */}
-            <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'url("https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop") center/cover no-repeat',
-                opacity: 0.6
-            }}></div>
-            <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(2, 6, 23, 0.95) 0%, rgba(2, 6, 23, 0.4) 100%)',
-                zIndex: 1
-            }}></div>
-
-            <div className="container" style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'center' }}>
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    style={{ maxWidth: '750px', textAlign: 'center' }}
-                >
+        <div className="relative min-h-[80vh] flex items-center pt-20 overflow-hidden">
+            {/* Background elements - Figma style gradients */}
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-figma-purple/20 blur-[120px] rounded-full" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-figma-blue/20 blur-[100px] rounded-full" />
+            
+            <div className="container relative z-10">
+                <div className="max-w-4xl mx-auto text-center">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        style={{
-                            display: 'inline-flex', alignItems: 'center', gap: '8px',
-                            background: 'rgba(37, 99, 235, 0.1)', border: '1px solid rgba(37, 99, 235, 0.2)',
-                            padding: '0.5rem 1rem', borderRadius: '30px', color: 'var(--primary-light)',
-                            fontSize: '0.85rem', fontWeight: 700, marginBottom: '1.5rem', textTransform: 'uppercase', letterSpacing: '1px'
-                        }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
                     >
-                        <span style={{ width: '8px', height: '8px', background: 'var(--primary)', borderRadius: '50%' }}></span>
-                        Global Trade Hub v2.0
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-figma-blue text-xs font-bold uppercase tracking-widest mb-8">
+                            
+                        </div>
+                        
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
+                            Trade without <br />
+                            <span className="text-figma-blue">limits.</span>
+                        </h1>
+                        
+                        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+                            The easy-to-use platform for global exporters and importers. 
+                            Connect your business with the world's most trusted trade network.
+                        </p>
+                        
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <Button size="lg" asChild className="h-14 px-8 rounded-full text-base font-bold bg-figma-blue hover:bg-figma-blue/90 shadow-[0_8px_20px_rgba(13,153,255,0.3)] group">
+                                <Link to="/products">
+                                    Start Trading <HiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                            </Button>
+                            <Button size="lg" variant="outline" asChild className="h-14 px-8 rounded-full text-base font-bold border-2">
+                                <Link to="/register">Create Account</Link>
+                            </Button>
+                        </div>
                     </motion.div>
 
-                    <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', marginBottom: '1rem', lineHeight: '1.2', fontWeight: 800, color: 'white' }}>
-                        Connect the World <br />
-                        <span style={{
-                            background: 'linear-gradient(to right, var(--secondary), #fff)',
-                            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
-                        }}>Seamlessly.</span>
-                    </h1>
-
-                    <p style={{ fontSize: '0.9rem', marginBottom: '2rem', opacity: 0.8, fontWeight: 400, maxWidth: '550px', margin: '0 auto 2rem', lineHeight: 1.6, color: '#f8fafc' }}>
-                        The most sophisticated ecosystem for global exporters and importers.
-                        List your inventory or source premium goods with a single click.
-                    </p>
-
-                    <div className="flex gap-4 justify-center">
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Link to="/products" className="btn btn-primary" style={{ padding: '0.6rem 2rem', fontSize: '0.9rem', borderRadius: '12px' }}>
-                                Start Trading
-                            </Link>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Link to="/register" className="btn" style={{
-                                padding: '0.6rem 2rem', fontSize: '0.9rem', borderRadius: '12px',
-                                border: '1px solid rgba(255,255,255,0.2)', color: 'white', background: 'rgba(255,255,255,0.05)',
-                                backdropFilter: 'blur(10px)'
-                            }}>
-                                Join Network
-                            </Link>
-                        </motion.div>
-                    </div>
-                </motion.div>
+                    {/* Decorative "Canvas" element */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
+                        className="mt-20 relative"
+                    >
+                        <div className="relative rounded-2xl border-4 border-figma-black/5 dark:border-white/5 shadow-2xl overflow-hidden bg-background">
+                            <img 
+                                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop" 
+                                alt="Dashboard Preview" 
+                                className="w-full h-auto object-cover opacity-90"
+                            />
+                            {/* Figma-like floating elements */}
+                            <div className="absolute top-10 left-10 p-4 bg-figma-blue text-white rounded-lg shadow-xl hidden md:block">
+                                <div className="text-[10px] uppercase font-bold opacity-80 mb-1">Live Telemetry</div>
+                                <div className="text-xl font-black">1,240 TEU</div>
+                            </div>
+                            <div className="absolute bottom-10 right-10 p-4 bg-figma-green text-white rounded-lg shadow-xl hidden md:block">
+                                <div className="text-[10px] uppercase font-bold opacity-80 mb-1">Sync Status</div>
+                                <div className="text-xl font-black">99.9%</div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
             </div>
         </div>
     );

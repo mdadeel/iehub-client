@@ -4,11 +4,14 @@ import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
 import {
     HiArrowLeft, HiCheckCircle, HiStar, HiLocationMarker,
-    HiInbox, HiLightningBolt, HiShieldCheck, HiTrendingUp,
+    HiLightningBolt, HiShieldCheck, HiTrendingUp,
     HiCube, HiInformationCircle
 } from 'react-icons/hi';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { Button } from '../components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
 
 const ImportModal = ({ product, user, onClose, onSuccess }) => {
     const [qty, setQty] = useState(1);
@@ -17,7 +20,7 @@ const ImportModal = ({ product, user, onClose, onSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isOverLimit) return;
+        if (isOverLimit || qty < 1) return;
         setSubmitting(true);
 
         try {
@@ -42,90 +45,63 @@ const ImportModal = ({ product, user, onClose, onSuccess }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            style={{
-                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(12px)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3000
-            }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-figma-black/80 backdrop-blur-md p-4"
         >
             <motion.div
-                initial={{ scale: 0.95, y: 20, opacity: 0 }}
-                animate={{ scale: 1, y: 0, opacity: 1 }}
-                className="card"
-                style={{
-                    maxWidth: '400px', width: '90%', padding: '2rem',
-                    background: 'var(--bg-card)', borderRadius: '24px',
-                    border: '1px solid var(--primary-light)',
-                    boxShadow: '0 25px 50px -12px rgba(37, 99, 235, 0.25)'
-                }}
+                initial={{ scale: 0.95, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                className="w-full max-w-md"
             >
-                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                    <div style={{
-                        width: '56px', height: '56px', background: 'rgba(37, 99, 235, 0.1)', color: 'var(--primary)',
-                        borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '1.5rem', margin: '0 auto 1rem'
-                    }}>
-                        <HiShieldCheck />
-                    </div>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.5px' }}>Trade Execution</h2>
-                    <p style={{ opacity: 0.5, fontSize: '0.8rem', fontWeight: 600 }}>ID: {product._id?.substring(0, 8)}...</p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <div style={{
-                        padding: '1rem', background: 'var(--bg-inset)',
-                        borderRadius: '16px', border: '1px solid var(--border-color)',
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                    }}>
-                        <div style={{ textAlign: 'left' }}>
-                            <div style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.4 }}>Availability</div>
-                            <div style={{ fontSize: '0.9rem', fontWeight: 800 }}>{product.quantity} Units</div>
+                <Card className="border-2 shadow-2xl">
+                    <CardHeader className="text-center pb-4">
+                        <div className="w-12 h-12 bg-figma-blue/10 text-figma-blue rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <HiShieldCheck className="w-6 h-6" />
                         </div>
-                        <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.4 }}>Unit Price</div>
-                            <div style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--primary-light)' }}>${product.price}</div>
+                        <CardTitle className="text-2xl font-black tracking-tighter">Authorize Trade</CardTitle>
+                        <CardDescription className="font-medium">Execute acquisition protocol for this asset.</CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="grid gap-6">
+                        <div className="p-4 bg-muted/50 rounded-xl border-2 border-dashed flex justify-between items-center">
+                            <div>
+                                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Available</div>
+                                <div className="text-sm font-black">{product.quantity} Units</div>
+                            </div>
+                            <div className="text-right">
+                                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Price/Unit</div>
+                                <div className="text-sm font-black text-figma-blue">${product.price?.toLocaleString()}</div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5 }}>Transaction Volume</label>
-                        <input
-                            type="number"
-                            min="1"
-                            value={qty}
-                            onChange={(e) => setQty(parseInt(e.target.value) || 0)}
-                            className="market-input"
-                            style={{
-                                padding: '0.8rem',
-                                fontSize: '1.1rem',
-                                textAlign: 'center',
-                                borderRadius: '12px',
-                                border: isOverLimit ? '2px solid var(--danger)' : '1px solid var(--border-color)',
-                                background: 'var(--bg-inset)',
-                                width: '100%'
-                            }}
-                        />
-                        {isOverLimit && <span style={{ color: 'var(--danger)', fontSize: '0.75rem', textAlign: 'center', fontWeight: 700 }}>EXCEEDS QUOTA LIMIT</span>}
-                    </div>
+                        <form onSubmit={handleSubmit} className="grid gap-4">
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Transaction Volume</label>
+                                <Input
+                                    type="number"
+                                    min="1"
+                                    max={product.quantity}
+                                    value={qty}
+                                    onChange={(e) => setQty(parseInt(e.target.value) || 0)}
+                                    className="h-12 text-center text-lg font-black border-2 focus-visible:ring-figma-blue"
+                                />
+                                {isOverLimit && <p className="text-[10px] text-destructive font-bold text-center uppercase tracking-widest">Exceeds available inventory</p>}
+                            </div>
 
-                    <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <motion.button
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            disabled={isOverLimit || qty < 1 || submitting}
-                            className="btn btn-primary"
-                            style={{ width: '100%', justifyContent: 'center', padding: '1rem', borderRadius: '12px', minHeight: '52px' }}
-                        >
-                            {submitting ? 'EXECUTING...' : 'AUTHORIZE TRADE'}
-                        </motion.button>
-                        <button type="button" onClick={onClose} style={{
-                            background: 'transparent', border: 'none', color: 'var(--text-muted)',
-                            fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', padding: '0.5rem'
-                        }}>
-                            ABORT TRANSACTION
-                        </button>
-                    </div>
-                </form>
+                            <div className="grid grid-cols-2 gap-3 mt-2">
+                                <Button type="button" variant="outline" onClick={onClose} className="h-12 font-bold border-2">
+                                    CANCEL
+                                </Button>
+                                <Button 
+                                    type="submit" 
+                                    disabled={isOverLimit || qty < 1 || submitting}
+                                    className="h-12 font-black bg-figma-blue hover:bg-figma-blue/90"
+                                >
+                                    {submitting ? 'EXECUTING...' : 'CONFIRM TRADE'}
+                                </Button>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
             </motion.div>
         </motion.div>
     );
@@ -134,7 +110,7 @@ const ImportModal = ({ product, user, onClose, onSuccess }) => {
 const ProductDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { user, theme } = useAuth();
+    const { user } = useAuth();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -156,224 +132,142 @@ const ProductDetailsPage = () => {
     }, [fetchProduct]);
 
     if (loading) return (
-        <div className="container" style={{ padding: '8rem 0', textAlign: 'center' }}>
-            <div className="spinner" style={{ margin: '0 auto' }}></div>
-            <p style={{ marginTop: '1.5rem', fontWeight: 800, opacity: 0.4, letterSpacing: '1px' }}>INITIALIZING ASSET TELEMETRY...</p>
+        <div className="container py-40 text-center">
+            <div className="w-12 h-12 border-4 border-muted border-t-figma-blue rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Initializing Asset Telemetry...</p>
         </div>
     );
 
     if (!product) return null;
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg-page)', position: 'relative' }}>
-            {/* Background Mesh Overlay */}
-            <div style={{
-                position: 'fixed', top: 0, left: 0, right: 0, height: '400px',
-                background: `radial-gradient(circle at 50% -20%, ${theme === 'light' ? 'rgba(37,99,235,0.05)' : 'rgba(37,99,235,0.15)'}, transparent)`,
-                pointerEvents: 'none', zIndex: 0
-            }}></div>
-
-            <main className="container" style={{ paddingTop: 'var(--hero-padding-top)', position: 'relative', zIndex: 1, paddingBottom: '4rem' }}>
-                {/* Header/Back Link */}
-                <motion.button
-                    whileTap={{ scale: 0.95 }}
+        <div className="min-h-screen bg-background relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-figma-blue/5 blur-[120px] rounded-full pointer-events-none" />
+            
+            <main className="container py-24 relative z-10">
+                <Button 
+                    variant="ghost" 
                     onClick={() => navigate('/products')}
-                    className="flex items-center gap-2"
-                    style={{
-                        background: 'transparent', border: 'none', color: 'var(--text-muted)',
-                        marginBottom: '1rem', fontWeight: 800, fontSize: '0.8rem',
-                        textTransform: 'uppercase', letterSpacing: '1px', cursor: 'pointer',
-                        padding: '0.75rem 0', minHeight: '44px'
-                    }}
+                    className="mb-8 hover:bg-transparent p-0 text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest text-[10px]"
                 >
-                    <HiArrowLeft /> Terminal Index
-                </motion.button>
+                    <HiArrowLeft className="mr-2 w-4 h-4" /> Back to Terminal Index
+                </Button>
 
-                <div className="grid main-layout-grid" style={{ gridTemplateColumns: '0.85fr 1.15fr', gap: '2.5rem', alignItems: 'start' }}>
-                    {/* Left: Product Visuals */}
-                    <div style={{ position: 'sticky', top: '100px' }}>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="card"
-                            style={{
-                                padding: '1rem', borderRadius: '24px', overflow: 'hidden',
-                                background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)',
-                                boxShadow: '0 30px 60px -20px rgba(0,0,0,0.4)', position: 'relative'
-                            }}
-                        >
-                            <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', aspectRatio: '1.1/1' }}>
-                                <motion.img
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    {/* Left: Visuals */}
+                    <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+                        <Card className="overflow-hidden border-2 shadow-2xl">
+                            <div className="aspect-square relative">
+                                <img
                                     src={product.image}
                                     alt={product.name}
-                                    initial={{ scale: 1.1 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ duration: 0.8 }}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    className="w-full h-full object-cover"
                                 />
-                                <div style={{
-                                    position: 'absolute', top: '1rem', left: '1rem',
-                                    background: 'var(--primary)', color: 'white',
-                                    padding: '0.35rem 0.75rem', borderRadius: '8px', fontSize: '0.6rem',
-                                    fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px',
-                                    boxShadow: '0 10px 20px rgba(37,99,235,0.3)'
-                                }}>
-                                    Live Stream Enabled
+                                <div className="absolute top-4 left-4 bg-figma-blue text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-md shadow-lg">
+                                    LIVE CHANNEL ACTIVE
                                 </div>
                             </div>
-
-                            {/* Status Bar */}
-                            <div style={{
-                                marginTop: '1rem', padding: '0.75rem 1rem', background: 'var(--bg-inset)',
-                                borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                            }}>
+                            <div className="p-4 bg-muted/30 border-t flex justify-between items-center">
                                 <div className="flex items-center gap-2">
-                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }}></div>
-                                    <span style={{ fontSize: '0.7rem', fontWeight: 800, opacity: 0.7 }}>Channel Active</span>
+                                    <div className="w-2 h-2 rounded-full bg-figma-green animate-pulse" />
+                                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Verified Origin</span>
                                 </div>
-                                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--primary)' }}>REF-{product._id?.substring(0, 4).toUpperCase()}</div>
+                                <div className="text-[10px] font-black text-figma-blue uppercase tracking-widest">
+                                    REF-{product._id?.substring(0, 8).toUpperCase()}
+                                </div>
                             </div>
-                        </motion.div>
+                        </Card>
 
-                        {/* Quick Metrics Grid */}
-                        <div className="grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginTop: '1rem' }}>
+                        <div className="grid grid-cols-3 gap-4">
                             {[
-                                { label: 'Origin Port', value: product.origin, icon: <HiLocationMarker />, color: 'var(--primary)' },
-                                { label: 'Asset Class', value: product.category, icon: <HiCube />, color: 'var(--secondary)' },
-                                { label: 'Net Capacity', value: `${product.quantity} Units`, icon: <HiTrendingUp />, color: 'var(--accent)' }
+                                { label: 'Origin Port', value: product.origin, icon: <HiLocationMarker />, color: 'text-figma-blue' },
+                                { label: 'Asset Class', value: product.category, icon: <HiCube />, color: 'text-figma-purple' },
+                                { label: 'Net Capacity', value: `${product.quantity} U`, icon: <HiTrendingUp />, color: 'text-figma-green' }
                             ].map((item, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    transition={{ delay: 0.1 * idx }}
-                                    className="card"
-                                    style={{ padding: '1rem 0.75rem', textAlign: 'left', borderRadius: '14px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', cursor: 'default' }}
-                                >
-                                    <div style={{ fontSize: '1.25rem', color: item.color, marginBottom: '0.35rem' }}>{item.icon}</div>
-                                    <div style={{ fontSize: '0.6rem', fontWeight: 900, textTransform: 'uppercase', opacity: 0.5, letterSpacing: '0.5px' }}>{item.label}</div>
-                                    <div style={{ fontSize: '0.85rem', fontWeight: 800, marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.value}</div>
-                                </motion.div>
+                                <Card key={idx} className="border-2 p-4">
+                                    <div className={`${item.color} mb-2`}>{item.icon}</div>
+                                    <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">{item.label}</div>
+                                    <div className="text-[10px] font-black truncate mt-1">{item.value}</div>
+                                </Card>
                             ))}
                         </div>
                     </div>
 
-                    {/* Right: Technical Details */}
-                    <div style={{ paddingTop: '1rem' }}>
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            <div className="flex items-center gap-3" style={{ marginBottom: '0.75rem' }}>
-                                <div style={{
-                                    padding: '0.3rem 0.6rem', background: theme === 'light' ? '#f1f5f9' : '#1e293b',
-                                    borderRadius: '6px', fontSize: '0.6rem', fontWeight: 800, opacity: 0.8
-                                }}>{product.category}</div>
+                    {/* Right: Intel */}
+                    <div className="lg:col-span-7 space-y-8">
+                        <div>
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="px-2 py-1 bg-muted rounded font-black text-[10px] uppercase tracking-widest text-muted-foreground">
+                                    {product.category}
+                                </span>
                                 <div className="flex items-center gap-1">
-                                    <HiStar style={{ color: 'var(--secondary)', fontSize: '0.85rem' }} />
-                                    <span style={{ fontSize: '0.7rem', fontWeight: 800 }}>{product.rating} HubScore</span>
+                                    <HiStar className="text-figma-orange w-4 h-4" />
+                                    <span className="font-black text-xs">{product.rating} HubScore</span>
                                 </div>
                             </div>
-
-                            <h1 style={{ fontSize: '1.75rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-1px', lineHeight: 1.1 }}>
+                            <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-[0.9] mb-6">
                                 {product.name}
                             </h1>
+                            <p className="text-lg text-muted-foreground font-medium leading-relaxed">
+                                {product.description || "Sophisticated commodity listing with verified supply chain origin. Rigorously tested for international compliance standards."}
+                            </p>
+                        </div>
 
-                            <div style={{
-                                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem',
-                                padding: '1.25rem', background: 'var(--bg-glass)', borderRadius: '16px',
-                                border: '1px solid var(--border-color)', marginBottom: '1.5rem'
-                            }}>
-                                <div>
-                                    <div style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.5, letterSpacing: '1px' }}>Market Value</div>
-                                    <div className="flex items-baseline gap-1" style={{ marginTop: '0.2rem' }}>
-                                        <span style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--primary)' }}>${product.price.toLocaleString()}</span>
-                                        <span style={{ fontSize: '0.75rem', fontWeight: 700, opacity: 0.4 }}>USD/U</span>
+                        <Card className="border-2 bg-muted/20">
+                            <CardContent className="p-8 flex flex-wrap justify-between items-center gap-8">
+                                <div className="space-y-1">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Current Market Value</div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-4xl font-black text-figma-blue">${product.price?.toLocaleString()}</span>
+                                        <span className="text-sm font-bold text-muted-foreground">USD / UNIT</span>
                                     </div>
                                 </div>
-                                <div className="flex flex-col justify-center border-l" style={{ paddingLeft: '1.5rem', borderColor: 'var(--border-color)' }}>
-                                    <div style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.5 }}>Availability</div>
-                                    <div style={{ fontSize: '0.9rem', fontWeight: 800, marginTop: '0.2rem' }}>{product.quantity} In Stock</div>
+                                <div className="space-y-1 md:text-right">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Inventory Status</div>
+                                    <div className="text-xl font-black text-foreground">{product.quantity} Units in Terminal</div>
                                 </div>
-                            </div>
+                            </CardContent>
+                        </Card>
 
-                            <section style={{ marginBottom: '2rem', padding: 0 }}>
-                                <h3 style={{
-                                    display: 'flex', alignItems: 'center', gap: '6px',
-                                    fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase',
-                                    letterSpacing: '1px', color: 'var(--primary)', marginBottom: '0.75rem'
-                                }}>
-                                    <HiInformationCircle /> Asset Intelligence
-                                </h3>
-                                <p style={{ fontSize: '1rem', lineHeight: 1.6, opacity: 0.7, fontWeight: 500 }}>
-                                    {product.description || "Sophisticated commodity listing with verified supply chain origin. Rigorously tested for international compliance standards."}
-                                </p>
-                            </section>
-
-                            {/* Trade Certifications Grid */}
-                            <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                                {[
-                                    { title: 'ISO Sync', desc: '9001:2015', icon: <HiCheckCircle /> },
-                                    { title: 'Logistics', desc: 'Secure Chain', icon: <HiCube /> },
-                                    { title: 'Custody', desc: 'E2E Tracking', icon: <HiShieldCheck /> },
-                                    { title: 'Protocol', desc: 'Algo Ready', icon: <HiLightningBolt /> }
-                                ].map((cert, idx) => (
-                                    <motion.div
-                                        key={idx}
-                                        whileTap={{ scale: 0.98 }}
-                                        style={{
-                                            padding: '1rem', border: '1px solid var(--border-color)',
-                                            borderRadius: '12px', display: 'flex', gap: '12px', alignItems: 'center',
-                                            background: 'rgba(255,255,255,0.02)'
-                                        }}
-                                    >
-                                        <div style={{ color: 'var(--primary)', fontSize: '1.25rem' }}>{cert.icon}</div>
-                                        <div>
-                                            <div style={{ fontSize: '0.75rem', fontWeight: 900 }}>{cert.title}</div>
-                                            <div style={{ fontSize: '0.65rem', fontWeight: 600, opacity: 0.5 }}>{cert.desc}</div>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-
-                            {/* Bottom Action Bar */}
-                            <div style={{
-                                position: 'sticky', bottom: '2rem',
-                                background: 'rgba(15, 23, 42, 0.9)', backdropFilter: 'blur(24px)',
-                                padding: '0.8rem 1.25rem', borderRadius: '16px',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)',
-                                display: 'flex', alignItems: 'center', gap: '1rem'
-                            }}>
-                                <div className="flex-grow desktop-visible" style={{ color: 'white' }}>
-                                    <div style={{ fontSize: '0.55rem', fontWeight: 800, textTransform: 'uppercase', opacity: 0.5 }}>Execution Volume</div>
-                                    <div style={{ fontSize: '0.85rem', fontWeight: 900 }}>${product.price.toLocaleString()} Base Unit</div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {[
+                                { title: 'Compliance Sync', desc: 'ISO 9001:2015 Verified', icon: <HiCheckCircle /> },
+                                { title: 'Chain of Custody', desc: 'Blockchain Manifest', icon: <HiShieldCheck /> },
+                                { title: 'Secure Logistics', desc: 'E2E Encryption', icon: <HiCube /> },
+                                { title: 'Trade Protocol', desc: 'Algo-Ready Execution', icon: <HiLightningBolt /> }
+                            ].map((cert, idx) => (
+                                <div key={idx} className="flex items-center gap-4 p-4 rounded-xl border-2 border-muted hover:border-figma-blue/20 transition-colors group">
+                                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:text-figma-blue group-hover:bg-figma-blue/10 transition-all">
+                                        {cert.icon}
+                                    </div>
+                                    <div>
+                                        <div className="text-xs font-black uppercase tracking-widest">{cert.title}</div>
+                                        <div className="text-[10px] font-bold text-muted-foreground">{cert.desc}</div>
+                                    </div>
                                 </div>
-                                <motion.button
-                                    whileTap={{ scale: 0.96 }}
-                                    onClick={() => {
-                                        if (!user) {
-                                            toast.error("Security Bypass Blocked: Login Required");
-                                            navigate("/login", { state: { from: { pathname: `/products/${id}` } } });
-                                            return;
-                                        }
-                                        setShowModal(true);
-                                    }}
-                                    disabled={product.quantity < 1}
-                                    className="btn btn-primary"
-                                    style={{
-                                        padding: '0.85rem 1.5rem', borderRadius: '12px',
-                                        fontWeight: 900, fontSize: '0.85rem', flex: 1,
-                                        boxShadow: '0 10px 20px rgba(37,99,235,0.4)',
-                                        minHeight: '48px'
-                                    }}
-                                >
-                                    {product.quantity < 1 ? 'STOCK DEPLETED' : 'SECURE IMPORT CHANNEL'}
-                                </motion.button>
-                            </div>
-                        </motion.div>
+                            ))}
+                        </div>
+
+                        <div className="pt-8 border-t space-y-4">
+                            <Button 
+                                onClick={() => {
+                                    if (!user) {
+                                        toast.error("Security Bypass Blocked: Login Required");
+                                        navigate("/login", { state: { from: { pathname: `/products/${id}` } } });
+                                        return;
+                                    }
+                                    setShowModal(true);
+                                }}
+                                disabled={product.quantity < 1}
+                                className="w-full h-16 text-lg font-black bg-figma-blue hover:bg-figma-blue/90 shadow-xl shadow-figma-blue/20 rounded-2xl"
+                            >
+                                {product.quantity < 1 ? 'STOCK DEPLETED' : 'INITIATE SECURE IMPORT PROTOCOL'}
+                            </Button>
+                            <p className="text-[10px] text-center font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                                All transactions are governed by the IEHUB global trade agreement.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -388,20 +282,8 @@ const ProductDetailsPage = () => {
                     />
                 )}
             </AnimatePresence>
-
-            <style>{`
-                @media (max-width: 1024px) {
-                    .main-layout-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-                    .main-layout-grid > div { position: relative !important; top: 0 !important; }
-                    h1 { font-size: 2rem !important; }
-                }
-                .market-input:focus {
-                    transform: scale(1.02);
-                }
-            `}</style>
         </div>
     );
 };
 
 export default ProductDetailsPage;
-

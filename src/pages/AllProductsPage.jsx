@@ -4,6 +4,9 @@ import api from '../utils/api';
 import toast from 'react-hot-toast';
 import { HiSearch, HiFilter, HiSortAscending } from 'react-icons/hi';
 import ProductCard from '../components/ProductCard';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
 
 const AllProductsPage = () => {
     const [products, setProducts] = useState([]);
@@ -40,174 +43,109 @@ const AllProductsPage = () => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="container"
-            style={{ paddingBottom: '4rem', paddingTop: 'var(--hero-padding-top)' }}
+            className="container py-24"
         >
-            <section style={{ paddingTop: '0' }}>
+            <div className="mb-12">
+                <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
+                    Global <span className="text-figma-blue">Marketplace</span>
+                </h1>
+                <p className="text-muted-foreground font-medium text-lg max-w-2xl">
+                    Discover and acquire verified international assets with end-to-end synchronization.
+                </p>
+            </div>
 
-                {/* Glass Filter Bar */}
-                <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="card"
-                    style={{
-                        padding: '1rem',
-                        marginBottom: '2rem',
-                        background: 'var(--bg-glass)',
-                        backdropFilter: 'blur(30px)',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: '20px',
-                        boxShadow: 'var(--shadow)'
-                    }}
-                >
-                    <div className="grid" style={{
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                        gap: '1.5rem',
-                        alignItems: 'end'
-                    }}>
-                        <div className="flex flex-col gap-3">
-                            <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1.2px', opacity: 0.4 }}>
-                                <HiSearch style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Identification
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Search products or origin..."
+            {/* Filter Bar */}
+            <Card className="p-4 mb-12 bg-muted/30 border-none shadow-none">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 items-end">
+                    <div className="grid gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Search Assets</label>
+                        <div className="relative">
+                            <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                            <Input
+                                placeholder="Identification..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="market-input"
+                                className="pl-10 h-12 bg-background border-2 focus-visible:ring-figma-blue"
                             />
                         </div>
-
-                        <div className="flex flex-col gap-3">
-                            <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1.2px', opacity: 0.4 }}>
-                                <HiFilter style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Classification
-                            </label>
-                            <select
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                className="market-select"
-                            >
-                                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                            </select>
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <label style={{ fontWeight: 800, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1.2px', opacity: 0.4 }}>
-                                <HiSortAscending style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Telemetry Sort
-                            </label>
-                            <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
-                                className="market-select"
-                            >
-                                <option value="name">Product Name (A-Z)</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                                <option value="rating">Highest Rated</option>
-                            </select>
-                        </div>
                     </div>
-                </motion.div>
 
-                <div className="flex justify-between items-center" style={{ marginBottom: '2rem' }}>
-                    <div style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--primary)', letterSpacing: '-0.5px' }}>
-                        {products.length} Opportunities Verified
+                    <div className="grid gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Classification</label>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="flex h-12 w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm font-bold focus:outline-none focus:border-figma-blue transition-colors appearance-none cursor-pointer"
+                        >
+                            {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                    </div>
+
+                    <div className="grid gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Telemetry Sort</label>
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="flex h-12 w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm font-bold focus:outline-none focus:border-figma-blue transition-colors appearance-none cursor-pointer"
+                        >
+                            <option value="name">Product Name (A-Z)</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                        </select>
+                    </div>
+
+                    <div className="flex items-center justify-between md:justify-end lg:col-span-1">
+                        <div className="text-right">
+                            <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Verified Results</div>
+                            <div className="text-2xl font-black text-figma-blue">{products.length}</div>
+                        </div>
                     </div>
                 </div>
+            </Card>
 
-                <AnimatePresence mode="wait">
-                    {loading ? (
-                        <motion.div
-                            key="loading"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            style={{ textAlign: 'center', padding: '10rem 0' }}
+            <AnimatePresence mode="wait">
+                {loading ? (
+                    <motion.div
+                        key="loading"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="py-40 text-center"
+                    >
+                        <div className="w-12 h-12 border-4 border-muted border-t-figma-blue rounded-full animate-spin mx-auto mb-4" />
+                        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Synchronizing Global Inventory...</p>
+                    </motion.div>
+                ) : products.length > 0 ? (
+                    <motion.div
+                        key="grid"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                    >
+                        {products.map((product, index) => (
+                            <ProductCard key={product._id || product.id} product={product} />
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="empty"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="py-40 text-center border-4 border-dashed rounded-3xl"
+                    >
+                        <HiSearch className="w-16 h-16 text-muted mx-auto mb-6" />
+                        <h2 className="text-3xl font-black tracking-tighter mb-4 text-foreground">Zero Signals Detected</h2>
+                        <p className="text-muted-foreground font-medium mb-8">Modify your identification parameters to discover verified assets.</p>
+                        <Button 
+                            onClick={() => { setSearchTerm(''); setCategory('All'); }}
+                            className="bg-figma-blue hover:bg-figma-blue/90 rounded-full font-black px-8 h-12"
                         >
-                            <div className="spinner"></div>
-                            <p style={{ marginTop: '1.5rem', opacity: 0.4, fontWeight: 600 }}>Synchronizing global inventory...</p>
-                        </motion.div>
-                    ) : products.length > 0 ? (
-                        <motion.div
-                            key="grid"
-                            className="grid"
-                            style={{
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                                gap: '2rem'
-                            }}
-                        >
-                            {products.map((product, index) => (
-                                <motion.div
-                                    key={product._id || product.id}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.05 }}
-                                >
-                                    <ProductCard product={product} />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="empty"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            style={{ textAlign: 'center', padding: '10rem 0' }}
-                        >
-                            <HiSearch size={80} style={{ opacity: 0.05, marginBottom: '2rem' }} />
-                            <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '1rem' }}>Zero Signals Detected</h2>
-                            <p style={{ opacity: 0.4, marginBottom: '2.5rem', fontWeight: 600 }}>Modify your identification parameters to discover verified assets.</p>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="btn btn-primary"
-                                onClick={() => { setSearchTerm(''); setCategory('All'); }}
-                                style={{ padding: '1rem 2.5rem', fontWeight: 800 }}
-                            >
-                                RESET ALL PARAMETERS
-                            </motion.button>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </section>
-
-            <style>{`
-                .market-input, .market-select {
-                    padding: 0.8rem 1.1rem;
-                    border-radius: 12px;
-                    background: var(--bg-card);
-                    border: 1px solid var(--border-color);
-                    color: var(--text-body);
-                    outline: none;
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-                .market-input:focus, .market-select:focus { 
-                    border-color: var(--primary); 
-                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-                    background: var(--bg-inset);
-                }
-                .market-select {
-                    appearance: none;
-                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.3)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-                    background-repeat: no-repeat;
-                    background-position: right 1.25rem center;
-                    background-size: 1.25rem;
-                }
-                .spinner {
-                    width: 48px;
-                    height: 48px;
-                    border: 4px solid var(--border-color);
-                    border-top: 4px solid var(--primary);
-                    border-radius: 50%;
-                    animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-                    margin: 0 auto;
-                }
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            `}</style>
+                            RESET PARAMETERS
+                        </Button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 };

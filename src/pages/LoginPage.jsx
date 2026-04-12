@@ -4,6 +4,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { FaGoogle, FaUser, FaCrown } from 'react-icons/fa';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
 
 const LoginPage = () => {
     const { loginUser, loginWithGoogle, loginAsGuest } = useAuth();
@@ -38,7 +41,6 @@ const LoginPage = () => {
 
     const handleDemoLogin = async (userType) => {
         try {
-            // Use guest login for demo access
             await loginAsGuest(userType === 'user' ? 'demo-user' : 'demo-admin');
             toast.success(`Demo ${userType} access granted. Welcome to IE HUB.`);
             navigate(from, { replace: true });
@@ -48,220 +50,82 @@ const LoginPage = () => {
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container"
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '80vh',
-                paddingTop: '2rem',
-                paddingBottom: '2rem'
-            }}
-        >
+        <div className="min-h-[90vh] flex items-center justify-center container py-12 relative overflow-hidden">
+            {/* Background Mesh */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-figma-blue/5 blur-[120px] rounded-full pointer-events-none" />
+            
             <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="card"
-                style={{
-                    maxWidth: '420px',
-                    width: '100%',
-                    padding: '2rem',
-                    background: 'var(--bg-glass)',
-                    backdropFilter: 'blur(24px)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: 'var(--shadow-lg)',
-                    position: 'relative',
-                    overflow: 'hidden'
-                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+                className="w-full max-w-[420px] z-10"
             >
-                {/* Decorative background glow */}
-                <div style={{
-                    position: 'absolute',
-                    top: '-50px',
-                    right: '-50px',
-                    width: '150px',
-                    height: '150px',
-                    background: 'var(--primary)',
-                    filter: 'blur(80px)',
-                    opacity: 0.1,
-                    zIndex: 0
-                }}></div>
-
-                <div style={{ position: 'relative', zIndex: 1 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '0.4rem', letterSpacing: '-0.5px' }}>
-                            Welcome <span style={{ color: 'var(--primary)' }}>Back</span>
-                        </h2>
-                        <p style={{ opacity: 0.5, fontSize: '0.9rem' }}>Access your global trade dashboard</p>
-                    </div>
-
-                    <form onSubmit={handleLogin} className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-2">
-                            <label style={{ fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>Corporate Email</label>
-                            <input
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@company.com"
-                                className="auth-input"
-                            />
+                <Card className="border-2 shadow-2xl">
+                    <CardHeader className="text-center pb-8">
+                        <div className="w-12 h-12 bg-figma-blue rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-figma-blue/20">
+                            <img src="/logo.png" alt="" className="w-6 h-6 brightness-0 invert" />
                         </div>
-
-                        <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-center">
-                                <label style={{ fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>Secure Password</label>
-                                <Link to="/reset" style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600 }}>Recovery</Link>
+                        <CardTitle className="text-3xl font-black tracking-tighter">Welcome <span className="text-figma-blue">Back</span></CardTitle>
+                        <CardDescription className="font-medium">Access your global trade terminal.</CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="grid gap-6">
+                        <form onSubmit={handleLogin} className="grid gap-4">
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Corporate Email</label>
+                                <Input 
+                                    type="email" 
+                                    placeholder="name@company.com" 
+                                    required 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="h-12 border-2 focus-visible:ring-figma-blue"
+                                />
                             </div>
-                            <input
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                className="auth-input"
-                            />
+                            <div className="grid gap-2">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Access Key</label>
+                                    <Link to="#" className="text-[10px] font-bold text-figma-blue hover:underline">Forgot key?</Link>
+                                </div>
+                                <Input 
+                                    type="password" 
+                                    placeholder="••••••••" 
+                                    required 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="h-12 border-2 focus-visible:ring-figma-blue"
+                                />
+                            </div>
+                            <Button type="submit" className="h-12 font-black bg-figma-blue hover:bg-figma-blue/90 mt-2">
+                                SIGN IN TO PORTAL
+                            </Button>
+                        </form>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-[10px] uppercase font-black tracking-widest">
+                                <span className="bg-card px-2 text-muted-foreground">OR CONTINUE WITH</span>
+                            </div>
                         </div>
 
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            className="btn btn-primary"
-                            style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem', padding: '0.8rem', fontWeight: 900 }}
-                        >
-                            Sign In to Portal
-                        </motion.button>
-
-                        <div style={{ textAlign: 'center', margin: '1.5rem 0', position: 'relative' }}>
-                            <div style={{ height: '1px', background: 'var(--border-color)', width: '100%' }}></div>
-                            <span style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                background: 'var(--bg-card)',
-                                padding: '0 1.5rem',
-                                fontSize: '0.75rem',
-                                fontWeight: 700,
-                                letterSpacing: '1px',
-                                opacity: 0.4
-                            }}>DEMO ACCESS</span>
+                        <div className="grid grid-cols-2 gap-3">
+                            <Button variant="outline" className="h-12 font-bold border-2" onClick={handleGoogleLogin}>
+                                <FaGoogle className="mr-2 text-red-500" /> Google
+                            </Button>
+                            <Button variant="outline" className="h-12 font-bold border-2" onClick={() => handleDemoLogin('user')}>
+                                <FaUser className="mr-2 text-figma-blue" /> Demo
+                            </Button>
                         </div>
 
-                        <div className="flex flex-col gap-3">
-                            <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                type="button"
-                                onClick={() => handleDemoLogin('user')}
-                                className="btn"
-                                style={{
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    border: '1px solid var(--border-color)',
-                                    background: 'var(--bg-inset)',
-                                    padding: '1rem',
-                                    fontWeight: 700,
-                                    color: 'var(--text-body)'
-                                }}
-                            >
-                                <FaUser style={{ marginRight: '10px', color: 'var(--primary)' }} /> Demo User Access
-                            </motion.button>
-
-                            <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                type="button"
-                                onClick={() => navigate('/admin/login')}
-                                className="btn"
-                                style={{
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    border: '1px solid var(--secondary)',
-                                    background: 'rgba(16, 185, 129, 0.1)',
-                                    padding: '1rem',
-                                    fontWeight: 700,
-                                    color: 'var(--secondary)'
-                                }}
-                            >
-                                <FaCrown style={{ marginRight: '10px', color: 'var(--secondary)' }} /> Go to Admin Portal
-                            </motion.button>
-                        </div>
-
-                        <div style={{
-                            textAlign: 'center',
-                            marginTop: '1rem',
-                            padding: '0.8rem',
-                            background: 'var(--bg-inset)',
-                            borderRadius: 'var(--radius-md)',
-                            fontSize: '0.75rem',
-                            opacity: 0.8
-                        }}>
-                            <p>Demo access allows you to explore the platform without creating an account</p>
-                        </div>
-                    </form>
-
-                    <div style={{ textAlign: 'center', margin: '2rem 0', position: 'relative' }}>
-                        <div style={{ height: '1px', background: 'var(--border-color)', width: '100%' }}></div>
-                        <span style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            background: 'var(--bg-card)',
-                            padding: '0 1.5rem',
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            letterSpacing: '1px',
-                            opacity: 0.4
-                        }}>SECURE CONNECT</span>
-                    </div>
-
-                    <motion.button
-                        whileHover={{ scale: 1.02, background: 'var(--bg-inset)' }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={handleGoogleLogin}
-                        className="btn"
-                        style={{
-                            width: '100%',
-                            justifyContent: 'center',
-                            border: '1px solid var(--border-color)',
-                            background: 'transparent',
-                            padding: '1rem',
-                            fontWeight: 700,
-                            color: 'var(--text-body)'
-                        }}
-                    >
-                        <FaGoogle style={{ marginRight: '10px', color: '#EA4335' }} /> Continue with Google
-                    </motion.button>
-
-                    <p style={{ textAlign: 'center', marginTop: '2.5rem', fontSize: '0.95rem', opacity: 0.7 }}>
-                        New to the network? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 800 }}>Create Corporate ID</Link>
-                    </p>
-                </div>
+                        <p className="text-center text-xs font-medium text-muted-foreground">
+                            New to the network? <Link to="/register" className="text-figma-blue font-bold hover:underline">Create Corporate ID</Link>
+                        </p>
+                    </CardContent>
+                </Card>
             </motion.div>
-
-            <style>{`
-                .auth-input {
-                    padding: 0.8rem 1rem;
-                    border-radius: var(--radius-md);
-                    border: 1px solid var(--border-color);
-                    background: var(--bg-card);
-                    color: var(--text-body);
-                    width: 100%;
-                    outline: none;
-                    transition: all 0.3s;
-                    font-size: 0.95rem;
-                }
-                .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-            `}</style>
-        </motion.div>
+        </div>
     );
 };
 

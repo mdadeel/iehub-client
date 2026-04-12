@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { HiLockClosed } from 'react-icons/hi';
 import { motion } from 'framer-motion';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
 
 const AdminLoginPage = () => {
     const [email, setEmail] = useState('');
@@ -22,173 +25,85 @@ const AdminLoginPage = () => {
     };
 
     return (
-        <div style={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'radial-gradient(circle at center, #111827 0%, #030712 100%)',
-            color: 'white',
-            padding: '2rem'
-        }}>
+        <div className="min-h-screen flex items-center justify-center bg-figma-black p-6 relative overflow-hidden">
+            {/* Security Overlay */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none" 
+                 style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #333 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+            
             <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="card"
-                style={{
-                    width: '100%',
-                    maxWidth: '440px',
-                    padding: '3.5rem',
-                    background: 'rgba(17, 24, 39, 0.7)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                    borderRadius: '24px',
-                    position: 'relative',
-                    overflow: 'hidden'
-                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-[440px] z-10"
             >
-                {/* Decorative Glow */}
-                <div style={{
-                    position: 'absolute',
-                    top: '-50px',
-                    right: '-50px',
-                    width: '150px',
-                    height: '150px',
-                    background: 'var(--primary)',
-                    filter: 'blur(80px)',
-                    opacity: 0.15,
-                    pointerEvents: 'none'
-                }} />
+                <Card className="border-white/10 bg-figma-black/80 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                    <CardHeader className="text-center pb-8 border-b border-white/5">
+                        <div className="w-16 h-16 bg-figma-blue/10 text-figma-blue rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-figma-blue/20">
+                            <HiLockClosed className="w-8 h-8" />
+                        </div>
+                        <CardTitle className="text-3xl font-black tracking-tighter text-white">System <span className="text-figma-blue">Control</span></CardTitle>
+                        <CardDescription className="font-bold text-xs uppercase tracking-[0.2em] text-muted-foreground mt-2">High-Security Restricted Zone</CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="p-8 grid gap-8">
+                        <form onSubmit={handleLogin} className="grid gap-6">
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Security Identifier</label>
+                                <Input 
+                                    type="email" 
+                                    placeholder="admin@enterprise.com" 
+                                    required 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="h-12 bg-white/5 border-white/10 text-white focus-visible:ring-figma-blue placeholder:text-white/20"
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Access Key</label>
+                                <Input 
+                                    type="password" 
+                                    placeholder="••••••••" 
+                                    required 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="h-12 bg-white/5 border-white/10 text-white focus-visible:ring-figma-blue placeholder:text-white/20"
+                                />
+                            </div>
+                            <Button type="submit" className="h-14 font-black bg-figma-blue hover:bg-figma-blue/90 text-lg mt-2">
+                                AUTHORIZE ACCESS
+                            </Button>
+                        </form>
 
-                <div style={{ textAlign: 'center', marginBottom: '3rem', position: 'relative' }}>
-                    <motion.div
-                        initial={{ rotate: -20, opacity: 0 }}
-                        animate={{ rotate: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        style={{
-                            width: '72px', height: '72px',
-                            background: 'linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%)',
-                            borderRadius: '20px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            margin: '0 auto 1.5rem',
-                            fontSize: '2rem',
-                            boxShadow: '0 10px 20px -5px rgba(37, 99, 235, 0.5)'
-                        }}>
-                        <HiLockClosed />
-                    </motion.div>
-                    <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.5rem', letterSpacing: '-0.5px' }}>Admin <span style={{ color: 'var(--primary)' }}>Portal</span></h2>
-                    <p style={{ opacity: 0.4, fontWeight: 600, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>High-Security Zone</p>
-                </div>
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-white/10" />
+                            </div>
+                            <div className="relative flex justify-center text-[10px] uppercase font-black tracking-widest">
+                                <span className="bg-[#1E1E1E] px-2 text-muted-foreground">Override Protocol</span>
+                            </div>
+                        </div>
 
-                <form onSubmit={handleLogin} className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-2">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '1.5px', marginLeft: '4px' }}>Security ID</label>
-                        <input
-                            type="email"
-                            placeholder="admin@enterprise.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="admin-input"
-                        />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '1.5px', marginLeft: '4px' }}>Access Key</label>
-                        <input
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="admin-input"
-                        />
-                    </div>
-                    <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        type="submit"
-                        className="btn btn-primary"
-                        style={{
-                            marginTop: '1.5rem',
-                            justifyContent: 'center',
-                            padding: '1.2rem',
-                            fontWeight: 900,
-                            letterSpacing: '1px',
-                            borderRadius: '14px',
-                            fontSize: '1rem'
-                        }}
-                    >
-                        AUTHORIZE ACCESS
-                    </motion.button>
-                </form>
+                        <Button 
+                            variant="outline" 
+                            className="h-12 font-black border-figma-green/30 text-figma-green hover:bg-figma-green/10 hover:text-figma-green"
+                            onClick={() => {
+                                localStorage.setItem('isAdmin', 'true');
+                                toast.success('Demo admin access granted. Welcome to System Control.');
+                                navigate('/admin/dashboard');
+                            }}
+                        >
+                            INITIATE DEMO BYPASS
+                        </Button>
 
-                {/* Demo Admin Access */}
-                <div style={{ textAlign: 'center', margin: '2rem 0', position: 'relative' }}>
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', width: '100%' }}></div>
-                    <span style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        background: 'rgba(17, 24, 39, 0.9)',
-                        padding: '0 1rem',
-                        fontSize: '0.7rem',
-                        fontWeight: 700,
-                        letterSpacing: '1px',
-                        opacity: 0.5
-                    }}>DEMO ACCESS</span>
-                </div>
-
-                <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="button"
-                    onClick={() => {
-                        localStorage.setItem('isAdmin', 'true');
-                        toast.success('Demo admin access granted. Welcome to System Control.');
-                        navigate('/admin/dashboard');
-                    }}
-                    className="btn"
-                    style={{
-                        width: '100%',
-                        justifyContent: 'center',
-                        border: '1px solid var(--secondary)',
-                        background: 'rgba(16, 185, 129, 0.1)',
-                        padding: '1rem',
-                        fontWeight: 700,
-                        color: '#10b981'
-                    }}
-                >
-                    <HiLockClosed style={{ marginRight: '10px' }} /> Demo Admin Access
-                </motion.button>
-
-                <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <p style={{ fontSize: '0.8rem', opacity: 0.3, fontWeight: 500 }}>
-                        All sessions are logged and encrypted. <br />
-                        Unauthorized access attempts will be flagged.
-                    </p>
-                </div>
+                        <div className="text-center">
+                            <p className="text-[10px] font-medium text-muted-foreground leading-relaxed">
+                                All sessions are logged and cryptographically signed. <br />
+                                Unauthorized access attempts will be permanently flagged.
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
             </motion.div>
-
-            <style>{`
-                .admin-input {
-                    padding: 1.1rem 1.25rem;
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 14px;
-                    color: white;
-                    font-size: 1rem;
-                    outline: none;
-                    transition: all 0.3s ease;
-                }
-                .admin-input:focus {
-                    background: rgba(255, 255, 255, 0.05);
-                    border-color: var(--primary);
-                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-                }
-            `}</style>
         </div>
     );
 };
