@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { useAuth } from './hooks/useAuth';
 import { useEffect } from 'react';
 
 // Layouts
@@ -34,7 +33,6 @@ import MarketInsightsPage from './pages/MarketInsightsPage';
 import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
-  const { theme } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -42,7 +40,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <div className={`app ${theme}`}>
+    <div className="app">
       <Toaster position="top-right" />
 
       <Routes>
@@ -50,9 +48,8 @@ function App() {
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
 
-        {/* Main Application Routes (Wrapped in MainLayout) */}
+        {/* Public Routes (Wrapped in MainLayout with Navbar and Marketing Footer) */}
         <Route element={<MainLayout />}>
-          {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -65,17 +62,17 @@ function App() {
           <Route path="/shipping" element={<GlobalLogisticsPage />} />
           <Route path="/careers" element={<TradeExpertsPage />} />
           <Route path="/news" element={<MarketInsightsPage />} />
+        </Route>
 
-          {/* User Dashboard Routes (Protected) */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route index element={<DashboardPage />} />
-              <Route path="stats" element={<DashboardPage />} />
-              <Route path="add-export" element={<AddExportPage />} />
-              <Route path="my-exports" element={<MyExportsPage />} />
-              <Route path="my-imports" element={<MyImportsPage />} />
-              <Route path="profile" element={<ProfilePage />} />
-            </Route>
+        {/* User Workspace Routes (Self-Contained DashboardLayout with Sidebar, No Marketing Footer) */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="stats" element={<DashboardPage />} />
+            <Route path="add-export" element={<AddExportPage />} />
+            <Route path="my-exports" element={<MyExportsPage />} />
+            <Route path="my-imports" element={<MyImportsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
         </Route>
       </Routes>

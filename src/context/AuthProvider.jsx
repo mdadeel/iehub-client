@@ -22,7 +22,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        document.body.className = theme;
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(theme);
     }, [theme]);
 
     // Auth Operations
@@ -45,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     // Guest/Demo user login
     const loginAsGuest = (userType = 'guest') => {
         setLoading(true);
-        // Create a mock user object for demo/guest access
+        const isAdmin = userType === 'demo-admin';
         const guestUser = {
             uid: `guest-${Date.now()}`,
             email: userType === 'demo-user' ? 'demo@importexport.com' :
@@ -53,22 +54,31 @@ export const AuthProvider = ({ children }) => {
                    `guest-${Date.now()}@example.com`,
             displayName: `${userType.charAt(0).toUpperCase() + userType.slice(1)} User`,
             isGuest: true,
+            isAdmin: isAdmin,
             userType: userType
         };
 
         setUser(guestUser);
+        localStorage.setItem('guestUser', JSON.stringify(guestUser));
         setLoading(false);
         return Promise.resolve({ user: guestUser });
     };
 
     const loginWithGoogle = () => {
         setLoading(true);
+        localStorage.removeItem('guestUser');
         return signInWithPopup(auth, googleProvider);
     };
 
     const logout = () => {
         setLoading(true);
-        return signOut(auth);
+        localStorage.removeItem('guestUser');
+        if (user?.isGuest) {
+            setUser(null);
+            setLoading(false);
+            return Promise.resolve();
+        }
+        return signOut(auth).finally(() => setLoading(false));
     };
 
     useEffect(() => {
@@ -84,7 +94,22 @@ export const AuthProvider = ({ children }) => {
         }, 5000);
 
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+            if (currentUser) {
+                const adminEmails = ['admin121@gmail.com', 'admin@importexport.com'];
+                currentUser.isAdmin = adminEmails.includes(currentUser.email?.toLowerCase());
+                setUser(currentUser);
+            } else {
+                const savedGuest = localStorage.getItem('guestUser');
+                if (savedGuest) {
+                    try {
+                        setUser(JSON.parse(savedGuest));
+                    } catch {
+                        setUser(null);
+                    }
+                } else {
+                    setUser(null);
+                }
+            }
             setLoading(false);
             clearTimeout(timeoutId);
         });

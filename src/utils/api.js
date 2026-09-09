@@ -1,37 +1,53 @@
 import axios from 'axios';
+import { auth } from './firebase.config';
 
+// All env moved to backend — client uses relative /api.
+// Dev: Vite proxies /api → http://localhost:5000 (see vite.config.js)
+// Prod: Vercel rewrites /api → backend URL (see vercel.json)
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: '/api',
 });
 
-// Request interceptor to add auth headers if needed
 api.interceptors.request.use(
-    (config) => {
-        // Add any request modifications here if needed
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  async (config) => {
+    try {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const token = await currentUser.getIdToken();
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        const guestUserStr = localStorage.getItem('guestUser');
+        if (guestUserStr) {
+          try {
+            const guestUser = JSON.parse(guestUserStr);
+            if (guestUser?.isAdmin) {
+              config.headers.Authorization = 'Bearer demo-admin-token';
+            } else if (guestUser?.uid) {
+              config.headers.Authorization = `Bearer guest-token-${guestUser.uid}`;
+            }
+          } catch {
+            // ignore JSON parse error
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Could not attach auth token to request', err);
     }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor for handling errors globally
 api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        // Handle specific error cases
-        if (error.response?.status === 401) {
-            // Handle unauthorized access
-            console.error('Unauthorized access - please log in');
-        } else if (error.response?.status >= 500) {
-            // Handle server errors
-            console.error('Server error occurred');
-        }
-
-        return Promise.reject(error);
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error('Unauthorized access - please log in');
+    } else if (error.response?.status >= 500) {
+      console.error('Server error occurred');
     }
+    return Promise.reject(error);
+  }
 );
 
 export default api;

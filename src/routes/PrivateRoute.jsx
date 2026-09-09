@@ -1,41 +1,9 @@
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useState, useEffect } from 'react';
 
 const PrivateRoute = ({ children }) => {
     const { user, loading } = useAuth();
     const location = useLocation();
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        try {
-            // Validate auth state
-            if (loading === undefined || user === undefined) {
-                console.error('Auth context is not properly initialized');
-            }
-        } catch (err) {
-            setError(err.message);
-            console.error('Error in PrivateRoute:', err);
-        }
-    }, [user, loading]);
-
-    if (error) {
-        return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
-                <div>
-                    <h2>Authentication Error</h2>
-                    <p>There was an issue with the authentication system.</p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="btn"
-                        style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
-                    >
-                        Refresh Page
-                    </button>
-                </div>
-            </div>
-        );
-    }
 
     if (loading) {
         return (

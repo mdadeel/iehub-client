@@ -21,7 +21,7 @@ const demoUsers = [
 const createDemoUsers = async () => {
     for (const user of demoUsers) {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password);
+            await createUserWithEmailAndPassword(auth, user.email, user.password);
             console.log(`Created user: ${user.email}`);
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {

@@ -1,185 +1,817 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { HiEye, HiSearch, HiGlobeAlt, HiCube, HiTrendingUp } from 'react-icons/hi';
+import {
+  HiSearch,
+  HiGlobeAlt,
+  HiEye,
+  HiTrash,
+  HiCheckCircle,
+  HiClipboardCopy,
+  HiShieldCheck,
+  HiScale,
+  HiCurrencyDollar,
+  HiExternalLink,
+  HiRefresh,
+} from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
+import { Badge } from '../components/ui/Badge';
+import { EmptyState } from '../components/ui/EmptyState';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
+import { ConfirmDialog } from '../components/ui/ConfirmDialog';
+import { Modal, ModalHeader, ModalContent, ModalFooter } from '../components/ui/Modal';
+import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
+import { DropdownMenu } from '../components/ui/DropdownMenu';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from '../components/ui/Table';
+
+const MILESTONES = [
+  { id: 'Confirmed', label: 'PO Issued', desc: 'Legally binding order registered' },
+  { id: 'Cargo Received', label: 'Port Origin', desc: 'Cargo consolidated at port of loading' },
+  { id: 'Customs Clearance', label: 'Customs Cleared', desc: 'Export clearance & inspection passed' },
+  { id: 'In Transit', label: 'In Ocean Transit', desc: 'Vessel en route to discharge port' },
+  { id: 'Delivered', label: 'Consignee Delivery', desc: 'Customs released & landed at destination' },
+];
+
+const STATUS_SEQUENCE = ['Confirmed', 'Cargo Received', 'Customs Clearance', 'In Transit', 'Delivered'];
 
 const MyImportsPage = () => {
-    const { user } = useAuth();
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('orders');
+  const [imports, setImports] = useState([]);
+  const [filteredImports, setFilteredImports] = useState([]);
+  const [myRFQs, setMyRFQs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-    if (user?.isGuest) {
-        return (
-            <div className="max-w-2xl mx-auto py-20 text-center">
-                <div className="w-20 h-20 bg-figma-blue/10 text-figma-blue rounded-3xl flex items-center justify-center mx-auto mb-6">
-                    <HiGlobeAlt className="w-10 h-10" />
-                </div>
-                <h1 className="text-4xl font-black tracking-tighter mb-4">Demo <span className="text-figma-blue">Environment</span></h1>
-                <p className="text-muted-foreground font-medium mb-10 leading-relaxed">
-                    Import tracking and acquisition history are not available in the demo sandbox. 
-                    Please establish a verified corporate identity to access global trade records.
-                </p>
-                <div className="flex gap-4 justify-center">
-                    <Button asChild size="lg" className="rounded-full font-black bg-figma-blue hover:bg-figma-blue/90 h-14 px-8">
-                        <Link to="/register">Create Account</Link>
-                    </Button>
-                    <Button asChild variant="outline" size="lg" className="rounded-full font-black border-2 h-14 px-8">
-                        <Link to="/dashboard">Back to Overview</Link>
-                    </Button>
-                </div>
-            </div>
-        );
+  // Detail Sheet state
+  const [activePO, setActivePO] = useState(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Cancellation dialog state
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [orderToCancel, setOrderToCancel] = useState(null);
+  const [cancelling, setCancelling] = useState(false);
+
+  // Dispute modal state
+  const [disputeModalOpen, setDisputeModalOpen] = useState(false);
+  const [disputeData, setDisputeData] = useState({
+    reason: 'Cargo Damage in Ocean Transit',
+    disputedAmount: '',
+    description: '',
+  });
+  const [filingDispute, setFilingDispute] = useState(false);
+
+  // Escrow action states
+  const [escrowLoading, setEscrowLoading] = useState(false);
+
+  const fetchImportsAndRFQs = useCallback(async () => {
+    if (!user?.email) return;
+    try {
+      setRefreshing(true);
+      const [importsRes, rfqsRes] = await Promise.allSettled([
+        api.get(`/imports/${encodeURIComponent(user.email)}`),
+        api.get('/rfq?as=buyer'),
+      ]);
+
+      if (importsRes.status === 'fulfilled') {
+        const list = Array.isArray(importsRes.value.data) ? importsRes.value.data : [];
+        setImports(list);
+        setFilteredImports(list);
+      }
+      if (rfqsRes.status === 'fulfilled') {
+        setMyRFQs(Array.isArray(rfqsRes.value.data) ? rfqsRes.value.data : []);
+      }
+    } catch {
+      toast.error('Unable to retrieve purchase order registry.');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
+  }, [user?.email]);
 
-    const [imports, setImports] = useState([]);
-    const [filteredImports, setFilteredImports] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
+  useEffect(() => {
+    fetchImportsAndRFQs();
+  }, [fetchImportsAndRFQs]);
 
-    const fetchImports = useCallback(async () => {
-        if (!user?.email) return;
-        setLoading(true);
-        try {
-            const { data } = await api.get('/products');
-            const otherProducts = data.filter(p => p.exporterEmail !== user.email);
-            setImports(otherProducts);
-            setFilteredImports(otherProducts);
-        } catch (error) {
-            console.error("Failed to fetch imports", error);
-            toast.error("Telemetry failure: Could not retrieve acquisition logs.");
-        } finally {
-            setLoading(false);
-        }
-    }, [user?.email]);
+  useEffect(() => {
+    const results = imports.filter((item) => {
+      const prod = item.productId || item;
+      const name = prod.name || '';
+      const origin = prod.origin || '';
+      const poNum = item.poNumber || '';
+      const pod = item.destinationPort || '';
+      return (
+        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        origin.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        poNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        pod.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    setFilteredImports(results);
+  }, [searchTerm, imports]);
 
-    useEffect(() => {
-        fetchImports();
-    }, [fetchImports]);
+  const openCancelPrompt = (item) => {
+    setOrderToCancel(item);
+    setCancelModalOpen(true);
+  };
 
-    useEffect(() => {
-        const results = imports.filter(item =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.origin.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredImports(results);
-    }, [searchTerm, imports]);
+  const handleConfirmCancel = async () => {
+    if (!orderToCancel) return;
+    setCancelling(true);
+    try {
+      await api.patch(`/imports/${orderToCancel._id}/status`, { status: 'Cancelled' });
+      setImports((prev) => prev.filter((i) => i._id !== orderToCancel._id));
+      toast.success('Purchase order cancelled and reserved inventory released.');
+      if (activePO?._id === orderToCancel._id) {
+        setSheetOpen(false);
+      }
+      setCancelModalOpen(false);
+    } catch {
+      toast.error('Failed to cancel order.');
+    } finally {
+      setCancelling(false);
+      setOrderToCancel(null);
+    }
+  };
 
-    if (loading) return (
-        <div className="py-40 text-center">
-            <div className="w-12 h-12 border-4 border-muted border-t-figma-blue rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Retrieving Acquisition Logs...</p>
-        </div>
-    );
+  const handleFundEscrow = async (poId) => {
+    setEscrowLoading(true);
+    try {
+      await api.patch(`/imports/${poId}/escrow-fund`);
+      toast.success('Commercial escrow funded. Funds secured in platform vault.');
+      fetchImportsAndRFQs();
+      if (activePO?._id === poId) {
+        setActivePO((p) => ({ ...p, escrowStatus: 'Funded' }));
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to fund escrow.');
+    } finally {
+      setEscrowLoading(false);
+    }
+  };
 
+  const handleReleaseEscrow = async (poId) => {
+    setEscrowLoading(true);
+    try {
+      await api.patch(`/imports/${poId}/escrow-release`);
+      toast.success('Escrow released to exporter upon confirmed delivery.');
+      fetchImportsAndRFQs();
+      if (activePO?._id === poId) {
+        setActivePO((p) => ({ ...p, escrowStatus: 'Released' }));
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to release escrow.');
+    } finally {
+      setEscrowLoading(false);
+    }
+  };
+
+  const openDisputeModal = (po) => {
+    const prod = po.productId || po;
+    const totalVal = po.totalAmount || (po.quantity || 1) * (po.unitPrice || prod.price || 0);
+    setActivePO(po);
+    setDisputeData({
+      reason: 'Cargo Damage in Ocean Transit',
+      disputedAmount: totalVal,
+      description: '',
+    });
+    setDisputeModalOpen(true);
+  };
+
+  const handleFileDispute = async (e) => {
+    e.preventDefault();
+    if (!activePO) return;
+    setFilingDispute(true);
+    try {
+      await api.post('/disputes', {
+        orderId: activePO._id,
+        reason: disputeData.reason,
+        disputedAmount: Number(disputeData.disputedAmount),
+        description: disputeData.description,
+      });
+      toast.success('Commercial dispute filed. Escrow locked pending arbitration.');
+      setDisputeModalOpen(false);
+      fetchImportsAndRFQs();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to file dispute.');
+    } finally {
+      setFilingDispute(false);
+    }
+  };
+
+  const handleConvertToPO = async (rfqId) => {
+    try {
+      const res = await api.post(`/rfq/${rfqId}/convert-to-po`);
+      toast.success(`Converted to Purchase Order ${res.data?.poNumber || ''}!`);
+      fetchImportsAndRFQs();
+      setActiveTab('orders');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to convert RFQ to purchase order.');
+    }
+  };
+
+  const openPODetails = (item) => {
+    setActivePO(item);
+    setSheetOpen(true);
+  };
+
+  const copyPO = (poNum) => {
+    navigator.clipboard.writeText(poNum);
+    toast.success(`Copied ${poNum} to clipboard`);
+  };
+
+  if (user?.isGuest) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-10"
-        >
-            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-                <div>
-                    <h1 className="text-4xl font-black tracking-tighter mb-2">My <span className="text-figma-blue">Imports</span></h1>
-                    <p className="text-muted-foreground font-medium">Track incoming shipments and verify global acquisitions.</p>
-                </div>
-                
-                <div className="relative w-full md:w-80">
-                    <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <Input 
-                        placeholder="Search acquisition records..." 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 h-12 border-2 focus-visible:ring-figma-blue"
-                    />
-                </div>
-            </div>
-
-            {imports.length === 0 ? (
-                <div className="py-32 text-center border-4 border-dashed rounded-[32px] bg-muted/20">
-                    <HiGlobeAlt className="w-16 h-16 text-muted mx-auto mb-6" />
-                    <h3 className="text-2xl font-black tracking-tight mb-2">Zero Active Imports</h3>
-                    <p className="text-muted-foreground font-medium mb-8">You haven't initiated any acquisition protocols yet.</p>
-                    <Button asChild size="lg" className="rounded-full font-black bg-figma-blue h-14 px-8">
-                        <Link to="/products">EXPLORE MARKETPLACE</Link>
-                    </Button>
-                </div>
-            ) : filteredImports.length === 0 ? (
-                <div className="py-20 text-center text-muted-foreground font-bold">No matching records detected.</div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <AnimatePresence mode='popLayout'>
-                        {filteredImports.map((item, index) => (
-                            <motion.div
-                                layout
-                                key={item._id}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ delay: index * 0.05 }}
-                            >
-                                <Card className="overflow-hidden border-2 hover:border-figma-blue transition-all group flex flex-col h-full shadow-lg">
-                                    <div className="relative aspect-[16/10] overflow-hidden">
-                                        <img 
-                                            src={item.image || 'https://via.placeholder.com/300'} 
-                                            alt={item.name} 
-                                            className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                                        />
-                                        <div className="absolute top-3 right-3 bg-figma-blue text-white text-[9px] font-black px-2 py-1 rounded uppercase tracking-[0.1em] shadow-lg">
-                                            {item.status || 'IN_TRANSIT'}
-                                        </div>
-                                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                            <div className="flex items-center gap-2 text-white font-black text-[10px] uppercase tracking-widest">
-                                                <HiGlobeAlt className="text-figma-blue" />
-                                                {item.origin}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <CardContent className="p-6 flex-1">
-                                        <h3 className="text-xl font-black leading-tight mb-4 group-hover:text-figma-blue transition-colors truncate">{item.name}</h3>
-                                        
-                                        <div className="grid grid-cols-2 gap-3 mb-4">
-                                            <div className="p-3 bg-muted/50 rounded-xl border">
-                                                <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Volume</div>
-                                                <div className="text-sm font-black flex items-center gap-1.5">
-                                                    <HiCube className="text-figma-blue w-3 h-3" /> {item.quantity} U
-                                                </div>
-                                            </div>
-                                            <div className="p-3 bg-muted/50 rounded-xl border">
-                                                <div className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Value</div>
-                                                <div className="text-sm font-black flex items-center gap-1">
-                                                    <span className="text-figma-blue">$</span>{item.price.toLocaleString()}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-dashed">
-                                            <div className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Est. Synchronization</div>
-                                            <div className="text-[10px] font-black text-figma-green uppercase tracking-widest flex items-center gap-1">
-                                                <HiTrendingUp className="w-3 h-3" /> 14 DAYS
-                                            </div>
-                                        </div>
-                                    </CardContent>
-
-                                    <CardFooter className="p-6 pt-0">
-                                        <Button asChild variant="outline" className="w-full font-black border-2 hover:bg-figma-blue hover:text-white hover:border-figma-blue group/btn">
-                                            <Link to={`/products/${item._id}`} className="flex items-center justify-center gap-2">
-                                                <HiEye className="w-4 h-4" /> TRACK CHANNEL
-                                            </Link>
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </div>
-            )}
-        </motion.div>
+      <EmptyState
+        icon={HiGlobeAlt}
+        title="Purchase Order Registry"
+        description="Active import order tracking and consignment delivery manifests are reserved for verified corporate accounts."
+        action={
+          <div className="flex gap-2">
+            <Button size="sm" asChild>
+              <Link to="/register">Create Account</Link>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/dashboard">Back to Overview</Link>
+            </Button>
+          </div>
+        }
+      />
     );
+  }
+
+  const totalUnits = imports.reduce((acc, curr) => acc + (curr.quantity || 1), 0);
+  const totalCommitment = imports.reduce((acc, curr) => {
+    const prod = curr.productId || curr;
+    return acc + (curr.quantity || 1) * (curr.unitPrice || prod.price || 0);
+  }, 0);
+
+  return (
+    <div className="space-y-6">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border-default">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
+              Buyer Workbench
+            </h1>
+            <Badge variant="neutral" size="sm">
+              {imports.length} PO{imports.length === 1 ? '' : 's'}
+            </Badge>
+          </div>
+          {imports.length > 0 && (
+            <p className="text-xs text-foreground-muted mt-0.5 tabular-nums">
+              {totalUnits.toLocaleString()} units committed &bull; ${totalCommitment.toLocaleString()} total trade exposure
+            </p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={fetchImportsAndRFQs}
+            disabled={refreshing}
+            className="h-8 text-xs text-foreground-muted"
+          >
+            <HiRefresh className={`w-3.5 h-3.5 mr-1 ${refreshing ? 'animate-spin' : ''}`} />
+            Sync
+          </Button>
+          <Button size="sm" asChild className="shrink-0 gap-1.5">
+            <Link to="/products">
+              <HiGlobeAlt className="w-4 h-4" />
+              <span>Source Commodities</span>
+            </Link>
+          </Button>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <div className="flex items-center justify-between border-b border-border-default pb-3">
+          <TabsList className="bg-surface-subtle border border-border-default">
+            <TabsTrigger value="orders">
+              Purchase Orders ({imports.length})
+            </TabsTrigger>
+            <TabsTrigger value="rfqs">
+              My Formal Quotations ({myRFQs.length})
+              {myRFQs.filter((r) => r.status === 'Quoted').length > 0 && (
+                <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] bg-status-success/20 text-status-success font-semibold">
+                  {myRFQs.filter((r) => r.status === 'Quoted').length} Quoted
+                </span>
+              )}
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        {/* TAB 1: PURCHASE ORDERS */}
+        <TabsContent value="orders" className="space-y-4">
+          {imports.length > 0 && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="relative flex-1 max-w-sm">
+                <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground-muted" />
+                <Input
+                  placeholder="Search PO number, commodity, or destination port..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-9 h-9 text-xs"
+                />
+              </div>
+
+              {searchTerm && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSearchTerm('')}
+                  className="text-xs text-foreground-muted"
+                >
+                  Clear
+                </Button>
+              )}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="space-y-2">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-14 rounded-lg border border-border-default bg-surface animate-pulse" />
+              ))}
+            </div>
+          ) : imports.length === 0 ? (
+            <EmptyState
+              icon={HiGlobeAlt}
+              title="No purchase orders yet"
+              description="Your executed contracts and shipment milestones will appear here once you issue your first purchase order from the marketplace."
+              action={
+                <Button size="sm" asChild>
+                  <Link to="/products">Browse Marketplace</Link>
+                </Button>
+              }
+            />
+          ) : filteredImports.length === 0 ? (
+            <div className="py-16 text-center text-xs text-foreground-muted">
+              No orders match &ldquo;{searchTerm}&rdquo;.
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>PO Reference / Commodity</TableHead>
+                  <TableHead>Destination Port</TableHead>
+                  <TableHead className="text-right">Total Commitment</TableHead>
+                  <TableHead>Escrow / Acceptance</TableHead>
+                  <TableHead className="text-center">Status</TableHead>
+                  <TableHead className="w-10"><span className="sr-only">Actions</span></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredImports.map((item) => {
+                  const prod = item.productId || item;
+                  const unitPrice = item.unitPrice || prod.price || 0;
+                  const totalVal = item.totalAmount || (item.quantity || 1) * unitPrice;
+                  const statusText = item.status || 'Confirmed';
+                  const statusVariant =
+                    statusText === 'Delivered'
+                      ? 'success'
+                      : statusText === 'In Transit'
+                      ? 'accent'
+                      : statusText === 'Disputed'
+                      ? 'danger'
+                      : statusText === 'Customs Clearance'
+                      ? 'warning'
+                      : 'neutral';
+                  const poNumber = item.poNumber || `PO-${String(item._id).slice(-6).toUpperCase()}`;
+
+                  return (
+                    <TableRow key={item._id} className="cursor-pointer hover:bg-surface-subtle/50" onClick={() => openPODetails(item)}>
+                      <TableCell className="py-2.5">
+                        <div className="flex items-center gap-2.5">
+                          {prod.image ? (
+                            <div className="w-9 h-9 rounded-md overflow-hidden bg-surface-subtle border border-border-default shrink-0">
+                              <img
+                                src={prod.image}
+                                alt={prod.name}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-9 h-9 rounded-md bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-[10px] shrink-0">
+                              {prod.name?.charAt(0)?.toUpperCase() || 'P'}
+                            </div>
+                          )}
+                          <div className="min-w-0">
+                            <div className="font-semibold text-xs text-foreground truncate max-w-[200px]">
+                              {prod.name}
+                            </div>
+                            <div className="flex items-center gap-1.5 text-[10px] text-foreground-muted font-mono mt-0.5">
+                              <span className="text-foreground-secondary">{poNumber}</span>
+                              <span>&bull;</span>
+                              <span className="text-accent-primary font-bold">{item.incoterm || prod.incoterm || 'FOB'}</span>
+                              <span>&bull;</span>
+                              <span className="text-foreground-muted">{(item.quantity || 1).toLocaleString()} {item.unit || prod.unit || 'MT'}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      <TableCell className="py-2.5 text-xs text-foreground-secondary">
+                        <div className="truncate max-w-[170px] font-medium text-foreground">
+                          {item.destinationPort || 'Designated Port of Entry'}
+                        </div>
+                        <div className="text-[10px] text-foreground-muted font-mono">
+                          Origin: {prod.origin || 'Global Port'}
+                        </div>
+                      </TableCell>
+
+                      <TableCell className="py-2.5 text-right font-mono text-xs font-semibold tabular-nums text-foreground">
+                        ${totalVal.toLocaleString()}
+                      </TableCell>
+
+                      <TableCell className="py-2.5">
+                        <div className="flex flex-col gap-1">
+                          <Badge
+                            variant={item.escrowStatus === 'Funded' ? 'accent' : item.escrowStatus === 'Released' ? 'success' : 'neutral'}
+                            size="sm"
+                            className="text-[10px] w-fit"
+                          >
+                            Escrow: {item.escrowStatus || 'None'}
+                          </Badge>
+                          <span className="text-[10px] text-foreground-muted">
+                            Seller: {item.sellerAccepted || 'Pending'}
+                          </span>
+                        </div>
+                      </TableCell>
+
+                      <TableCell className="py-2.5 text-center">
+                        <Badge variant={statusVariant} size="sm" hasDot>
+                          {statusText}
+                        </Badge>
+                      </TableCell>
+
+                      <TableCell className="py-2.5 text-right" onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu
+                          items={[
+                            { label: 'View contract & tracking', icon: HiEye, onSelect: () => openPODetails(item) },
+                            { label: 'Copy PO reference', icon: HiClipboardCopy, onSelect: () => copyPO(poNumber) },
+                            ...(item.escrowStatus !== 'Funded' && item.escrowStatus !== 'Released'
+                              ? [{ label: 'Fund Escrow Vault', icon: HiCurrencyDollar, onSelect: () => handleFundEscrow(item._id) }]
+                              : []),
+                            { label: 'Raise Dispute / Claim', icon: HiScale, onSelect: () => openDisputeModal(item) },
+                            { label: 'Cancel purchase order', icon: HiTrash, danger: true, onSelect: () => openCancelPrompt(item) },
+                          ]}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          )}
+        </TabsContent>
+
+        {/* TAB 2: MY RFQS */}
+        <TabsContent value="rfqs" className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-bold text-foreground">My Requests for Quotation (RFQ)</h2>
+              <p className="text-xs text-foreground-muted">Manage bespoke sourcing inquiries and convert agreed vendor quotes into active purchase orders.</p>
+            </div>
+          </div>
+
+          {myRFQs.length > 0 ? (
+            <Card className="border border-border-default bg-surface shadow-2xs overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>RFQ Reference</TableHead>
+                    <TableHead>Commodity / Exporter</TableHead>
+                    <TableHead>My Bid (Vol & Price)</TableHead>
+                    <TableHead>Seller Quotation</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {myRFQs.map((rfq) => (
+                    <TableRow key={rfq._id}>
+                      <TableCell>
+                        <div className="font-semibold text-xs font-mono text-foreground">{rfq.rfqNumber || rfq._id?.slice(-8)}</div>
+                        <div className="text-[11px] text-foreground-muted">{new Date(rfq.createdAt).toLocaleDateString()}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-xs font-semibold text-foreground">{rfq.productId?.name || 'Commodity'}</div>
+                        <div className="text-[11px] text-foreground-muted truncate max-w-[170px]">{rfq.sellerEmail}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-xs font-bold tabular-nums text-foreground">{rfq.requestedQuantity} Units</div>
+                        <div className="text-[11px] text-foreground-muted font-mono">Target: ${rfq.targetPrice?.toLocaleString()}</div>
+                      </TableCell>
+                      <TableCell>
+                        {rfq.counterOfferPrice ? (
+                          <div>
+                            <div className="text-xs font-bold text-accent-primary tabular-nums">
+                              ${rfq.counterOfferPrice?.toLocaleString()} FOB
+                            </div>
+                            <div className="text-[10px] text-foreground-muted">
+                              Lead: {rfq.counterOfferLeadDays || 14} days
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-foreground-muted italic">Awaiting Quote</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={rfq.status === 'Accepted' ? 'success' : rfq.status === 'Quoted' ? 'accent' : 'warning'}
+                          size="sm"
+                        >
+                          {rfq.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {rfq.status === 'Quoted' || rfq.status === 'Accepted' ? (
+                          <Button size="sm" onClick={() => handleConvertToPO(rfq._id)} className="h-7 text-xs">
+                            Convert to PO
+                          </Button>
+                        ) : (
+                          <span className="text-xs text-foreground-muted">-</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+          ) : (
+            <EmptyState
+              icon={HiGlobeAlt}
+              title="No Formal RFQs Submitted"
+              description="When requesting custom pricing from commodity pages, your RFQ negotiations will appear here."
+              className="min-h-[220px]"
+            />
+          )}
+        </TabsContent>
+      </Tabs>
+
+      {/* PO Detail & Milestone Drawer (Sheet) */}
+      <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}>
+        {activePO && (
+          <>
+            <SheetHeader
+              title={`Purchase Order: ${activePO.poNumber || `PO-${String(activePO._id).slice(-6).toUpperCase()}`}`}
+              description="Binding international commercial purchase order"
+              onClose={() => setSheetOpen(false)}
+            />
+
+            <SheetContent className="space-y-6">
+              {/* Escrow Status & Action Banner */}
+              <div className="p-4 rounded-xl border border-accent-primary/20 bg-accent-subtle/30 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                    <HiShieldCheck className="w-4 h-4 text-accent-primary" />
+                    B2B Platform Escrow Protection
+                  </span>
+                  <Badge variant={activePO.escrowStatus === 'Funded' ? 'accent' : activePO.escrowStatus === 'Released' ? 'success' : 'neutral'} size="sm">
+                    {activePO.escrowStatus || 'None'}
+                  </Badge>
+                </div>
+                <p className="text-[11px] text-foreground-muted">
+                  Funds are secured in fiduciary vault and released only when bill of lading and discharge manifest are confirmed.
+                </p>
+                <div className="flex gap-2 pt-1">
+                  {activePO.escrowStatus !== 'Funded' && activePO.escrowStatus !== 'Released' && (
+                    <Button size="sm" onClick={() => handleFundEscrow(activePO._id)} disabled={escrowLoading} className="h-7 text-xs">
+                      Fund Escrow Now
+                    </Button>
+                  )}
+                  {activePO.escrowStatus === 'Funded' && (
+                    <Button size="sm" onClick={() => handleReleaseEscrow(activePO._id)} disabled={escrowLoading} className="h-7 text-xs bg-status-success hover:bg-status-success/90">
+                      Confirm Receipt & Release Funds
+                    </Button>
+                  )}
+                  <Button size="sm" variant="outline" onClick={() => openDisputeModal(activePO)} className="h-7 text-xs text-status-danger border-status-danger/30 hover:bg-status-danger/10">
+                    File Dispute
+                  </Button>
+                </div>
+              </div>
+
+              {/* Ocean Carrier & Bill of Lading Logistics */}
+              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-3">
+                <div className="text-xs font-semibold text-foreground">
+                  Carrier & Logistics Documentation
+                </div>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Vessel Name</span>
+                    <span className="font-medium text-foreground">{activePO.vesselName || 'Pending Carrier Assignment'}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Vessel IMO</span>
+                    <span className="font-mono text-foreground">{activePO.vesselImo || 'Pending IMO'}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Container BIC</span>
+                    <span className="font-mono text-foreground">{activePO.containerNumber || 'Pending Consolidation'}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Bill of Lading</span>
+                    {activePO.billOfLadingUrl ? (
+                      <a href={activePO.billOfLadingUrl} target="_blank" rel="noreferrer" className="text-accent-primary font-medium inline-flex items-center gap-1 hover:underline">
+                        View B/L Manifest <HiExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-foreground-muted italic">Drafting Underway</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Milestone Stepper */}
+              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold text-foreground">
+                    Transit & Customs Lifecycle
+                  </div>
+                  <Badge variant="accent" size="sm" hasDot>
+                    {activePO.status || 'Confirmed'}
+                  </Badge>
+                </div>
+
+                <div className="relative pl-6 space-y-5 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-border-default">
+                  {MILESTONES.map((step, idx) => {
+                    const currentIdx = STATUS_SEQUENCE.indexOf(activePO.status || 'Confirmed');
+                    const isCompleted = idx <= currentIdx;
+
+                    return (
+                      <div key={step.id} className="relative">
+                        <div
+                          className={`absolute -left-6 top-0.5 w-4 h-4 rounded-full border flex items-center justify-center text-[9px] ${
+                            isCompleted
+                              ? 'bg-accent-primary border-accent-primary text-white'
+                              : 'bg-surface border-border-default text-foreground-muted'
+                          }`}
+                        >
+                          {isCompleted ? <HiCheckCircle className="w-3.5 h-3.5" /> : idx + 1}
+                        </div>
+                        <div className="text-xs font-semibold text-foreground">
+                          {step.label}
+                        </div>
+                        <div className="text-[11px] text-foreground-muted">
+                          {step.desc}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Commercial Terms */}
+              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-3">
+                <div className="text-xs font-semibold text-foreground">
+                  Contract Particulars
+                </div>
+
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Incoterm (ICC 2020)</span>
+                    <span className="font-mono font-bold text-accent-primary">
+                      {activePO.incoterm || 'FOB'}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Named Port of Destination</span>
+                    <span className="font-medium text-foreground text-right max-w-[180px] truncate">
+                      {activePO.destinationPort || 'Designated Port of Entry'}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Payment Terms</span>
+                    <span className="font-medium text-foreground text-right max-w-[180px] truncate">
+                      {activePO.paymentTerms || 'Confirmed Letter of Credit (LC)'}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between py-1 border-b border-border-subtle">
+                    <span className="text-foreground-muted">Laycan Loading Window</span>
+                    <span className="font-mono text-foreground">
+                      {activePO.laycanWindow || 'Standard 14-Day Laycan'}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between py-1">
+                    <span className="text-foreground-muted">Seller Acceptance</span>
+                    <span className="font-semibold text-foreground">
+                      {activePO.sellerAccepted || 'Pending'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </SheetContent>
+
+            <SheetFooter>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full text-status-danger border-status-danger/30 hover:bg-status-danger/10"
+                onClick={() => {
+                  setSheetOpen(false);
+                  openCancelPrompt(activePO);
+                }}
+              >
+                Terminate Purchase Order
+              </Button>
+            </SheetFooter>
+          </>
+        )}
+      </Sheet>
+
+      {/* Confirmation Dialog for Cancellation */}
+      <ConfirmDialog
+        open={cancelModalOpen}
+        onClose={() => setCancelModalOpen(false)}
+        onConfirm={handleConfirmCancel}
+        loading={cancelling}
+        title="Cancel Purchase Order"
+        description={`Are you certain you wish to terminate PO ${orderToCancel?.poNumber || ''}? Allocated inventory will be released immediately back to the supplier.`}
+        confirmText="Confirm Termination"
+        cancelText="Retain Order"
+        variant="danger"
+      />
+
+      {/* Dispute Modal */}
+      {disputeModalOpen && (
+        <Modal open={disputeModalOpen} onClose={() => setDisputeModalOpen(false)}>
+          <ModalHeader
+            title="File Commercial Dispute Claim"
+            description={`Initiate official arbitration for PO ${activePO?.poNumber || ''}. Escrow funds will freeze automatically.`}
+          />
+          <form onSubmit={handleFileDispute}>
+            <ModalContent className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Claim Reason</label>
+                <select
+                  value={disputeData.reason}
+                  onChange={(e) => setDisputeData({ ...disputeData, reason: e.target.value })}
+                  className="w-full text-xs rounded-md border border-border-default bg-surface px-3 py-2 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                >
+                  <option value="Cargo Damage in Ocean Transit">Cargo Damage in Ocean Transit</option>
+                  <option value="Quality Specification Deviation">Quality Specification Deviation (SGS Mismatch)</option>
+                  <option value="Non-Delivery / Exceeded Laycan">Non-Delivery / Exceeded Laycan Window</option>
+                  <option value="Commercial Contract Breach">Commercial Contract Breach</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Disputed Amount ($ USD)</label>
+                <Input
+                  type="number"
+                  required
+                  step="0.01"
+                  value={disputeData.disputedAmount}
+                  onChange={(e) => setDisputeData({ ...disputeData, disputedAmount: e.target.value })}
+                  className="h-8 text-xs font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Detailed Claim Statement *</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={disputeData.description}
+                  onChange={(e) => setDisputeData({ ...disputeData, description: e.target.value })}
+                  placeholder="Provide container seals numbers, inspection reports, or specific clauses breached..."
+                  className="w-full text-xs rounded-md border border-border-default bg-surface p-2 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary resize-none"
+                />
+              </div>
+            </ModalContent>
+            <ModalFooter>
+              <Button type="button" variant="outline" onClick={() => setDisputeModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={filingDispute || !disputeData.description}>
+                {filingDispute ? 'Transmitting Claim...' : 'Submit Claim for Arbitration'}
+              </Button>
+            </ModalFooter>
+          </form>
+        </Modal>
+      )}
+    </div>
+  );
 };
 
 export default MyImportsPage;

@@ -1,96 +1,109 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { HiPlusCircle, HiArrowDown, HiArrowUp, HiUser, HiChartBar } from 'react-icons/hi';
-import { useState, useEffect } from 'react';
+import {
+  HiPlus,
+  HiArrowDown,
+  HiArrowUp,
+  HiUser,
+  HiViewGrid,
+  HiShieldCheck,
+  HiGlobeAlt,
+} from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/Badge';
+import Navbar from '../components/Navbar';
 
 const DashboardLayout = () => {
-    const { user } = useAuth();
-    const [error, setError] = useState(null);
+  const { user } = useAuth();
 
-    const menuItems = user?.isGuest ? [
-        { title: 'Overview', path: '/dashboard', icon: <HiChartBar /> },
-        { title: 'Settings', path: '/dashboard/profile', icon: <HiUser /> },
-    ] : [
-        { title: 'Overview', path: '/dashboard', icon: <HiChartBar /> },
-        { title: 'Add Export', path: '/dashboard/add-export', icon: <HiPlusCircle /> },
-        { title: 'My Exports', path: '/dashboard/my-exports', icon: <HiArrowUp /> },
-        { title: 'My Imports', path: '/dashboard/my-imports', icon: <HiArrowDown /> },
-        { title: 'Settings', path: '/dashboard/profile', icon: <HiUser /> },
-    ];
+  const menuItems = [
+    { title: 'Overview', path: '/dashboard', icon: HiViewGrid, end: true },
+    { title: 'Source Products', path: '/products', icon: HiGlobeAlt },
+    { title: 'New Listing', path: '/dashboard/add-export', icon: HiPlus, hidden: user?.isGuest },
+    { title: 'Inventory (Exports)', path: '/dashboard/my-exports', icon: HiArrowUp, hidden: user?.isGuest },
+    { title: 'Purchase Orders', path: '/dashboard/my-imports', icon: HiArrowDown, hidden: user?.isGuest },
+    { title: 'Settings', path: '/dashboard/profile', icon: HiUser },
+  ].filter((item) => !item.hidden);
 
-    useEffect(() => {
-        if (!menuItems || menuItems.length === 0) {
-            console.error('Menu items are not properly defined');
-        }
-    }, [menuItems]);
+  if (user?.isAdmin || user?.role === 'admin' || user?.userType === 'demo-admin') {
+    menuItems.push({
+      title: 'Admin Console',
+      path: '/admin/dashboard',
+      icon: HiShieldCheck,
+    });
+  }
 
-    if (error) {
-        return (
-            <div className="flex items-center justify-center min-h-screen text-center p-4">
-                <div>
-                    <h2 className="text-2xl font-black mb-4">Dashboard System Error</h2>
-                    <button onClick={() => window.location.reload()} className="bg-primary text-white px-6 py-2 rounded-lg font-bold">
-                        Refresh Interface
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="flex min-h-[calc(100vh-80px)] bg-muted/20">
-            {/* Sidebar */}
-            <aside className="w-64 lg:w-72 bg-background border-r hidden md:flex flex-col p-6 sticky top-20 h-[calc(100vh-80px)]">
-                <div className="mb-8">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4 ml-2">Control Panel</div>
-                    {user?.isGuest && (
-                        <div className="bg-figma-orange/10 text-figma-orange text-[10px] font-black uppercase tracking-widest p-2 rounded-md border border-figma-orange/20 text-center">
-                            Demo Sandbox Active
-                        </div>
-                    )}
-                </div>
-
-                <nav className="grid gap-1">
-                    {menuItems.map(item => (
-                        <NavLink
-                            key={item.path}
-                            to={item.path}
-                            end={item.path === '/dashboard'}
-                            className={({ isActive }) => cn(
-                                "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group",
-                                isActive 
-                                    ? "bg-figma-blue text-white shadow-lg shadow-figma-blue/20" 
-                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                            )}
-                        >
-                            <span className="text-xl">{item.icon}</span>
-                            <span>{item.title}</span>
-                        </NavLink>
-                    ))}
-                </nav>
-
-                <div className="mt-auto pt-6 border-t">
-                    <div className="flex items-center gap-3 p-2 rounded-xl bg-muted/50 border">
-                        <div className="w-8 h-8 rounded-full bg-figma-blue/20 flex items-center justify-center text-figma-blue font-black text-xs">
-                            {user?.displayName?.charAt(0)}
-                        </div>
-                        <div className="overflow-hidden">
-                            <div className="text-xs font-bold truncate">{user?.displayName}</div>
-                            <div className="text-[9px] text-muted-foreground truncate uppercase font-black tracking-widest">{user?.isGuest ? 'GUEST_ENTITY' : 'VERIFIED_TRADER'}</div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            {/* Content Area */}
-            <main className="flex-1 p-6 md:p-10 lg:p-12 overflow-x-hidden">
-                <div className="max-w-6xl mx-auto">
-                    <Outlet />
-                </div>
-            </main>
+  return (
+    <div className="min-h-screen bg-canvas flex flex-col">
+      <Navbar />
+      <div className="flex flex-1 mt-14">
+      {/* Enterprise Left Sidebar */}
+      <aside className="w-56 lg:w-60 bg-surface border-r border-border-default hidden md:flex flex-col p-4 sticky top-14 h-[calc(100vh-56px)] shrink-0 select-none">
+        {/* Workspace Identity */}
+        <div className="mb-5 px-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-foreground-muted">
+              Workspace
+            </span>
+            <Badge variant={user?.isGuest ? 'warning' : 'success'} size="sm" hasDot>
+              {user?.isGuest ? 'Demo' : 'Live'}
+            </Badge>
+          </div>
+          <div className="text-xs font-semibold text-foreground truncate mt-1">
+            {user?.displayName || 'Trade Account'}
+          </div>
         </div>
-    );
+
+        {/* Navigation Items */}
+        <nav className="space-y-0.5">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.end}
+                className={({ isActive }) =>
+                  cn(
+                    'flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors',
+                    isActive
+                      ? 'bg-surface-subtle text-foreground border border-border-default shadow-2xs font-semibold'
+                      : 'text-foreground-secondary hover:text-foreground hover:bg-surface-hover/60'
+                  )
+                }
+              >
+                <Icon className="w-4 h-4 text-foreground-muted shrink-0" />
+                <span className="truncate">{item.title}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        {/* Bottom User Bar */}
+        <div className="mt-auto pt-4 border-t border-border-subtle">
+          <div className="flex items-center gap-2.5 p-2 rounded-lg bg-surface-subtle border border-border-subtle">
+            <div className="w-7 h-7 rounded-md bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-xs shrink-0">
+              {user?.displayName?.charAt(0) || 'U'}
+            </div>
+            <div className="overflow-hidden">
+              <div className="text-xs font-medium text-foreground truncate">
+                {user?.displayName || 'User'}
+              </div>
+              <div className="text-[10px] text-foreground-muted truncate">
+                {user?.isGuest ? 'Read-only Sandbox' : 'Verified Member'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Workspace Canvas */}
+      <main className="flex-1 p-6 md:p-8 lg:p-10 overflow-x-hidden min-w-0">
+        <Outlet />
+      </main>
+      </div>
+    </div>
+  );
 };
 
 export default DashboardLayout;

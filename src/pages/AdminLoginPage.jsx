@@ -1,111 +1,132 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { HiLockClosed } from 'react-icons/hi';
-import { motion } from 'framer-motion';
+import { HiLockClosed, HiShieldCheck } from 'react-icons/hi';
+import { FaUserShield } from 'react-icons/fa';
+import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
+import { Card, CardContent } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+
+const ADMIN_EMAILS = ['admin121@gmail.com', 'admin@importexport.com'];
 
 const AdminLoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { loginUser, loginAsGuest } = useAuth();
+  const navigate = useNavigate();
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-        if (email === 'admin121@gmail.com' && password === 'admin121') {
-            localStorage.setItem('isAdmin', 'true');
-            toast.success('Central command authorized. Welcome, Admin.');
-            navigate('/admin/dashboard');
-        } else {
-            toast.error('Authorization failed. Access denied.');
-        }
-    };
+    try {
+      const result = await loginUser(email, password);
+      const userEmail = (result?.user?.email || email).toLowerCase();
+      
+      if (ADMIN_EMAILS.includes(userEmail)) {
+        toast.success('Admin authorization granted. Welcome.');
+        navigate('/admin/dashboard');
+      } else {
+        toast.error('Account does not possess administrative privileges.');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Invalid administrative credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-figma-black p-6 relative overflow-hidden">
-            {/* Security Overlay */}
-            <div className="absolute inset-0 opacity-20 pointer-events-none" 
-                 style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #333 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-            
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-[440px] z-10"
-            >
-                <Card className="border-white/10 bg-figma-black/80 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                    <CardHeader className="text-center pb-8 border-b border-white/5">
-                        <div className="w-16 h-16 bg-figma-blue/10 text-figma-blue rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-figma-blue/20">
-                            <HiLockClosed className="w-8 h-8" />
-                        </div>
-                        <CardTitle className="text-3xl font-black tracking-tighter text-white">System <span className="text-figma-blue">Control</span></CardTitle>
-                        <CardDescription className="font-bold text-xs uppercase tracking-[0.2em] text-muted-foreground mt-2">High-Security Restricted Zone</CardDescription>
-                    </CardHeader>
-                    
-                    <CardContent className="p-8 grid gap-8">
-                        <form onSubmit={handleLogin} className="grid gap-6">
-                            <div className="grid gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Security Identifier</label>
-                                <Input 
-                                    type="email" 
-                                    placeholder="admin@enterprise.com" 
-                                    required 
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="h-12 bg-white/5 border-white/10 text-white focus-visible:ring-figma-blue placeholder:text-white/20"
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Access Key</label>
-                                <Input 
-                                    type="password" 
-                                    placeholder="••••••••" 
-                                    required 
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="h-12 bg-white/5 border-white/10 text-white focus-visible:ring-figma-blue placeholder:text-white/20"
-                                />
-                            </div>
-                            <Button type="submit" className="h-14 font-black bg-figma-blue hover:bg-figma-blue/90 text-lg mt-2">
-                                AUTHORIZE ACCESS
-                            </Button>
-                        </form>
+  const handleDemoAdmin = async () => {
+    try {
+      await loginAsGuest('demo-admin');
+      toast.success('Signed in as Demo Administrator.');
+      navigate('/admin/dashboard');
+    } catch {
+      toast.error('Failed to authenticate demo admin.');
+    }
+  };
 
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-white/10" />
-                            </div>
-                            <div className="relative flex justify-center text-[10px] uppercase font-black tracking-widest">
-                                <span className="bg-[#1E1E1E] px-2 text-muted-foreground">Override Protocol</span>
-                            </div>
-                        </div>
-
-                        <Button 
-                            variant="outline" 
-                            className="h-12 font-black border-figma-green/30 text-figma-green hover:bg-figma-green/10 hover:text-figma-green"
-                            onClick={() => {
-                                localStorage.setItem('isAdmin', 'true');
-                                toast.success('Demo admin access granted. Welcome to System Control.');
-                                navigate('/admin/dashboard');
-                            }}
-                        >
-                            INITIATE DEMO BYPASS
-                        </Button>
-
-                        <div className="text-center">
-                            <p className="text-[10px] font-medium text-muted-foreground leading-relaxed">
-                                All sessions are logged and cryptographically signed. <br />
-                                Unauthorized access attempts will be permanently flagged.
-                            </p>
-                        </div>
-                    </CardContent>
-                </Card>
-            </motion.div>
+  return (
+    <div className="min-h-[85vh] flex items-center justify-center container py-12">
+      <div className="w-full max-w-[400px]">
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-surface border border-border-default shadow-2xs mb-3">
+            <HiLockClosed className="w-5 h-5 text-accent-primary" />
+          </div>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
+              Administrator Console
+            </h1>
+            <Badge variant="neutral" size="sm">
+              Restricted
+            </Badge>
+          </div>
+          <p className="text-xs text-foreground-muted">
+            Internal network operations, audit logs, and compliance overrides.
+          </p>
         </div>
-    );
+
+        <Card className="border border-border-default bg-surface shadow-2xs">
+          <CardContent className="p-6 space-y-4">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">
+                  Admin Identity (Email)
+                </label>
+                <Input
+                  type="email"
+                  placeholder="admin121@gmail.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-9 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">
+                  Security Passkey
+                </label>
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-9 text-xs"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                size="sm"
+                disabled={loading}
+                className="w-full h-9 text-xs font-semibold"
+              >
+                {loading ? 'Verifying Credentials...' : 'Authenticate Admin Session'}
+              </Button>
+            </form>
+
+            <div className="pt-2 border-t border-border-subtle">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleDemoAdmin}
+                className="w-full h-8 text-xs gap-1.5 text-foreground-secondary hover:text-foreground"
+              >
+                <FaUserShield className="w-3 h-3 text-accent-primary" />
+                <span>Sign in as Demo Administrator</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export default AdminLoginPage;

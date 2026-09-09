@@ -1,75 +1,106 @@
 import { useNavigate } from 'react-router-dom';
-import { HiStar, HiLocationMarker, HiArrowRight } from 'react-icons/hi';
+import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardFooter } from './ui/Card';
-import { Button } from './ui/Button';
-import { Badge } from 'lucide-react'; // Wait, I should use a custom badge or just a div
+import { Badge } from './ui/Badge';
 
 const ProductCard = ({ product }) => {
-    const navigateToProductDetail = useNavigate();
+  const navigate = useNavigate();
 
-    const handleViewSpecifications = () => {
-        navigateToProductDetail(`/products/${product._id}`);
-    };
+  const handleViewDetails = () => {
+    navigate(`/products/${product._id || product.id}`);
+  };
 
-    return (
-        <motion.div
-            layout
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -8 }}
-            transition={{ duration: 0.3 }}
-        >
-            <Card className="overflow-hidden border-2 hover:border-figma-blue transition-colors group h-full flex flex-col">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3 flex gap-2">
-                        <div className="bg-white/90 dark:bg-figma-black/90 backdrop-blur-sm text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md border border-border shadow-sm">
-                            {product.category}
-                        </div>
-                    </div>
-                    <div className="absolute bottom-3 right-3 bg-figma-blue text-white text-sm font-black px-3 py-1 rounded-full shadow-lg">
-                        ${product.price?.toLocaleString()}
-                    </div>
-                </div>
+  const incoterm = product.incoterm || 'FOB';
+  const unit = product.unit || 'MT';
+  const origin = product.origin || product.portOfOrigin || 'Global';
+  const availableQty = product.quantity || 0;
+  const isOutOfStock = availableQty < 1;
 
-                <CardContent className="p-5 flex-1">
-                    <div className="flex items-center gap-1 mb-2">
-                        {[...Array(5)].map((_, i) => (
-                            <HiStar key={i} className={i < Math.floor(product.rating || 0) ? "text-figma-orange" : "text-muted"} />
-                        ))}
-                        <span className="text-[10px] font-bold text-muted-foreground ml-1">{product.rating}</span>
-                    </div>
-                    
-                    <h3 className="font-black text-lg leading-tight mb-3 line-clamp-1">{product.name}</h3>
-                    
-                    <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                            <HiLocationMarker className="text-figma-blue" />
-                            {product.origin}
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <div className="w-2 h-2 rounded-full bg-figma-green" />
-                            {product.quantity} Units
-                        </div>
-                    </div>
-                </CardContent>
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+      onClick={handleViewDetails}
+      role="link"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleViewDetails();
+        }
+      }}
+      className="group cursor-pointer flex flex-col h-full rounded-xl border border-border-default bg-surface hover:border-accent-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary transition-all duration-200 overflow-hidden"
+    >
+      {/* Visual Asset Container */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-surface-subtle">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+          loading="lazy"
+        />
 
-                <CardFooter className="p-5 pt-0">
-                    <Button 
-                        onClick={handleViewSpecifications}
-                        className="w-full justify-between bg-muted hover:bg-figma-blue hover:text-white text-foreground border-none font-bold"
-                    >
-                        View Details <HiArrowRight />
-                    </Button>
-                </CardFooter>
-            </Card>
-        </motion.div>
-    );
+        {/* Minimalist Top Tag (incoterm lives in the price row) */}
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+          <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-surface/90 backdrop-blur-md text-foreground-secondary border border-border-subtle shadow-2xs">
+            {product.category}
+          </span>
+        </div>
+
+        {isOutOfStock && (
+          <div className="absolute top-2.5 right-2.5">
+            <Badge variant="danger" size="sm" hasDot className="bg-surface/95 backdrop-blur-md text-[10px]">
+              Allocated
+            </Badge>
+          </div>
+        )}
+      </div>
+
+      {/* Card Body — Clean, Focused & Breathable */}
+      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+        <div>
+          {/* Origin & Sector Location */}
+          <div className="flex items-center gap-1 text-[11px] text-foreground-muted mb-1 truncate">
+            <HiLocationMarker className="w-3.5 h-3.5 text-foreground-subtle shrink-0" />
+            <span className="truncate">{origin}</span>
+          </div>
+
+          {/* Commodity Name */}
+          <h3 className="font-semibold text-sm text-foreground leading-snug line-clamp-1 group-hover:text-accent-primary transition-colors">
+            {product.name}
+          </h3>
+        </div>
+
+        {/* Pricing & Supply Row */}
+        <div className="pt-3 border-t border-border-subtle flex items-end justify-between gap-2">
+          <div>
+            <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted">
+              Unit Price ({incoterm})
+            </div>
+            <div className="text-sm font-bold text-foreground tabular-nums font-mono">
+              ${product.price?.toLocaleString()}
+              <span className="text-[11px] font-normal text-foreground-muted ml-0.5">
+                /{unit}
+              </span>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <div className="text-[10px] font-mono text-foreground-muted">
+              {availableQty.toLocaleString()} {unit} avail.
+            </div>
+            <div className="inline-flex items-center gap-1 text-xs font-medium text-accent-primary group-hover:translate-x-0.5 transition-transform mt-0.5">
+              <span>View</span>
+              <HiArrowRight className="w-3 h-3" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
 };
 
 export default ProductCard;

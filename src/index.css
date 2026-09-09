@@ -1,107 +1,157 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(0 0% 11.8%);
+  /* Font Family Definitions */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(0 0% 11.8%);
+  /* Surface & Canvas Tokens */
+  --color-canvas: var(--bg-app);
+  --color-surface: var(--bg-surface);
+  --color-surface-subtle: var(--bg-surface-subtle);
+  --color-surface-hover: var(--bg-surface-hover);
 
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(0 0% 11.8%);
+  /* Foreground Text Tokens */
+  --color-foreground: var(--text-primary);
+  --color-foreground-secondary: var(--text-secondary);
+  --color-foreground-muted: var(--text-muted);
+  --color-foreground-subtle: var(--text-subtle);
 
-  --color-primary: hsl(205 100% 53%);
-  --color-primary-foreground: hsl(0 0% 100%);
+  /* Border & Divider Tokens */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-hover: var(--border-hover);
 
-  --color-secondary: hsl(268 100% 67%);
-  --color-secondary-foreground: hsl(0 0% 100%);
+  /* Primary Accent Token: Enterprise Cobalt */
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-accent-contrast: var(--accent-contrast);
 
-  --color-muted: hsl(0 0% 96.1%);
-  --color-muted-foreground: hsl(0 0% 45.1%);
+  /* Status Semantics */
+  --color-status-success: var(--status-success);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-bg: var(--status-danger-bg);
 
-  --color-accent: hsl(157 91% 43%);
-  --color-accent-foreground: hsl(0 0% 100%);
+  /* Standard shadcn mapping */
+  --color-background: var(--bg-app);
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--bg-surface);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--accent-primary);
+  --color-primary-foreground: var(--accent-contrast);
+  --color-secondary: var(--bg-surface-subtle);
+  --color-secondary-foreground: var(--text-primary);
+  --color-muted: var(--bg-surface-subtle);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--accent-subtle);
+  --color-accent-foreground: var(--accent-primary);
+  --color-destructive: var(--status-danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--border-default);
+  --color-input: var(--border-default);
+  --color-ring: var(--accent-primary);
 
-  --color-destructive: hsl(14 89% 53%);
-  --color-destructive-foreground: hsl(0 0% 100%);
-
-  --color-border: hsl(0 0% 89.8%);
-  --color-input: hsl(0 0% 89.8%);
-  --color-ring: hsl(205 100% 53%);
-
-  --radius-lg: 0.5rem;
-  --radius-md: calc(0.5rem - 2px);
-  --radius-sm: calc(0.5rem - 4px);
-
-  --color-figma-blue: #0D99FF;
-  --color-figma-purple: #A259FF;
-  --color-figma-orange: #F24E1E;
-  --color-figma-green: #0ACF83;
-  --color-figma-pink: #FF7262;
-  --color-figma-black: #1E1E1E;
+  /* Legacy Bridge Tokens (remapped to disciplined system) */
+  --color-figma-blue: var(--accent-primary);
+  --color-figma-purple: var(--accent-primary);
+  --color-figma-orange: var(--status-warning);
+  --color-figma-green: var(--status-success);
+  --color-figma-pink: var(--status-danger);
+  --color-figma-black: var(--bg-surface);
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 11.8%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 11.8%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 11.8%;
-    --primary: 205 100% 53%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 268 100% 67%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 157 91% 43%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 14 89% 53%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 205 100% 53%;
-    --radius: 0.5rem;
-  }
+:root {
+  /* LIGHT MODE (Clean Scandinavian Enterprise) */
+  --bg-app: #FAFAFA;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #F4F4F5;
+  --bg-surface-hover: #ECECEE;
 
-  .dark {
-    --background: 0 0% 11.8%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 15%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 11.8%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 205 100% 53%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 268 100% 67%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 157 91% 43%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 14 89% 53%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 205 100% 53%;
-  }
+  --text-primary: #09090B;
+  --text-secondary: #52525B;
+  --text-muted: #71717A;
+  --text-subtle: #A1A1AA;
+
+  --border-subtle: #F0F0F2;
+  --border-default: #E4E4E7;
+  --border-hover: #A1A1AA;
+
+  --accent-primary: #0066FF;
+  --accent-hover: #0052CC;
+  --accent-subtle: rgba(0, 102, 255, 0.08);
+  --accent-contrast: #FFFFFF;
+
+  /* Status text tiers: AA on light surfaces (success 5.5:1, warning 4.8:1, danger 4.5:1) */
+  --status-success: #047857;
+  --status-success-bg: rgba(16, 185, 129, 0.08);
+  --status-warning: #B45309;
+  --status-warning-bg: rgba(245, 158, 11, 0.08);
+  --status-danger: #DC2626;
+  --status-danger-bg: rgba(239, 68, 68, 0.08);
+
+  color-scheme: light;
+}
+
+.dark {
+  /* DARK MODE (Linear & Raycast Obsidian) */
+  --bg-app: #09090B;
+  --bg-surface: #111114;
+  --bg-surface-subtle: #18181C;
+  --bg-surface-hover: #222227;
+
+  --text-primary: #FAFAFA;
+  --text-secondary: #D4D4D8;
+  --text-muted: #8E8E98;
+  --text-subtle: #52525B;
+
+  --border-subtle: #1A1A20;
+  --border-default: #25252D;
+  --border-hover: #3E3E49;
+
+  --accent-primary: #2575FC;
+  --accent-hover: #4088FF;
+  --accent-subtle: rgba(37, 117, 252, 0.12);
+  --accent-contrast: #FFFFFF;
+
+  /* Status text tiers: lighter for AA on dark surfaces */
+  --status-success: #34D399;
+  --status-success-bg: rgba(16, 185, 129, 0.12);
+  --status-warning: #FBBF24;
+  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-danger: #F87171;
+  --status-danger-bg: rgba(239, 68, 68, 0.12);
+
+  color-scheme: dark;
 }
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border-default);
   }
+  
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    min-height: 100vh;
   }
 }
 
-/* Custom Scrollbar - Figma Style */
+/* Precision Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -109,31 +159,82 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
-  border-radius: 10px;
+  background: var(--border-default);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
+  background: var(--border-hover);
 }
 
-/* Keep some useful legacy classes but updated with tailwind */
+/* Utility to hide scrollbars while maintaining scrollability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility Containers & Elevation */
 .container {
-  @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 80rem;
 }
 
-.glass-card {
-  @apply bg-background/70 backdrop-blur-md border border-border rounded-xl shadow-sm;
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
-.btn-primary {
-  @apply bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium transition-all hover:opacity-90 active:scale-95;
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
-.btn-secondary {
-  @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-md font-medium transition-all hover:opacity-90 active:scale-95;
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
-.transition-figma {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+/* Seamless ticker marquee (2 copies of content, shift by half) */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 36s linear infinite;
+}
+
+.marquee-hover:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbars while preserving scrollability (nav overflow, drawers) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

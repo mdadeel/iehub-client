@@ -1,126 +1,147 @@
-import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
+import { Card, CardContent } from '../components/ui/Card';
 
 const RegisterPage = () => {
-    const { registerUser } = useAuth();
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        photo: '',
-        password: ''
-    });
-    const navigate = useNavigate();
+  const { registerUser } = useAuth();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    photo: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const validatePassword = (pass) => {
-        if (pass.length < 6) return "Password must be at least 6 characters long.";
-        if (!/[A-Z]/.test(pass)) return "Password must contain at least one uppercase letter.";
-        if (!/[a-z]/.test(pass)) return "Password must contain at least one lowercase letter.";
-        return null;
-    };
+  const validatePassword = (pass) => {
+    if (pass.length < 6) return 'Password must be at least 6 characters long.';
+    if (!/[A-Z]/.test(pass)) return 'Password must contain at least one uppercase letter.';
+    if (!/[a-z]/.test(pass)) return 'Password must contain at least one lowercase letter.';
+    return null;
+  };
 
-    const handleRegister = (e) => {
-        e.preventDefault();
-        const passError = validatePassword(formData.password);
-        if (passError) {
-            toast.error(passError);
-            return;
-        }
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const passError = validatePassword(formData.password);
+    if (passError) {
+      toast.error(passError);
+      return;
+    }
 
-        registerUser(formData.email, formData.password, formData.name, formData.photo)
-            .then(() => {
-                toast.success("Account infrastructure verified. Welcome.");
-                navigate("/");
-            })
-            .catch((err) => {
-                toast.error(err.message);
-            });
-    };
+    setLoading(true);
+    try {
+      await registerUser(formData.email, formData.password, formData.name, formData.photo);
+      toast.success('Trade account established. Welcome to IEHUB.');
+      navigate('/dashboard');
+    } catch (err) {
+      toast.error(err.message || 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <div className="min-h-[90vh] flex items-center justify-center container py-12 relative overflow-hidden">
-            {/* Background Mesh */}
-            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-figma-blue/5 blur-[150px] rounded-full pointer-events-none" />
-            
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="w-full max-w-[460px] z-10"
-            >
-                <Card className="border-2 shadow-2xl">
-                    <CardHeader className="text-center pb-8">
-                        <div className="w-12 h-12 bg-figma-blue rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-figma-blue/20">
-                            <img src="/logo.png" alt="" className="w-6 h-6 brightness-0 invert" />
-                        </div>
-                        <CardTitle className="text-3xl font-black tracking-tighter">Join the <span className="text-figma-blue">Network</span></CardTitle>
-                        <CardDescription className="font-medium">Establish your global trade identity.</CardDescription>
-                    </CardHeader>
-                    
-                    <CardContent className="grid gap-6">
-                        <form onSubmit={handleRegister} className="grid gap-4">
-                            <div className="grid gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Entity Name</label>
-                                <Input 
-                                    type="text" 
-                                    placeholder="e.g. Global Traders Ltd" 
-                                    required 
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="h-12 border-2 focus-visible:ring-figma-blue"
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Corporate Email</label>
-                                <Input 
-                                    type="email" 
-                                    placeholder="admin@enterprise.com" 
-                                    required 
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    className="h-12 border-2 focus-visible:ring-figma-blue"
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Logo / Photo URL</label>
-                                <Input 
-                                    type="url" 
-                                    placeholder="https://logo.com/my-company.jpg" 
-                                    value={formData.photo}
-                                    onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
-                                    className="h-12 border-2 focus-visible:ring-figma-blue"
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Master Password</label>
-                                <Input 
-                                    type="password" 
-                                    placeholder="••••••••" 
-                                    required 
-                                    value={formData.password}
-                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className="h-12 border-2 focus-visible:ring-figma-blue"
-                                />
-                                <p className="text-[10px] text-muted-foreground font-medium ml-1">Requires 6+ characters with mixed casing.</p>
-                            </div>
-                            <Button type="submit" className="h-12 font-black bg-figma-blue hover:bg-figma-blue/90 mt-4">
-                                BUILD NETWORK ACCESS
-                            </Button>
-                        </form>
-
-                        <p className="text-center text-xs font-medium text-muted-foreground">
-                            Already have access? <Link to="/login" className="text-figma-blue font-bold hover:underline">Login to Portal</Link>
-                        </p>
-                    </CardContent>
-                </Card>
-            </motion.div>
+  return (
+    <div className="min-h-[85vh] flex items-center justify-center container py-12">
+      <div className="w-full max-w-[420px]">
+        {/* Top Branding */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-surface border border-border-default shadow-2xs mb-3">
+            <span className="font-black text-sm text-accent-primary">IE</span>
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-foreground">
+            Create Trade Account
+          </h1>
+          <p className="text-xs text-foreground-muted mt-1">
+            Register your corporate organization for international trade access.
+          </p>
         </div>
-    );
+
+        <Card className="border border-border-default bg-surface shadow-2xs">
+          <CardContent className="p-6">
+            <form onSubmit={handleRegister} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">
+                  Representative or Entity Name
+                </label>
+                <Input
+                  type="text"
+                  placeholder="e.g. Apex Global Logistics Ltd"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="h-9 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">
+                  Corporate Email
+                </label>
+                <Input
+                  type="email"
+                  placeholder="desk@enterprise.com"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="h-9 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">
+                  Avatar or Logo URL (Optional)
+                </label>
+                <Input
+                  type="url"
+                  placeholder="https://example.com/logo.png"
+                  value={formData.photo}
+                  onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
+                  className="h-9 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground">
+                  Secure Password
+                </label>
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="h-9 text-xs"
+                />
+                <p className="text-[11px] text-foreground-muted">
+                  Minimum 6 characters with uppercase and lowercase letters.
+                </p>
+              </div>
+
+              <Button
+                type="submit"
+                size="sm"
+                disabled={loading}
+                className="w-full h-9 text-xs font-semibold mt-2"
+              >
+                {loading ? 'Registering Account...' : 'Open Trade Account'}
+              </Button>
+            </form>
+
+            <div className="mt-4 pt-4 border-t border-border-subtle text-center text-xs text-foreground-muted">
+              Already have an account?{' '}
+              <Link to="/login" className="text-accent-primary font-medium hover:underline">
+                Sign In
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export default RegisterPage;

@@ -1,86 +1,138 @@
-import { motion } from 'framer-motion';
-import { HiGlobeAlt, HiTrendingUp } from 'react-icons/hi';
 import { Card, CardContent } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { HiGlobeAlt } from 'react-icons/hi';
 
 const LatestTradesPage = () => {
-    const trades = [
-        { id: "TRD-8821", item: "Solar Panel Array", from: "China", to: "Germany", status: "In Transit", color: "text-figma-blue" },
-        { id: "TRD-7652", item: "Industrial Lathe", from: "Japan", to: "USA", status: "Cleared", color: "text-figma-green" },
-        { id: "TRD-9011", item: "Premium Coffee Beans", from: "Brazil", to: "UK", status: "Processing", color: "text-figma-orange" },
-        { id: "TRD-4432", item: "Raw Silk Bolts", from: "India", to: "France", status: "Delivered", color: "text-figma-purple" },
-    ];
+  const trades = [
+    {
+      id: 'FOB-2026-8821',
+      item: 'Bifacial Solar Photovoltaic Modules 550W',
+      sector: 'Renewable Energy',
+      volume: '12,000 units (24 TEU)',
+      from: 'Ningbo-Zhoushan, China',
+      to: 'Hamburg, Germany',
+      status: 'Customs Manifest Filed',
+      statusType: 'accent',
+      terms: 'FOB Ningbo',
+      settlement: '$312,000 USD',
+    },
+    {
+      id: 'CIF-2026-7652',
+      item: 'Precision 5-Axis CNC Milling Center',
+      sector: 'Industrial Machinery',
+      volume: '4 units',
+      from: 'Yokohama, Japan',
+      to: 'Long Beach, USA',
+      status: 'Escrow Released',
+      statusType: 'success',
+      terms: 'CIF Los Angeles',
+      settlement: '$480,000 USD',
+    },
+    {
+      id: 'FOB-2026-9011',
+      item: 'Specialty Arabica Green Coffee Grade 1',
+      sector: 'Agriculture',
+      volume: '19,200 kg (Jute Bags)',
+      from: 'Santos Port, Brazil',
+      to: 'Felixstowe, United Kingdom',
+      status: 'Under Phytosanitary Inspection',
+      statusType: 'warning',
+      terms: 'FOB Santos',
+      settlement: '$92,160 USD',
+    },
+    {
+      id: 'DDP-2026-4432',
+      item: '100% Mulberry Raw Silk 20/22D',
+      sector: 'Textiles',
+      volume: '3,500 kg',
+      from: 'Mundra Port, India',
+      to: 'Le Havre, France',
+      status: 'Bill of Lading Verified',
+      statusType: 'success',
+      terms: 'DDP Paris',
+      settlement: '$157,500 USD',
+    },
+  ];
 
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="container py-24"
-        >
-            <div className="text-center mb-20">
-                <motion.h1
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="text-5xl md:text-7xl font-black tracking-tighter mb-6"
+  return (
+    <div className="container py-12 md:py-16 max-w-5xl">
+      <div className="text-center max-w-2xl mx-auto mb-12">
+        <Badge variant="neutral" size="sm" className="mb-2">
+          Examples
+        </Badge>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
+          Recent Trades
+        </h1>
+        <p className="text-xs sm:text-sm text-foreground-muted">
+          Sample contracts showing how purchase orders, bills of lading, and settlement values are structured on IEHUB.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {trades.map((trade, i) => (
+          <Card key={i} className="border border-border-default bg-surface hover:border-border-hover transition-colors">
+            <CardContent className="p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-border-subtle">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-foreground">
+                    {trade.id}
+                  </span>
+                  <Badge variant="neutral" size="sm">
+                    {trade.terms}
+                  </Badge>
+                </div>
+
+                <Badge
+                  variant={
+                    trade.statusType === 'success'
+                      ? 'success'
+                      : trade.statusType === 'warning'
+                      ? 'warning'
+                      : 'accent'
+                  }
+                  size="sm"
+                  hasDot
                 >
-                    Live <span className="text-figma-blue">Telemetry</span>
-                </motion.h1>
-                <p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
-                    Real-time visualization of global commodity movement and transaction fulfillment.
-                </p>
-            </div>
+                  {trade.status}
+                </Badge>
+              </div>
 
-            <div className="grid gap-6">
-                {trades.map((trade, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: i * 0.1 }}
-                    >
-                        <Card className="border-2 hover:border-figma-blue/20 transition-all group overflow-hidden">
-                            <CardContent className="p-8 flex flex-col md:flex-row items-center justify-between gap-8">
-                                <div className="flex items-center gap-8 w-full md:w-auto">
-                                    <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                                        <HiGlobeAlt className="text-figma-blue" />
-                                    </div>
-                                    <div>
-                                        <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Asset Designation</div>
-                                        <h3 className="text-2xl font-black tracking-tight">{trade.item}</h3>
-                                        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Registry ID: {trade.id}</div>
-                                    </div>
-                                </div>
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                <div className="md:col-span-6 space-y-1">
+                  <h2 className="text-sm font-semibold text-foreground">
+                    {trade.item}
+                  </h2>
+                  <div className="text-xs text-foreground-muted">
+                    {trade.sector} &bull; <span className="font-mono text-foreground">{trade.volume}</span>
+                  </div>
+                </div>
 
-                                <div className="flex flex-col items-center md:items-end w-full md:w-auto">
-                                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 text-center md:text-right w-full">Transfer Protocol</div>
-                                    <div className="flex items-center gap-4">
-                                        <div className="text-right">
-                                            <div className="text-sm font-black">{trade.from}</div>
-                                            <div className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Origin</div>
-                                        </div>
-                                        <div className="w-12 h-px bg-border relative">
-                                            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-figma-blue rounded-full" />
-                                        </div>
-                                        <div className="text-left">
-                                            <div className="text-sm font-black">{trade.to}</div>
-                                            <div className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Destination</div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div className="md:col-span-4 text-xs space-y-0.5">
+                  <div className="text-foreground-secondary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-border-strong" />
+                    <span>Origin: <strong>{trade.from}</strong></span>
+                  </div>
+                  <div className="text-foreground-secondary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
+                    <span>Destination: <strong>{trade.to}</strong></span>
+                  </div>
+                </div>
 
-                                <div className="flex flex-col items-center md:items-end w-full md:w-auto">
-                                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2">Sync Status</div>
-                                    <div className={`px-4 py-1.5 rounded-full bg-muted border-2 border-transparent font-black text-xs uppercase tracking-widest flex items-center gap-2 ${trade.color}`}>
-                                        <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-                                        {trade.status}
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                ))}
-            </div>
-        </motion.div>
-    );
+                <div className="md:col-span-2 text-left md:text-right">
+                  <div className="text-[10px] text-foreground-muted uppercase font-mono">
+                    Settlement
+                  </div>
+                  <div className="font-mono text-sm font-bold text-foreground">
+                    {trade.settlement}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default LatestTradesPage;
