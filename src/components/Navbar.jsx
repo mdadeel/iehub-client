@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 import { CommandPalette } from './ui/CommandPalette';
+import OrganizationSwitcher from './OrganizationSwitcher';
 import {
     HiMenu, HiX, HiMoon, HiSun, HiLogout,
     HiChevronDown, HiUser, HiSearch,
@@ -121,6 +122,11 @@ const Navbar = () => {
 
                     {/* Right: Status, Theme & User Actions */}
                     <div className="flex items-center gap-2.5">
+                        {user && !user.isGuest && (
+                            <div className="hidden sm:flex items-center">
+                                <OrganizationSwitcher compact />
+                            </div>
+                        )}
                         {/* Theme Toggle */}
                         <Button
                             variant="ghost"

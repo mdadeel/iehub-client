@@ -11,6 +11,8 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     try {
+      const activeOrgId = localStorage.getItem('activeOrgId');
+      if (activeOrgId) config.headers['X-Org-Id'] = activeOrgId;
       const currentUser = auth.currentUser;
       if (currentUser) {
         const token = await currentUser.getIdToken();

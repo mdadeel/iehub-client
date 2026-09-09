@@ -28,6 +28,8 @@ import LatestTradesPage from './pages/LatestTradesPage';
 import GlobalLogisticsPage from './pages/GlobalLogisticsPage';
 import TradeExpertsPage from './pages/TradeExpertsPage';
 import MarketInsightsPage from './pages/MarketInsightsPage';
+import CreateOrganizationPage from './pages/CreateOrganizationPage';
+import InviteAcceptPage from './pages/InviteAcceptPage';
 
 // Routes
 import PrivateRoute from './routes/PrivateRoute';
@@ -63,6 +65,10 @@ function App() {
           <Route path="/careers" element={<TradeExpertsPage />} />
           <Route path="/news" element={<MarketInsightsPage />} />
         </Route>
+
+        {/* Organization routes */}
+        <Route path="/organizations/new" element={<CreateOrganizationPage />} />
+        <Route path="/invites/:token" element={<InviteAcceptPage />} />
 
         {/* User Workspace Routes (Self-Contained DashboardLayout with Sidebar, No Marketing Footer) */}
         <Route element={<PrivateRoute />}>

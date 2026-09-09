@@ -12,6 +12,7 @@ import { useAuth } from '../hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
 import Navbar from '../components/Navbar';
+import OrganizationSwitcher from '../components/OrganizationSwitcher';
 
 const DashboardLayout = () => {
   const { user } = useAuth();
@@ -52,6 +53,11 @@ const DashboardLayout = () => {
           <div className="text-xs font-semibold text-foreground truncate mt-1">
             {user?.displayName || 'Trade Account'}
           </div>
+          {!user?.isGuest && (
+            <div className="mt-3">
+              <OrganizationSwitcher />
+            </div>
+          )}
         </div>
 
         {/* Navigation Items */}
