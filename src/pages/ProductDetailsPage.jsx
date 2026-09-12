@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
 import {
@@ -7,6 +8,14 @@ import {
   HiShieldCheck,
   HiDocumentText,
   HiChevronDown,
+  HiTruck,
+  HiCheckCircle,
+  HiScale,
+  HiSparkles,
+  HiArrowRight,
+  HiLockClosed,
+  HiLocationMarker,
+  HiInformationCircle,
 } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import { Button } from '../components/ui/Button';
@@ -14,6 +23,8 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Badge } from '../components/ui/Badge';
 import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
+import ProductCard from '../components/ProductCard';
+import { cn } from '@/lib/utils';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -31,6 +42,11 @@ const ProductDetailsPage = () => {
   const [contractNotes, setContractNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // Recommendations & Detailed Tabs state
+  const [recommendations, setRecommendations] = useState([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+  const [activeTab, setActiveTab] = useState('specs');
+
   // RFQ state
   const [rfqDrawerOpen, setRfqDrawerOpen] = useState(false);
   const [rfqQuantity, setRfqQuantity] = useState(1);
@@ -40,13 +56,42 @@ const ProductDetailsPage = () => {
   const [rfqNotes, setRfqNotes] = useState('');
   const [rfqSubmitting, setRfqSubmitting] = useState(false);
 
+  const fetchRecommendations = useCallback(async (category, currentId) => {
+    try {
+      setLoadingRecommendations(true);
+      const { data } = await api.get('/products', { params: { category } });
+      const filtered = Array.isArray(data)
+        ? data.filter((item) => String(item._id || item.id) !== String(currentId))
+        : [];
+
+      if (filtered.length >= 3) {
+        setRecommendations(filtered.slice(0, 4));
+      } else {
+        // Fallback: Fetch general catalog to always provide up to 4 recommendations
+        const { data: allData } = await api.get('/products');
+        const fallbackFiltered = Array.isArray(allData)
+          ? allData.filter((item) => String(item._id || item.id) !== String(currentId))
+          : [];
+        setRecommendations(fallbackFiltered.slice(0, 4));
+      }
+    } catch (err) {
+      console.error('Failed to load trade recommendations:', err);
+    } finally {
+      setLoadingRecommendations(false);
+    }
+  }, []);
+
   const fetchProduct = useCallback(async () => {
     try {
+      setLoading(true);
       const { data } = await api.get(`/products/${id}`);
       setProduct(data);
       const moq = Math.max(1, data?.moq || 1);
       if (data?.quantity) {
         setQuantity(Math.min(moq, data.quantity));
+      }
+      if (data?.category) {
+        fetchRecommendations(data.category, data._id);
       }
     } catch {
       toast.error('Unable to locate commodity listing.');
@@ -54,9 +99,10 @@ const ProductDetailsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, navigate]);
+  }, [id, navigate, fetchRecommendations]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     fetchProduct();
   }, [fetchProduct]);
 
@@ -258,6 +304,17 @@ const ProductDetailsPage = () => {
               </div>
             </div>
 
+            {/* Commercial Pricing & Landed Cost Notice */}
+            <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/70 text-xs space-y-1">
+              <div className="font-semibold text-foreground flex items-center gap-1.5">
+                <HiInformationCircle className="w-4 h-4 text-accent-primary shrink-0" />
+                <span>Commercial Pricing & Landed Cost Disclaimer</span>
+              </div>
+              <p className="text-[11px] text-foreground-secondary leading-relaxed">
+                Unit price is quoted Free on Board (FOB) origin loading port. Ocean freight, cargo insurance, import customs tariffs, and discharge port handling are determined during formal Purchase Order issuance or RFQ quotation.
+              </p>
+            </div>
+
             {/* Certificates — collapsed accordion, only when real data exists */}
             {certificates.length > 0 && (
               <div className="rounded-lg border border-border-default bg-surface overflow-hidden">
@@ -273,16 +330,26 @@ const ProductDetailsPage = () => {
                   </span>
                   <HiChevronDown className={`w-4 h-4 text-foreground-muted transition-transform ${showCertificates ? 'rotate-180' : ''}`} />
                 </button>
-                {showCertificates && (
-                  <div className="px-4 pb-3 grid grid-cols-1 gap-2">
-                    {certificates.map((c, i) => (
-                      <div key={i} className="flex items-center justify-between gap-2 p-2.5 rounded border border-border-subtle bg-surface-subtle text-xs">
-                        <span className="font-medium text-foreground truncate">{c.name}</span>
-                        <span className="text-[11px] text-foreground-muted shrink-0">{c.issuer}</span>
+                <AnimatePresence>
+                  {showCertificates && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 pb-3 grid grid-cols-1 gap-2">
+                        {certificates.map((c, i) => (
+                          <div key={i} className="flex items-center justify-between gap-2 p-2.5 rounded border border-border-subtle bg-surface-subtle text-xs">
+                            <span className="font-medium text-foreground truncate">{c.name}</span>
+                            <span className="text-[11px] text-foreground-muted shrink-0">{c.issuer}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
 
@@ -328,11 +395,269 @@ const ProductDetailsPage = () => {
               >
                 Questions about this listing? Contact the trade desk
               </Link>
-              <p className="text-[11px] text-foreground-muted text-center">
-                Incoterms 2020 &bull; PO issued instantly &bull; Track progress from your dashboard
-              </p>
             </div>
           </div>
+        </div>
+
+        {/* Institutional Trade Safeguards Ribbon */}
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 p-4 rounded-xl border border-border-default bg-surface shadow-2xs">
+          <div className="flex items-center gap-3 p-2">
+            <div className="w-8 h-8 rounded-lg bg-accent-subtle text-accent-primary flex items-center justify-center shrink-0">
+              <HiLockClosed className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-foreground">Fiduciary Escrow</div>
+              <div className="text-[11px] text-foreground-muted">Capital held in audited custody</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-2">
+            <div className="w-8 h-8 rounded-lg bg-status-success-bg text-status-success flex items-center justify-center shrink-0">
+              <HiShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-foreground">SGS / Port Survey</div>
+              <div className="text-[11px] text-foreground-muted">Pre-shipment quantity & purity</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-2">
+            <div className="w-8 h-8 rounded-lg bg-surface-subtle text-foreground-secondary flex items-center justify-center shrink-0 border border-border-default">
+              <HiDocumentText className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-foreground">ICC 2020 Contract</div>
+              <div className="text-[11px] text-foreground-muted">Bilateral binding sales orders</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-2">
+            <div className="w-8 h-8 rounded-lg bg-surface-subtle text-foreground-secondary flex items-center justify-center shrink-0 border border-border-default">
+              <HiTruck className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-foreground">UN/LOCODE Tracking</div>
+              <div className="text-[11px] text-foreground-muted">Milestone freight updates</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Deep Commodity Details & Operations Tabs */}
+        <div className="mt-8 rounded-xl border border-border-default bg-surface overflow-hidden shadow-2xs">
+          {/* Tab Navigation */}
+          <div className="flex items-center border-b border-border-default bg-surface-subtle/50 px-4 gap-2 overflow-x-auto no-scrollbar">
+            {[
+              { id: 'specs', label: 'Technical Specifications & Standards', icon: HiScale },
+              { id: 'logistics', label: 'Ocean Freight & Laycan Logistics', icon: HiTruck },
+              { id: 'escrow', label: 'Settlement & Escrow Safeguards', icon: HiLockClosed },
+            ].map((tab) => {
+              const TabIcon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    'flex items-center gap-2 py-3 px-3.5 text-xs font-medium border-b-2 -mb-px transition-colors whitespace-nowrap',
+                    isActive
+                      ? 'border-accent-primary text-accent-primary font-semibold'
+                      : 'border-transparent text-foreground-muted hover:text-foreground hover:border-border-hover'
+                  )}
+                >
+                  <TabIcon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Tab Content 1: Technical Specs */}
+          {activeTab === 'specs' && (
+            <div className="p-6">
+              <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <HiCheckCircle className="w-4 h-4 text-status-success" />
+                Commodity Technical Profile & Commercial Parameters
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Harmonized Tariff (HS Code)</div>
+                  <div className="text-xs font-semibold font-mono text-foreground">
+                    {(() => {
+                      const isSpiceOrAgri = ['Spices', 'Food', 'Beverages'].includes(product.category);
+                      if (isSpiceOrAgri && product.hsCode) {
+                        return product.hsCode;
+                      }
+                      if (!isSpiceOrAgri && (product.hsCode === '0906.11' || product.hsCode === '0901.11.00' || !product.hsCode)) {
+                        return 'Pending Broker Classification';
+                      }
+                      return product.hsCode || 'Pending Broker Classification';
+                    })()}
+                  </div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Trade Sector / Category</div>
+                  <div className="text-xs font-semibold text-foreground">{product.category}</div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Named Origin / POL</div>
+                  <div className="text-xs font-semibold text-foreground">{product.origin || 'International Ocean Port'}</div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Minimum Order (MOQ)</div>
+                  <div className="text-xs font-semibold text-foreground tabular-nums">{moq.toLocaleString()} {product.unit || 'Unit'}</div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Total Available Capacity</div>
+                  <div className="text-xs font-semibold text-foreground tabular-nums">{product.quantity?.toLocaleString()} {product.unit || 'Unit'}</div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Standard Incoterms</div>
+                  <div className="text-xs font-semibold text-foreground">{product.incoterm || 'FOB, CIF, EXW, DDP'}</div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30 sm:col-span-2">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Export Packaging & Stowage Standard</div>
+                  <div className="text-xs text-foreground leading-relaxed">
+                    Export-grade seaworthy containerized stowage, certified palletized with moisture-barrier liners.
+                  </div>
+                </div>
+                <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
+                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Survey & Inspection Standard</div>
+                  <div className="text-xs font-semibold text-foreground">SGS / Bureau Veritas PSI Survey</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab Content 2: Ocean Freight & Laycan Logistics */}
+          {activeTab === 'logistics' && (
+            <div className="p-6">
+              <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <HiTruck className="w-4 h-4 text-accent-primary" />
+                Maritime Shipping, Transit Corridors & Port Delivery
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3 text-xs text-foreground-secondary leading-relaxed">
+                  <p>
+                    Commodity orders are loaded at the exporter’s declared port of origin under ICC Incoterms 2020. Container manifest numbers (BIC) and Ocean Bill of Lading (B/L) are registered directly to your shipment tracking portal upon vessel loading.
+                  </p>
+                  <div className="p-4 rounded-lg bg-surface-subtle border border-border-subtle space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-foreground-muted">Standard Laycan Window:</span>
+                      <span className="font-semibold text-foreground">14 – 21 Calendar Days</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-foreground-muted">Free Port Demurrage:</span>
+                      <span className="font-semibold text-foreground">7 Days at POD</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-foreground-muted">Container Allocation:</span>
+                      <span className="font-semibold text-foreground">20ft FCL / 40ft High Cube</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="text-[11px] font-mono uppercase tracking-wider text-foreground-muted">Primary Maritime Trade Corridors</div>
+                  <div className="space-y-2 text-xs">
+                    <div className="p-2.5 rounded border border-border-subtle bg-surface-subtle flex items-center justify-between">
+                      <span>Santos (BR) &rarr; Rotterdam (NL)</span>
+                      <span className="font-mono text-foreground-muted">16-18 Days</span>
+                    </div>
+                    <div className="p-2.5 rounded border border-border-subtle bg-surface-subtle flex items-center justify-between">
+                      <span>Jebel Ali (AE) &rarr; Singapore (SG)</span>
+                      <span className="font-mono text-foreground-muted">8-10 Days</span>
+                    </div>
+                    <div className="p-2.5 rounded border border-border-subtle bg-surface-subtle flex items-center justify-between">
+                      <span>Shanghai (CN) &rarr; Los Angeles (US)</span>
+                      <span className="font-mono text-foreground-muted">14-16 Days</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab Content 3: Settlement & Escrow Safeguards */}
+          {activeTab === 'escrow' && (
+            <div className="p-6">
+              <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <HiLockClosed className="w-4 h-4 text-status-success" />
+                4-Stage Commercial Escrow & Disbursal Protocol
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 01</span>
+                  <div className="text-xs font-semibold text-foreground">PO Issuance</div>
+                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                    Binding purchase order issued with mutually agreed payment terms, Incoterm, and POD.
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 02</span>
+                  <div className="text-xs font-semibold text-foreground">Escrow Custody</div>
+                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                    Buyer funds locked into fiduciary commercial escrow. Capital is protected from seller default.
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 03</span>
+                  <div className="text-xs font-semibold text-foreground">Port Inspection</div>
+                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                    Accredited surveyor certifies weight, moisture, and export quality before loading aboard vessel.
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
+                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-status-success-bg text-status-success font-bold">STAGE 04</span>
+                  <div className="text-xs font-semibold text-foreground">Title & Settlement</div>
+                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                    Clean Ocean Bill of Lading endorsed; escrow disbursed to exporter once cargo arrives at POD.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Recommended Trade Opportunities & Similar Lots Section */}
+        <div className="mt-14 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-default pb-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-accent-subtle text-accent-primary border border-accent-primary/20 mb-2">
+                <HiSparkles className="w-3.5 h-3.5" />
+                <span>Trade Recommendations</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                Similar Commodities & Active Trade Lots
+              </h2>
+              <p className="text-xs text-foreground-muted mt-1">
+                Verified supply opportunities matching {product.category} sector specifications
+              </p>
+            </div>
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-accent-primary hover:text-accent-hover transition-colors shrink-0"
+            >
+              <span>Explore full marketplace</span>
+              <HiArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {loadingRecommendations ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={i} className="h-72 rounded-xl bg-surface-subtle animate-pulse border border-border-default" />
+              ))}
+            </div>
+          ) : recommendations.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {recommendations.map((item) => (
+                <ProductCard key={item._id || item.id} product={item} />
+              ))}
+            </div>
+          ) : (
+            <div className="p-8 rounded-xl border border-dashed border-border-default bg-surface text-center">
+              <p className="text-xs text-foreground-muted">
+                No adjacent listings currently open in {product.category}. Contact the trade desk to initiate a custom commodity sourcing mandate.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

@@ -13,7 +13,14 @@ import { AuthContext } from './AuthContext';
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const [theme, setTheme] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark' || saved === 'light') return saved;
+        if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
+    });
 
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -40,6 +47,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginUser = (email, password) => {
         setLoading(true);
+        localStorage.removeItem('guestUser');
         return signInWithEmailAndPassword(auth, email, password);
     };
 

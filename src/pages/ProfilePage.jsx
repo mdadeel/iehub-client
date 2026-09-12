@@ -12,6 +12,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Badge } from '../components/ui/Badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
+import { WebhooksManager } from '../components/WebhooksManager';
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -155,6 +156,7 @@ const ProfilePage = () => {
         <TabsList>
           <TabsTrigger value="identity">Identity</TabsTrigger>
           <TabsTrigger value="banking">Banking &amp; Settlement</TabsTrigger>
+          <TabsTrigger value="webhooks">Developer &amp; Webhooks</TabsTrigger>
         </TabsList>
 
         <form onSubmit={handleSave}>
@@ -314,6 +316,10 @@ const ProfilePage = () => {
             )}
           </TabsContent>
         </form>
+
+        <TabsContent value="webhooks" className="space-y-4 pt-2">
+          <WebhooksManager />
+        </TabsContent>
       </Tabs>
 
       {/* Section hint for empty state guidance */}

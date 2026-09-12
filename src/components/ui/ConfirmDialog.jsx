@@ -37,7 +37,7 @@ const ConfirmDialog = ({
         </Button>
         <Button
           type="button"
-          variant={variant === 'danger' ? 'danger' : 'default'}
+          variant={variant === 'danger' || variant === 'destructive' ? 'destructive' : 'default'}
           size="sm"
           onClick={onConfirm}
           disabled={loading}

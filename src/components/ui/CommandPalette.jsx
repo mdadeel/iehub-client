@@ -16,6 +16,17 @@ import {
 } from "react-icons/hi";
 import { useAuth } from "@/hooks/useAuth";
 
+const BodyScrollLock = () => {
+  React.useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+  return null;
+};
+
 const CommandPalette = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { user, theme, setTheme } = useAuth();
@@ -53,58 +64,40 @@ const CommandPalette = ({ isOpen, onClose }) => {
         run: () => navigate("/products"),
       },
       {
-        id: "nav-trades",
-        title: "Live Trade Ledger",
-        subtitle: "Real-time cross-border settlements & executed contracts",
-        category: "Navigation",
-        icon: HiGlobeAlt,
-        shortcut: "G T",
-        run: () => navigate("/trades"),
-      },
-      {
-        id: "nav-shipping",
-        title: "Global Logistics & Ports",
-        subtitle: "Container tracking, ocean freight & maritime status",
-        category: "Navigation",
-        icon: HiGlobeAlt,
-        shortcut: "G S",
-        run: () => navigate("/shipping"),
-      },
-      {
         id: "nav-imports",
         title: "My Import Orders",
-        subtitle: "Active shipments, deliveries & acquisition logs",
+        subtitle: "Track active shipments, POs & deliveries",
         category: "Navigation",
         icon: HiArrowDown,
         shortcut: "G I",
-        run: () => navigate("/dashboard/my-imports"),
+        run: () => navigate("/imports"),
       },
       {
         id: "nav-exports",
-        title: "My Export Inventory",
-        subtitle: "Manage catalog listings, price & stock units",
+        title: "My Export Listings",
+        subtitle: "Manage inventory, pricing & active offers",
         category: "Navigation",
         icon: HiArrowUp,
         shortcut: "G E",
-        run: () => navigate("/dashboard/my-exports"),
-      },
-      {
-        id: "nav-profile",
-        title: "Corporate Settings",
-        subtitle: "Organization profile, trade parameters & security",
-        category: "Navigation",
-        icon: HiUser,
-        shortcut: "G P",
-        run: () => navigate("/dashboard/profile"),
+        run: () => navigate("/exports"),
       },
       {
         id: "act-new-export",
-        title: "Create New Export Listing",
-        subtitle: "Register commodity stock on the global network",
+        title: "List New Commodity for Export",
+        subtitle: "Publish a new wholesale or bulk listing",
         category: "Actions",
         icon: HiPlus,
-        shortcut: "N",
-        run: () => navigate("/dashboard/add-export"),
+        shortcut: "N E",
+        run: () => navigate("/exports/new"),
+      },
+      {
+        id: "act-profile",
+        title: "Account & Profile Settings",
+        subtitle: "Manage company verification & team credentials",
+        category: "Account",
+        icon: HiUser,
+        shortcut: "G P",
+        run: () => navigate("/profile"),
       },
       {
         id: "act-theme",
@@ -179,6 +172,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4">
+          <BodyScrollLock />
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}

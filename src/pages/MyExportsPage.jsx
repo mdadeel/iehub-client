@@ -13,6 +13,8 @@ import {
   HiCheckCircle,
   HiXCircle,
   HiRefresh,
+  HiChatAlt2,
+  HiDownload,
 } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
@@ -33,6 +35,7 @@ import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/
 import { Modal, ModalHeader, ModalContent, ModalFooter } from '../components/ui/Modal';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { DropdownMenu } from '../components/ui/DropdownMenu';
+import OrderMessageThread from '../components/OrderMessageThread';
 
 const MyExportsPage = () => {
   const { user } = useAuth();
@@ -77,6 +80,10 @@ const MyExportsPage = () => {
     sellerNotes: '',
   });
   const [submittingCounter, setSubmittingCounter] = useState(false);
+
+  // Collab messages modal state
+  const [collabModalOpen, setCollabModalOpen] = useState(false);
+  const [selectedCollabOrder, setSelectedCollabOrder] = useState(null);
 
   const fetchExporterData = useCallback(async () => {
     if (!user?.email) return;
@@ -214,10 +221,19 @@ const MyExportsPage = () => {
   const handleSaveShipping = async (e) => {
     e.preventDefault();
     if (!shippingOrder) return;
+
+    if (shippingData.status === 'In Transit') {
+      const hasLogistics = Boolean(shippingData.vesselName || shippingData.containerNumber || shippingData.billOfLadingUrl);
+      if (!hasLogistics) {
+        toast.error('Ocean transit milestone requires vessel name, container number, or Bill of Lading reference.');
+        return;
+      }
+    }
+
     setSavingShipping(true);
     try {
       await api.patch(`/imports/${shippingOrder._id}/shipping`, shippingData);
-      toast.success('Shipping & Bill of Lading details updated.');
+      toast.success('Logistics milestone & shipping details updated.');
       setShippingModalOpen(false);
       fetchExporterData();
     } catch (err) {
@@ -296,6 +312,24 @@ const MyExportsPage = () => {
   const pendingOrdersCount = inboundOrders.filter((o) => o.sellerAccepted === 'Pending').length;
   const pendingRFQsCount = inboundRFQs.filter((r) => r.status === 'Submitted').length;
 
+  const handleExportCsv = async () => {
+    try {
+      const res = await api.get('/analytics/export?type=orders&format=csv', {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `iehub-exporter-orders-${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success('Inbound order ledger exported for ERP integration');
+    } catch {
+      toast.error('Failed to export order ledger');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Header */}
@@ -317,6 +351,17 @@ const MyExportsPage = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {inboundOrders.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportCsv}
+              className="h-8 text-xs gap-1"
+            >
+              <HiDownload className="w-3.5 h-3.5" />
+              <span>Export CSV</span>
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="sm"
@@ -577,21 +622,36 @@ const MyExportsPage = () => {
                         </div>
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        {order.sellerAccepted === 'Pending' ? (
-                          <div className="inline-flex gap-1.5">
-                            <Button size="sm" onClick={() => handleSellerAcceptOrder(order._id)} className="h-7 text-xs">
-                              Accept
+                        <div className="inline-flex items-center gap-1.5">
+                          {order.sellerAccepted === 'Pending' ? (
+                            <>
+                              <Button size="sm" onClick={() => handleSellerAcceptOrder(order._id)} className="h-7 text-xs">
+                                Accept
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => handleSellerRejectOrder(order._id)} className="h-7 text-xs text-status-danger hover:bg-status-danger/10">
+                                Decline
+                              </Button>
+                            </>
+                          ) : (
+                            <Button size="sm" variant="outline" onClick={() => handleOpenShipping(order)} className="h-7 text-xs gap-1">
+                              <HiTruck className="w-3.5 h-3.5" />
+                              Logistics
                             </Button>
-                            <Button size="sm" variant="outline" onClick={() => handleSellerRejectOrder(order._id)} className="h-7 text-xs text-status-danger hover:bg-status-danger/10">
-                              Decline
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button size="sm" variant="outline" onClick={() => handleOpenShipping(order)} className="h-7 text-xs gap-1">
-                            <HiTruck className="w-3.5 h-3.5" />
-                            Logistics
+                          )}
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              setSelectedCollabOrder(order);
+                              setCollabModalOpen(true);
+                            }}
+                            className="h-7 text-xs gap-1"
+                            title="Open Bilateral Messages"
+                          >
+                            <HiChatAlt2 className="w-3.5 h-3.5 text-accent-primary" />
+                            Thread
                           </Button>
-                        )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -857,29 +917,38 @@ const MyExportsPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-foreground mb-1">Logistics Status</label>
+                  <label className="block text-xs font-semibold text-foreground mb-1">Logistics Milestone</label>
                   <select
                     value={shippingData.status}
                     onChange={(e) => setShippingData({ ...shippingData, status: e.target.value })}
-                    className="w-full h-8 text-xs rounded-md border border-border-default bg-surface px-2 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                    disabled={shippingOrder?.status === 'Delivered'}
+                    className="w-full h-8 text-xs rounded-md border border-border-default bg-surface px-2 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary disabled:opacity-50"
                   >
-                    <option value="Cargo Received">Cargo Received at Origin</option>
-                    <option value="Customs Clearance">Customs Cleared</option>
-                    <option value="In Transit">In Transit (Vessel En Route)</option>
-                    <option value="Delivered">Delivered to Consignee</option>
+                    <option value="Cargo Received">Cargo Received at Port of Origin</option>
+                    <option value="Customs Clearance">Export Customs Cleared</option>
+                    <option value="In Transit">In Ocean Transit (Vessel Dispatched)</option>
                   </select>
                 </div>
               </div>
 
+              {shippingOrder?.status === 'Delivered' && (
+                <div className="p-2.5 rounded-md bg-status-success-bg border border-status-success/20 text-xs text-status-success">
+                  Consignee confirmed cargo receipt & inspection sign-off.
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-semibold text-foreground mb-1">Bill of Lading URL / Secure Link</label>
                 <Input
-                  type="url"
-                  placeholder="https://documents.carrier.com/bol/..."
+                  type="text"
+                  placeholder="https://... or BL Reference"
                   value={shippingData.billOfLadingUrl}
                   onChange={(e) => setShippingData({ ...shippingData, billOfLadingUrl: e.target.value })}
                   className="h-8 text-xs font-mono"
                 />
+                <p className="text-[10px] text-foreground-muted mt-1">
+                  Ocean transit milestone requires at least one of Vessel Name, Container BIC, or Bill of Lading.
+                </p>
               </div>
             </ModalContent>
             <ModalFooter>
@@ -947,6 +1016,23 @@ const MyExportsPage = () => {
               </Button>
             </ModalFooter>
           </form>
+        </Modal>
+      )}
+
+      {/* Order Collaboration Thread Modal */}
+      {collabModalOpen && selectedCollabOrder && (
+        <Modal open={collabModalOpen} onClose={() => setCollabModalOpen(false)} maxWidth="max-w-2xl">
+          <ModalHeader
+            title={`Order Communication: ${selectedCollabOrder.poNumber || selectedCollabOrder._id}`}
+            description="Direct trade communication thread between consignee and supplier."
+          />
+          <ModalContent className="p-0">
+            <OrderMessageThread
+              orderId={selectedCollabOrder._id}
+              poNumber={selectedCollabOrder.poNumber}
+              onClose={() => setCollabModalOpen(false)}
+            />
+          </ModalContent>
         </Modal>
       )}
     </div>

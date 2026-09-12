@@ -13,6 +13,9 @@ import {
   HiCurrencyDollar,
   HiExternalLink,
   HiRefresh,
+  HiDownload,
+  HiDocumentText,
+  HiInformationCircle,
 } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
@@ -25,6 +28,7 @@ import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { Modal, ModalHeader, ModalContent, ModalFooter } from '../components/ui/Modal';
 import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
 import { DropdownMenu } from '../components/ui/DropdownMenu';
+import OrderMessageThread from '../components/OrderMessageThread';
 import {
   Table,
   TableHeader,
@@ -74,6 +78,15 @@ const MyImportsPage = () => {
 
   // Escrow action states
   const [escrowLoading, setEscrowLoading] = useState(false);
+
+  // Attached documents state
+  const [attachedDocs, setAttachedDocs] = useState([]);
+  const [loadingDocs, setLoadingDocs] = useState(false);
+
+  // Delivery sign-off state
+  const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
+  const [deliveryNotes, setDeliveryNotes] = useState('');
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
 
   const fetchImportsAndRFQs = useCallback(async () => {
     if (!user?.email) return;
@@ -185,6 +198,7 @@ const MyImportsPage = () => {
       reason: 'Cargo Damage in Ocean Transit',
       disputedAmount: totalVal,
       description: '',
+      evidenceDocId: '',
     });
     setDisputeModalOpen(true);
   };
@@ -199,6 +213,7 @@ const MyImportsPage = () => {
         reason: disputeData.reason,
         disputedAmount: Number(disputeData.disputedAmount),
         description: disputeData.description,
+        evidenceDocumentIds: disputeData.evidenceDocId ? [disputeData.evidenceDocId] : [],
       });
       toast.success('Commercial dispute filed. Escrow locked pending arbitration.');
       setDisputeModalOpen(false);
@@ -221,14 +236,75 @@ const MyImportsPage = () => {
     }
   };
 
-  const openPODetails = (item) => {
+  const openPODetails = async (item) => {
     setActivePO(item);
     setSheetOpen(true);
+    setLoadingDocs(true);
+    try {
+      const docsRes = await api.get(`/imports/${item._id}/documents`);
+      setAttachedDocs(Array.isArray(docsRes.data) ? docsRes.data : []);
+    } catch {
+      setAttachedDocs([]);
+    } finally {
+      setLoadingDocs(false);
+    }
+  };
+
+  const handleConfirmDelivery = async () => {
+    if (!activePO) return;
+    setDeliveryLoading(true);
+    try {
+      const res = await api.patch(`/imports/${activePO._id}/confirm-delivery`, {
+        notes: deliveryNotes.trim() || 'Cargo received and discharge inspection passed.',
+      });
+      toast.success('Delivery accepted! Escrow settlement confirmed.');
+      setActivePO(res.data);
+      setDeliveryModalOpen(false);
+      setDeliveryNotes('');
+      fetchImportsAndRFQs();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to confirm delivery sign-off.');
+    } finally {
+      setDeliveryLoading(false);
+    }
+  };
+
+  const handleDownloadDoc = async (docId, fileName) => {
+    try {
+      const res = await api.get(`/documents/${docId}/download-url`);
+      const link = document.createElement('a');
+      link.href = res.data.presignedGetUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(`Downloading ${fileName}`);
+    } catch {
+      toast.error('Failed to download document');
+    }
   };
 
   const copyPO = (poNum) => {
     navigator.clipboard.writeText(poNum);
     toast.success(`Copied ${poNum} to clipboard`);
+  };
+
+  const handleExportCsv = async () => {
+    try {
+      const res = await api.get('/analytics/export?type=orders&format=csv', {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `iehub-purchase-orders-${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success('Trade ledger exported for ERP integration');
+    } catch {
+      toast.error('Failed to export trade ledger');
+    }
   };
 
   if (user?.isGuest) {
@@ -278,6 +354,17 @@ const MyImportsPage = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {imports.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportCsv}
+              className="h-8 text-xs gap-1"
+            >
+              <HiDownload className="w-3.5 h-3.5" />
+              <span>Export CSV</span>
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="sm"
@@ -577,7 +664,7 @@ const MyImportsPage = () => {
 
             <SheetContent className="space-y-6">
               {/* Escrow Status & Action Banner */}
-              <div className="p-4 rounded-xl border border-accent-primary/20 bg-accent-subtle/30 space-y-2">
+              <div className="p-4 rounded-xl border border-accent-primary/20 bg-accent-subtle/30 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
                     <HiShieldCheck className="w-4 h-4 text-accent-primary" />
@@ -590,15 +677,51 @@ const MyImportsPage = () => {
                 <p className="text-[11px] text-foreground-muted">
                   Funds are secured in fiduciary vault and released only when bill of lading and discharge manifest are confirmed.
                 </p>
-                <div className="flex gap-2 pt-1">
+                <div className="text-[10px] text-foreground-muted/90 bg-surface/60 border border-border-default/60 rounded p-2 flex items-center gap-1.5">
+                  <HiInformationCircle className="w-3.5 h-3.5 text-accent-primary shrink-0" />
+                  <span>Internal Fiduciary Ledger · Custody tracking under platform bilateral rules. Third-party licensed banking partner integration in progress.</span>
+                </div>
+
+                {activePO.deliveryAcceptedByEmail && (
+                  <div className="p-2.5 rounded-lg bg-status-success-bg border border-status-success/20 text-xs space-y-1">
+                    <div className="flex items-center gap-1.5 font-semibold text-status-success">
+                      <HiCheckCircle className="w-4 h-4" />
+                      Consignee Delivery Sign-off Complete
+                    </div>
+                    <div className="text-[11px] text-foreground-muted">
+                      Accepted by <span className="font-medium text-foreground">{activePO.deliveryAcceptedByEmail}</span>
+                      {activePO.deliveryAcceptedAt && ` on ${new Date(activePO.deliveryAcceptedAt).toLocaleDateString()}`}
+                    </div>
+                    {activePO.deliverySignoffNotes && (
+                      <div className="text-[11px] text-foreground italic mt-0.5">&ldquo;{activePO.deliverySignoffNotes}&rdquo;</div>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex flex-wrap gap-2 pt-1">
                   {activePO.escrowStatus !== 'Funded' && activePO.escrowStatus !== 'Released' && (
                     <Button size="sm" onClick={() => handleFundEscrow(activePO._id)} disabled={escrowLoading} className="h-7 text-xs">
                       Fund Escrow Now
                     </Button>
                   )}
                   {activePO.escrowStatus === 'Funded' && (
-                    <Button size="sm" onClick={() => handleReleaseEscrow(activePO._id)} disabled={escrowLoading} className="h-7 text-xs bg-status-success hover:bg-status-success/90">
-                      Confirm Receipt & Release Funds
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleReleaseEscrow(activePO._id)}
+                      disabled={escrowLoading}
+                      className="h-7 text-xs border-status-success/30 text-status-success hover:bg-status-success/10"
+                    >
+                      Direct Escrow Release
+                    </Button>
+                  )}
+                  {!activePO.deliveryAcceptedByEmail && activePO.status !== 'Cancelled' && (
+                    <Button
+                      size="sm"
+                      onClick={() => setDeliveryModalOpen(true)}
+                      className="h-7 text-xs bg-status-success hover:bg-status-success/90"
+                    >
+                      Sign-off Delivery Acceptance
                     </Button>
                   )}
                   <Button size="sm" variant="outline" onClick={() => openDisputeModal(activePO)} className="h-7 text-xs text-status-danger border-status-danger/30 hover:bg-status-danger/10">
@@ -638,6 +761,58 @@ const MyImportsPage = () => {
                 </div>
               </div>
 
+              {/* Trade & Shipping Documents Attached */}
+              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <HiDocumentText className="w-4 h-4 text-accent-primary" />
+                    Attached Trade Documents ({attachedDocs.length})
+                  </div>
+                  <Link to="/dashboard/documents" className="text-[11px] text-accent-primary hover:underline inline-flex items-center gap-1">
+                    Document Vault <HiExternalLink className="w-3 h-3" />
+                  </Link>
+                </div>
+
+                {loadingDocs ? (
+                  <div className="text-xs text-foreground-muted animate-pulse py-2">Loading document ledger...</div>
+                ) : attachedDocs.length === 0 ? (
+                  <div className="text-[11px] text-foreground-muted italic py-1">
+                    No vault documents linked yet. Upload Bill of Lading, COO, or Inspection Certificates in the Document Vault.
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {attachedDocs.map((doc) => (
+                      <div key={doc._id} className="flex items-center justify-between p-2 rounded-lg bg-surface-subtle border border-border-subtle text-xs">
+                        <div className="min-w-0 pr-2">
+                          <div className="font-semibold text-foreground truncate">{doc.fileName}</div>
+                          <div className="text-[10px] text-foreground-muted flex items-center gap-2 mt-0.5">
+                            <Badge variant={doc.status === 'Verified' ? 'success' : 'neutral'} size="sm">
+                              {doc.documentType}
+                            </Badge>
+                            <span>{(doc.fileSizeBytes / 1024).toFixed(0)} KB</span>
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDownloadDoc(doc._id, doc.fileName)}
+                          className="h-7 w-7 p-0 shrink-0"
+                          title="Download Document"
+                        >
+                          <HiDownload className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Bilateral Trade Messaging Thread */}
+              <OrderMessageThread
+                orderId={activePO._id}
+                poNumber={activePO.poNumber}
+              />
+
               {/* Milestone Stepper */}
               <div className="p-4 rounded-xl border border-border-default bg-surface space-y-4">
                 <div className="flex items-center justify-between">
@@ -653,6 +828,7 @@ const MyImportsPage = () => {
                   {MILESTONES.map((step, idx) => {
                     const currentIdx = STATUS_SEQUENCE.indexOf(activePO.status || 'Confirmed');
                     const isCompleted = idx <= currentIdx;
+                    const milestoneEvent = activePO.milestones?.find((m) => m.status === step.id);
 
                     return (
                       <div key={step.id} className="relative">
@@ -665,12 +841,24 @@ const MyImportsPage = () => {
                         >
                           {isCompleted ? <HiCheckCircle className="w-3.5 h-3.5" /> : idx + 1}
                         </div>
-                        <div className="text-xs font-semibold text-foreground">
-                          {step.label}
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs font-semibold text-foreground">
+                            {step.label}
+                          </div>
+                          {milestoneEvent?.updatedAt && (
+                            <div className="text-[10px] text-foreground-muted">
+                              {new Date(milestoneEvent.updatedAt).toLocaleDateString()}
+                            </div>
+                          )}
                         </div>
                         <div className="text-[11px] text-foreground-muted">
                           {step.desc}
                         </div>
+                        {milestoneEvent?.notes && (
+                          <div className="text-[10px] text-foreground-secondary italic mt-0.5">
+                            &ldquo;{milestoneEvent.notes}&rdquo;
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -798,6 +986,29 @@ const MyImportsPage = () => {
                   className="w-full text-xs rounded-md border border-border-default bg-surface p-2 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary resize-none"
                 />
               </div>
+
+              {attachedDocs.length > 0 && (
+                <div>
+                  <label className="block text-xs font-semibold text-foreground mb-1">
+                    Link Vault Evidence Document
+                  </label>
+                  <select
+                    value={disputeData.evidenceDocId || ''}
+                    onChange={(e) => setDisputeData({ ...disputeData, evidenceDocId: e.target.value })}
+                    className="w-full text-xs rounded-md border border-border-default bg-surface px-3 py-2 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                  >
+                    <option value="">None (Claim statement only)</option>
+                    {attachedDocs.map((doc) => (
+                      <option key={doc._id} value={doc._id}>
+                        {doc.documentType}: {doc.fileName}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[10px] text-foreground-muted mt-1">
+                    Optionally bind inspection reports, SGS survey, or B/L manifests to lock escrow with evidence.
+                  </p>
+                </div>
+              )}
             </ModalContent>
             <ModalFooter>
               <Button type="button" variant="outline" onClick={() => setDisputeModalOpen(false)}>
@@ -805,6 +1016,56 @@ const MyImportsPage = () => {
               </Button>
               <Button type="submit" disabled={filingDispute || !disputeData.description}>
                 {filingDispute ? 'Transmitting Claim...' : 'Submit Claim for Arbitration'}
+              </Button>
+            </ModalFooter>
+          </form>
+        </Modal>
+      )}
+
+      {/* Delivery Acceptance Modal */}
+      {deliveryModalOpen && (
+        <Modal open={deliveryModalOpen} onClose={() => setDeliveryModalOpen(false)}>
+          <ModalHeader
+            title="Sign-off Cargo Delivery"
+            description={`Formal consignee acceptance for Purchase Order ${activePO?.poNumber || ''}`}
+            onClose={() => setDeliveryModalOpen(false)}
+          />
+          <form onSubmit={(e) => { e.preventDefault(); handleConfirmDelivery(); }}>
+            <ModalContent className="space-y-4">
+              <div className="p-3 rounded-lg bg-status-success-bg border border-status-success/20 text-xs text-status-success">
+                By confirming delivery, you formally certify that the commodity consignment has landed at{' '}
+                <strong>{activePO?.destinationPort || 'the port of destination'}</strong>, passed physical tally/inspection, and that escrow funds are authorized for release to the supplier.
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">
+                  Inspection / Discharge Remarks
+                </label>
+                <textarea
+                  rows={3}
+                  value={deliveryNotes}
+                  onChange={(e) => setDeliveryNotes(e.target.value)}
+                  placeholder="e.g. Received full consignment in good order. Container seal intact, tally report verified."
+                  className="w-full text-xs rounded-md border border-border-default bg-surface p-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-accent-primary resize-none"
+                />
+              </div>
+            </ModalContent>
+            <ModalFooter>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setDeliveryModalOpen(false)}
+                disabled={deliveryLoading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={deliveryLoading}
+                className="bg-status-success hover:bg-status-success/90"
+              >
+                {deliveryLoading ? 'Confirming...' : 'Sign-off Delivery & Settle Escrow'}
               </Button>
             </ModalFooter>
           </form>

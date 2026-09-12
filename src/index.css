@@ -1,9 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  /* Font Family Definitions */
+  /* Font Family Definitions (Module 1.2 & 14.5: 2 typefaces max) */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Golden Ratio Typography Scale (Module 1.2: 16px -> 26px -> 42px -> 68px) */
+  --text-body: 1rem;            /* 16px */
+  --text-subheading: 1.625rem;   /* 26px */
+  --text-heading: 2.625rem;      /* 42px */
+  --text-display: 4.25rem;       /* 68px */
+
+  /* Golden Ratio Spacing Scale (Module 1.1: 8 -> 13 -> 21 -> 34 -> 55 -> 89) */
+  --spacing-gr-1: 8px;
+  --spacing-gr-2: 13px;
+  --spacing-gr-3: 21px;
+  --spacing-gr-4: 34px;
+  --spacing-gr-5: 55px;
+  --spacing-gr-6: 89px;
+
+  /* Concentric Radius System (Module 1.5: 4px -> 8px -> 16px -> full) */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Animation Easing Curves (Module 1.3 & 14.8) */
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-symmetric: cubic-bezier(0.65, 0, 0.35, 1);
 
   /* Surface & Canvas Tokens */
   --color-canvas: var(--bg-app);
@@ -22,13 +48,16 @@
   --color-border-default: var(--border-default);
   --color-border-hover: var(--border-hover);
 
-  /* Primary Accent Token: Enterprise Cobalt */
+  /* Primary Accent Token: Cobalt Blue & Maritime Navy */
   --color-accent-primary: var(--accent-primary);
   --color-accent-hover: var(--accent-hover);
   --color-accent-subtle: var(--accent-subtle);
   --color-accent-contrast: var(--accent-contrast);
+  --color-link: var(--color-link);
+  --color-surface-inverse: var(--bg-surface-inverse);
+  --color-foreground-inverse: var(--text-inverse);
 
-  /* Status Semantics */
+  /* Status Semantics: Restrained Teal, Amber, Crimson */
   --color-status-success: var(--status-success);
   --color-status-success-bg: var(--status-success-bg);
   --color-status-warning: var(--status-warning);
@@ -66,65 +95,73 @@
 }
 
 :root {
-  /* LIGHT MODE (Clean Scandinavian Enterprise) */
-  --bg-app: #FAFAFA;
-  --bg-surface: #FFFFFF;
-  --bg-surface-subtle: #F4F4F5;
-  --bg-surface-hover: #ECECEE;
+  /* LIGHT MODE (Maritime Navy & Cobalt Blue — Enterprise Trade Foundation) */
+  --bg-app: #F7F9FC; /* Page background */
+  --bg-surface: #FFFFFF; /* Primary surface */
+  --bg-surface-subtle: #F1F5F9; /* Secondary surface */
+  --bg-surface-hover: #E2E8F0; /* Tactile hover */
+  --bg-surface-inverse: #0B1220; /* Inverse navy surface */
 
-  --text-primary: #09090B;
-  --text-secondary: #52525B;
-  --text-muted: #71717A;
-  --text-subtle: #A1A1AA;
+  --text-primary: #0F172A; /* Primary text */
+  --text-secondary: #475569; /* Secondary text */
+  --text-muted: #64748B; /* Muted text */
+  --text-subtle: #94A3B8; /* Subtle helper text */
+  --text-inverse: #F8FAFC; /* Text on inverse surface */
 
-  --border-subtle: #F0F0F2;
-  --border-default: #E4E4E7;
-  --border-hover: #A1A1AA;
+  --border-subtle: #EDF2F7;
+  --border-default: #E2E8F0; /* Decorative border */
+  --border-hover: #CBD5E1;
 
-  --accent-primary: #0066FF;
-  --accent-hover: #0052CC;
-  --accent-subtle: rgba(0, 102, 255, 0.08);
-  --accent-contrast: #FFFFFF;
+  --accent-primary: #2563EB; /* Cobalt primary button & action */
+  --accent-hover: #1D4ED8; /* Cobalt hover */
+  --accent-subtle: rgba(37, 99, 235, 0.08);
+  --accent-contrast: #FFFFFF; /* Crisp white text on cobalt */
+  --color-link: #1D4ED8;
 
-  /* Status text tiers: AA on light surfaces (success 5.5:1, warning 4.8:1, danger 4.5:1) */
+  /* Status text tiers: AA contrast */
   --status-success: #047857;
-  --status-success-bg: rgba(16, 185, 129, 0.08);
+  --status-success-bg: rgba(4, 120, 87, 0.08);
   --status-warning: #B45309;
-  --status-warning-bg: rgba(245, 158, 11, 0.08);
-  --status-danger: #DC2626;
-  --status-danger-bg: rgba(239, 68, 68, 0.08);
+  --status-warning-bg: rgba(180, 83, 9, 0.08);
+  --status-danger: #B91C1C;
+  --status-danger-bg: rgba(185, 28, 28, 0.08);
 
   color-scheme: light;
 }
 
 .dark {
-  /* DARK MODE (Linear & Raycast Obsidian) */
-  --bg-app: #09090B;
-  --bg-surface: #111114;
-  --bg-surface-subtle: #18181C;
-  --bg-surface-hover: #222227;
+  /* DARK MODE (Maritime Navy & Cobalt Blue — Enterprise Trade Foundation) */
+  --bg-app: #0B1220; /* Page background: deep maritime navy */
+  --bg-surface: #111C2E; /* Primary surface */
+  --bg-surface-subtle: #172338; /* Secondary surface */
+  --bg-surface-hover: #1E2D47; /* Tactile hover */
+  --bg-surface-inverse: #F7F9FC; /* Inverse surface */
 
-  --text-primary: #FAFAFA;
-  --text-secondary: #D4D4D8;
-  --text-muted: #8E8E98;
-  --text-subtle: #52525B;
+  /* Text hierarchy */
+  --text-primary: #F8FAFC; /* Primary text */
+  --text-secondary: #CBD5E1; /* Secondary text */
+  --text-muted: #94A3B8; /* Muted text */
+  --text-subtle: #64748B;
+  --text-inverse: #0F172A;
 
-  --border-subtle: #1A1A20;
-  --border-default: #25252D;
-  --border-hover: #3E3E49;
+  /* Borders: restrained maritime slate */
+  --border-subtle: #1E2D47;
+  --border-default: #2A3950; /* Decorative border */
+  --border-hover: #3E516F;
 
-  --accent-primary: #2575FC;
-  --accent-hover: #4088FF;
-  --accent-subtle: rgba(37, 117, 252, 0.12);
-  --accent-contrast: #FFFFFF;
+  --accent-primary: #2563EB; /* Cobalt primary button */
+  --accent-hover: #3B82F6; /* Cobalt hover */
+  --accent-subtle: rgba(37, 99, 235, 0.16);
+  --accent-contrast: #FFFFFF; /* Crisp white text on cobalt */
+  --color-link: #60A5FA;
 
-  /* Status text tiers: lighter for AA on dark surfaces */
+  /* Status text tiers */
   --status-success: #34D399;
-  --status-success-bg: rgba(16, 185, 129, 0.12);
+  --status-success-bg: rgba(52, 211, 153, 0.12);
   --status-warning: #FBBF24;
-  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-warning-bg: rgba(251, 191, 36, 0.12);
   --status-danger: #F87171;
-  --status-danger-bg: rgba(239, 68, 68, 0.12);
+  --status-danger-bg: rgba(248, 113, 113, 0.12);
 
   color-scheme: dark;
 }
@@ -145,6 +182,38 @@
     background-color: var(--bg-app);
     color: var(--text-primary);
     min-height: 100vh;
+    line-height: 1.55; /* Module 1.2: 1.4-1.6 for body */
+  }
+
+  /* Module 1.2 & 14.5: Tabular figures for numbers, tables, metrics */
+  table, .tabular-nums, [data-tabular], .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Module 1.2: Line height 1.1-1.2 for headings */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Module 1.4: Dim images to 90% in dark mode */
+  .dark img {
+    filter: brightness(0.9);
+  }
+
+  /* Module 14.6: Icons inherit text color by default */
+  svg:not([fill*="#"]):not([stroke*="#"]) {
+    color: currentColor;
+  }
+
+  /* Module 8.1 & 14.10: Focus visible ring with 3:1 contrast */
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
   }
 }
 

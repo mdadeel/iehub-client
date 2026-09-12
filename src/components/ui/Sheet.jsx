@@ -3,6 +3,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiX } from "react-icons/hi";
 import { cn } from "@/lib/utils";
 
+const BodyScrollLock = () => {
+  React.useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+  return null;
+};
+
 const Sheet = ({ open, onClose, children, className }) => {
   // Listen for Escape key
   React.useEffect(() => {
@@ -15,22 +26,11 @@ const Sheet = ({ open, onClose, children, className }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
-  // Lock body scroll when open
-  React.useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   return (
     <AnimatePresence>
       {open && (
         <div className="fixed inset-0 z-50 flex justify-end">
+          <BodyScrollLock />
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}

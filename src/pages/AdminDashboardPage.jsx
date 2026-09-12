@@ -12,6 +12,8 @@ import {
   HiRefresh,
   HiCurrencyDollar,
   HiShoppingCart,
+  HiDownload,
+  HiPaperClip,
 } from 'react-icons/hi';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
@@ -150,6 +152,21 @@ const AdminDashboardPage = () => {
       toast.error(err.response?.data?.message || 'Failed to resolve dispute.');
     } finally {
       setResolving(false);
+    }
+  };
+
+  const handleDownloadDoc = async (doc) => {
+    try {
+      const docId = typeof doc === 'object' ? doc._id : doc;
+      const res = await api.get(`/documents/${docId}/download-url`);
+      const link = document.createElement('a');
+      link.href = res.data.presignedGetUrl;
+      link.download = res.data.fileName || (typeof doc === 'object' ? doc.fileName : 'evidence.pdf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch {
+      toast.error('Failed to download evidence document');
     }
   };
 
@@ -751,11 +768,58 @@ const AdminDashboardPage = () => {
           />
           <form onSubmit={handleResolveDispute}>
             <ModalContent className="space-y-4">
-              <div className="p-3 bg-surface-subtle border border-border-default rounded-md text-xs space-y-1">
+              <div className="p-3 bg-surface-subtle border border-border-default rounded-md text-xs space-y-2">
                 <div><span className="font-semibold text-foreground">Claimant:</span> {selectedDispute.claimantEmail}</div>
                 <div><span className="font-semibold text-foreground">Reason:</span> {selectedDispute.reason}</div>
                 <div><span className="font-semibold text-foreground">Claimed Sum:</span> ${selectedDispute.disputedAmount?.toLocaleString()}</div>
                 <div><span className="font-semibold text-foreground">Claim Statement:</span> {selectedDispute.description || 'No statement provided.'}</div>
+
+                {selectedDispute.evidenceDocumentIds?.length > 0 && (
+                  <div className="pt-2 border-t border-border-default">
+                    <span className="font-semibold text-foreground block mb-1">Claimant Evidence Documents:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedDispute.evidenceDocumentIds.map((doc, idx) => (
+                        <button
+                          key={doc._id || idx}
+                          type="button"
+                          onClick={() => handleDownloadDoc(doc)}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface border border-border-default text-[11px] font-mono hover:bg-surface-subtle transition-colors text-accent-primary"
+                        >
+                          <HiPaperClip className="w-3 h-3 shrink-0" />
+                          <span className="max-w-[160px] truncate">{doc.fileName || `Evidence #${idx + 1}`}</span>
+                          <HiDownload className="w-3 h-3 shrink-0 text-foreground-muted ml-0.5" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {selectedDispute.counterEvidenceNotes && (
+                  <div className="pt-2 border-t border-border-default">
+                    <span className="font-semibold text-foreground block">Respondent Counter-Statement:</span>
+                    <p className="text-foreground-muted italic mt-0.5">{selectedDispute.counterEvidenceNotes}</p>
+                  </div>
+                )}
+
+                {selectedDispute.counterEvidenceDocumentIds?.length > 0 && (
+                  <div className="pt-2 border-t border-border-default">
+                    <span className="font-semibold text-foreground block mb-1">Respondent Counter-Evidence:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedDispute.counterEvidenceDocumentIds.map((doc, idx) => (
+                        <button
+                          key={doc._id || idx}
+                          type="button"
+                          onClick={() => handleDownloadDoc(doc)}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface border border-border-default text-[11px] font-mono hover:bg-surface-subtle transition-colors text-accent-primary"
+                        >
+                          <HiPaperClip className="w-3 h-3 shrink-0" />
+                          <span className="max-w-[160px] truncate">{doc.fileName || `Counter-Doc #${idx + 1}`}</span>
+                          <HiDownload className="w-3 h-3 shrink-0 text-foreground-muted ml-0.5" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>

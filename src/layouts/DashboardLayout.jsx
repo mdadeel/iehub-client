@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   HiPlus,
   HiArrowDown,
@@ -6,27 +6,36 @@ import {
   HiUser,
   HiViewGrid,
   HiShieldCheck,
-  HiGlobeAlt,
+  HiDocumentText,
+  HiLogout,
 } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
+import { useOrgs } from '../context/OrgsContext';
+import { canManageListings, isAdminUser } from '@/lib/permissions';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
 import Navbar from '../components/Navbar';
-import OrganizationSwitcher from '../components/OrganizationSwitcher';
 
 const DashboardLayout = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const { activeOrg } = useOrgs();
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
+  const showSellerLinks = canManageListings(user, activeOrg);
 
   const menuItems = [
-    { title: 'Overview', path: '/dashboard', icon: HiViewGrid, end: true },
-    { title: 'Source Products', path: '/products', icon: HiGlobeAlt },
-    { title: 'New Listing', path: '/dashboard/add-export', icon: HiPlus, hidden: user?.isGuest },
-    { title: 'Inventory (Exports)', path: '/dashboard/my-exports', icon: HiArrowUp, hidden: user?.isGuest },
+    { title: 'Overview', path: '/dashboard', end: true, icon: HiViewGrid },
+    { title: 'New Listing', path: '/dashboard/add-export', icon: HiPlus, hidden: !showSellerLinks },
+    { title: 'Inventory (Exports)', path: '/dashboard/my-exports', icon: HiArrowUp, hidden: !showSellerLinks },
     { title: 'Purchase Orders', path: '/dashboard/my-imports', icon: HiArrowDown, hidden: user?.isGuest },
+    { title: 'Document Vault', path: '/dashboard/documents', icon: HiDocumentText, hidden: user?.isGuest },
     { title: 'Settings', path: '/dashboard/profile', icon: HiUser },
   ].filter((item) => !item.hidden);
 
-  if (user?.isAdmin || user?.role === 'admin' || user?.userType === 'demo-admin') {
+  if (isAdminUser(user)) {
     menuItems.push({
       title: 'Admin Console',
       path: '/admin/dashboard',
@@ -50,14 +59,6 @@ const DashboardLayout = () => {
               {user?.isGuest ? 'Demo' : 'Live'}
             </Badge>
           </div>
-          <div className="text-xs font-semibold text-foreground truncate mt-1">
-            {user?.displayName || 'Trade Account'}
-          </div>
-          {!user?.isGuest && (
-            <div className="mt-3">
-              <OrganizationSwitcher />
-            </div>
-          )}
         </div>
 
         {/* Navigation Items */}
@@ -85,21 +86,16 @@ const DashboardLayout = () => {
           })}
         </nav>
 
-        {/* Bottom User Bar */}
+        {/* Bottom Sign Out */}
         <div className="mt-auto pt-4 border-t border-border-subtle">
-          <div className="flex items-center gap-2.5 p-2 rounded-lg bg-surface-subtle border border-border-subtle">
-            <div className="w-7 h-7 rounded-md bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-xs shrink-0">
-              {user?.displayName?.charAt(0) || 'U'}
-            </div>
-            <div className="overflow-hidden">
-              <div className="text-xs font-medium text-foreground truncate">
-                {user?.displayName || 'User'}
-              </div>
-              <div className="text-[10px] text-foreground-muted truncate">
-                {user?.isGuest ? 'Read-only Sandbox' : 'Verified Member'}
-              </div>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-foreground-secondary hover:text-status-danger hover:bg-status-danger-bg w-full text-left transition-colors"
+          >
+            <HiLogout className="w-4 h-4 shrink-0" />
+            <span className="truncate">Sign Out</span>
+          </button>
         </div>
       </aside>
 

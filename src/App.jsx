@@ -30,6 +30,7 @@ import TradeExpertsPage from './pages/TradeExpertsPage';
 import MarketInsightsPage from './pages/MarketInsightsPage';
 import CreateOrganizationPage from './pages/CreateOrganizationPage';
 import InviteAcceptPage from './pages/InviteAcceptPage';
+import DocumentVaultPage from './pages/DocumentVaultPage';
 
 // Routes
 import PrivateRoute from './routes/PrivateRoute';
@@ -78,6 +79,7 @@ function App() {
             <Route path="add-export" element={<AddExportPage />} />
             <Route path="my-exports" element={<MyExportsPage />} />
             <Route path="my-imports" element={<MyImportsPage />} />
+            <Route path="documents" element={<DocumentVaultPage />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>
         </Route>

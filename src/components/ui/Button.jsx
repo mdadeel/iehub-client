@@ -4,23 +4,24 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-medium transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.99]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium transition-all duration-75 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.97]",
   {
     variants: {
       variant: {
         default: "bg-accent-primary text-accent-contrast shadow-xs hover:bg-accent-hover",
         primary: "bg-accent-primary text-accent-contrast shadow-xs hover:bg-accent-hover",
-        destructive: "bg-status-danger text-accent-contrast shadow-xs hover:opacity-90",
+        destructive: "bg-status-danger text-white shadow-xs hover:opacity-90",
+        danger: "bg-status-danger text-white shadow-xs hover:opacity-90",
         outline: "border border-border-default bg-surface text-foreground hover:bg-surface-hover hover:border-border-hover shadow-2xs",
         secondary: "bg-surface-subtle text-foreground border border-border-default hover:bg-surface-hover shadow-2xs",
         ghost: "text-foreground-secondary hover:bg-surface-hover hover:text-foreground",
         link: "text-accent-primary underline-offset-4 hover:underline p-0 h-auto",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-[11px]",
-        lg: "h-10 rounded-md px-6 text-sm",
-        icon: "h-9 w-9 p-0",
+        default: "h-9 min-h-[36px] px-4 py-2",
+        sm: "h-8 min-h-[32px] rounded-md px-3 text-[11px]",
+        lg: "h-10 min-h-[40px] rounded-md px-6 text-sm",
+        icon: "h-9 w-9 min-h-[36px] min-w-[36px] p-0",
       },
     },
     defaultVariants: {

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
+import { useOrgs } from '../context/OrgsContext';
+import { canManageListings, canManageOrgSettings } from '@/lib/permissions';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
@@ -9,12 +11,25 @@ import { CommandPalette } from './ui/CommandPalette';
 import OrganizationSwitcher from './OrganizationSwitcher';
 import {
     HiMenu, HiX, HiMoon, HiSun, HiLogout,
-    HiChevronDown, HiUser, HiSearch,
-    HiViewGrid, HiGlobeAlt, HiArrowUp, HiArrowDown
+    HiChevronDown, HiChevronRight, HiUser, HiSearch,
+    HiViewGrid, HiGlobeAlt, HiArrowUp, HiArrowDown,
+    HiShoppingBag, HiTruck, HiDocumentText, HiShieldCheck, HiSupport,
+    HiOutlineShoppingBag, HiOutlineTruck, HiOutlineDocumentText, HiOutlineShieldCheck, HiOutlineSupport
 } from 'react-icons/hi';
+
+const NAV_ITEMS = [
+    { to: '/products', label: 'Source Products', icon: HiOutlineShoppingBag, activeIcon: HiShoppingBag },
+    { to: '/shipping', label: 'Track Shipments', icon: HiOutlineTruck, activeIcon: HiTruck },
+    { to: '/trades', label: 'Recent Trades', icon: HiOutlineDocumentText, activeIcon: HiDocumentText },
+    { to: '/about', label: 'Why IEHUB', icon: HiOutlineShieldCheck, activeIcon: HiShieldCheck },
+    { to: '/contact', label: 'Trade Desk', icon: HiOutlineSupport, activeIcon: HiSupport },
+];
 
 const Navbar = () => {
     const { user, logout, theme, toggleTheme } = useAuth();
+    const { activeOrg } = useOrgs();
+    const showSellerLinks = canManageListings(user, activeOrg);
+    const showOrgSettings = canManageOrgSettings(user, activeOrg);
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
@@ -58,114 +73,114 @@ const Navbar = () => {
                     : "bg-surface border-border-subtle"
             )}>
                 <nav className="flex items-center justify-between h-full px-4 sm:px-6 lg:px-8 no-scrollbar">
-                    {/* Left: Brand & Animated Nav Links */}
-                    <div className="flex items-center gap-4 lg:gap-6 min-w-0">
-                        <Link to="/" className="flex items-center gap-2 group select-none shrink-0">
-                            <div className="w-7 h-7 bg-accent-primary rounded-md flex items-center justify-center p-1 text-accent-contrast shadow-xs">
+                    {/* Left: Brand, Search Bar & Animated Nav Links */}
+                    <div className="flex items-center gap-3 lg:gap-4 min-w-0">
+                        {/* Logo mark only (no text) */}
+                        <Link to="/" className="flex items-center group select-none shrink-0" aria-label="IEHUB Home">
+                            <div className="w-7 h-7 bg-accent-primary rounded-md flex items-center justify-center p-1 text-accent-contrast shadow-xs group-hover:bg-accent-hover transition-colors">
                                 <span className="font-mono font-bold text-xs tracking-tighter">IE</span>
                             </div>
-                            <span className="font-semibold text-sm tracking-tight text-foreground">
-                                IE<span className="text-foreground-muted font-normal">HUB</span>
-                            </span>
                         </Link>
 
-                        {/* Desktop Nav Links with Animated Active Indicator — task-based */}
+                        {/* Search Bar on the Left */}
+                        <div className="hidden lg:flex items-center">
+                            <button
+                                type="button"
+                                onClick={() => setCommandOpen(true)}
+                                className="flex items-center gap-2 w-48 xl:w-60 px-2.5 py-1.5 text-xs text-foreground-muted bg-surface-subtle border border-border-default rounded-md hover:border-border-hover transition-colors"
+                            >
+                                <HiSearch className="w-3.5 h-3.5 text-foreground-muted shrink-0" />
+                                <span className="flex-1 text-left truncate">Search…</span>
+                                <kbd className="rounded bg-surface px-1.5 py-0.5 text-[10px] font-mono text-foreground-muted border border-border-default shrink-0">
+                                    ⌘K
+                                </kbd>
+                            </button>
+                        </div>
+
+                        {/* Desktop Nav Links with Icons & Active Indicator */}
                         <div className="hidden md:flex items-center gap-1 text-xs overflow-x-auto no-scrollbar">
-                            {[
-                                { to: '/products', label: 'Source Products' },
-                                { to: '/shipping', label: 'Track Shipments' },
-                                { to: '/trades', label: 'Recent Trades' },
-                                { to: '/about', label: 'Why IEHUB' },
-                                { to: '/contact', label: 'Trade Desk' },
-                            ].map((item) => (
+                            {NAV_ITEMS.map((item) => (
                                 <NavLink
                                     key={item.to}
                                     to={item.to}
                                     className={({ isActive }) => cn(
-                                        "relative px-2.5 lg:px-3 py-1.5 rounded-md font-medium transition-colors select-none",
+                                        "relative flex items-center gap-2 px-2.5 lg:px-3 py-1.5 rounded-md font-medium transition-colors select-none",
                                         isActive
                                             ? "text-foreground font-semibold"
                                             : "text-foreground-secondary hover:text-foreground hover:bg-surface-hover/40"
                                     )}
                                 >
-                                    {({ isActive }) => (
-                                        <>
-                                            <span className="relative z-10">{item.label}</span>
-                                            {isActive && (
-                                                <motion.div
-                                                    layoutId="navbar-active-pill"
-                                                    className="absolute inset-0 bg-surface-subtle border border-border-default/70 rounded-md z-0 shadow-2xs"
-                                                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                                                />
-                                            )}
-                                        </>
-                                    )}
+                                    {({ isActive }) => {
+                                        const Icon = isActive ? item.activeIcon : item.icon;
+                                        return (
+                                            <>
+                                                <Icon className={cn("relative z-10 w-4 h-4 shrink-0 transition-colors", isActive ? "text-accent-primary" : "text-foreground-muted")} aria-hidden="true" />
+                                                <span className="relative z-10">{item.label}</span>
+                                                {isActive && (
+                                                    <motion.div
+                                                        layoutId="navbar-active-pill"
+                                                        className="absolute inset-0 bg-surface-subtle border border-border-default/70 rounded-md z-0 shadow-2xs"
+                                                        transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                                                    />
+                                                )}
+                                            </>
+                                        );
+                                    }}
                                 </NavLink>
                             ))}
                         </div>
                     </div>
 
-                    {/* Center: Command Palette Trigger Button */}
-                    <div className="hidden lg:flex items-center">
-                        <button
-                            type="button"
-                            onClick={() => setCommandOpen(true)}
-                            className="flex items-center gap-2 w-56 xl:w-72 px-3 py-1.5 text-xs text-foreground-muted bg-surface-subtle border border-border-default rounded-md hover:border-border-hover transition-colors"
-                        >
-                            <HiSearch className="w-3.5 h-3.5 text-foreground-muted" />
-                            <span className="flex-1 text-left truncate">Search commodities, suppliers, or orders…</span>
-                            <kbd className="rounded bg-surface px-1.5 py-0.5 text-[10px] font-mono text-foreground-muted border border-border-default">
-                                ⌘K
-                            </kbd>
-                        </button>
-                    </div>
-
                     {/* Right: Status, Theme & User Actions */}
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2">
                         {user && !user.isGuest && (
                             <div className="hidden sm:flex items-center">
                                 <OrganizationSwitcher compact />
                             </div>
                         )}
-                        {/* Theme Toggle */}
-                        <Button
-                            variant="ghost"
-                            size="icon"
+                        {/* Theme Toggle Button */}
+                        <button
+                            type="button"
                             onClick={toggleTheme}
-                            className="h-8 w-8 text-foreground-secondary hover:text-foreground"
+                            className="h-8 w-8 rounded-lg border border-border-default/80 bg-surface hover:bg-surface-hover text-foreground-secondary hover:text-foreground flex items-center justify-center transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
                             aria-label="Toggle theme"
                         >
                             {theme === 'light' ? <HiMoon className="w-4 h-4" /> : <HiSun className="w-4 h-4 text-status-warning" />}
-                        </Button>
+                        </button>
 
                         <div className="h-4 w-px bg-border-default mx-0.5 hidden sm:block" />
 
                         {user ? (
                             <div className="relative" ref={dropdownRef}>
                                 <button
+                                    type="button"
                                     onClick={() => setProfileOpen(!profileOpen)}
-                                    className="flex items-center gap-2 p-1 rounded-md hover:bg-surface-hover text-xs transition-colors"
+                                    className="flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border-default/80 bg-surface hover:bg-surface-hover text-xs transition-all shadow-2xs group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                                    aria-label="User account menu"
+                                    aria-expanded={profileOpen}
                                 >
-                                    <div className="w-7 h-7 rounded-full bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-semibold text-xs">
+                                    <div className="w-6 h-6 rounded-full bg-accent-subtle text-accent-primary border border-accent-primary/25 flex items-center justify-center font-bold text-[11px] shrink-0">
                                         {user.photoURL ? (
                                             <img src={user.photoURL} alt="" className="w-full h-full rounded-full object-cover" />
                                         ) : (
-                                            user.displayName?.charAt(0) || "T"
+                                            user.displayName?.charAt(0) || "U"
                                         )}
                                     </div>
-                                    <span className="hidden sm:inline font-medium text-foreground max-w-[100px] truncate">
-                                        {user.displayName?.split(' ')[0]}
+                                    <span className="hidden sm:inline font-semibold text-foreground max-w-[90px] truncate text-left">
+                                        {user.displayName?.split(' ')[0] || 'Account'}
                                     </span>
-                                    <HiChevronDown className={cn("w-3.5 h-3.5 text-foreground-muted transition-transform", profileOpen && "rotate-180")} />
+                                    <span className="hidden lg:inline-block w-1.5 h-1.5 rounded-full bg-status-success shrink-0" title="Active Trader" />
+                                    <HiChevronDown className={cn("w-3.5 h-3.5 text-foreground-muted group-hover:text-foreground transition-transform shrink-0", profileOpen && "rotate-180")} />
                                 </button>
 
                                 <AnimatePresence>
                                     {profileOpen && (
                                         <motion.div
-                                            initial={{ opacity: 0, y: 4, scale: 0.98 }}
+                                            initial={{ opacity: 0, y: 4, scale: 0.96 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 2, scale: 0.98 }}
+                                            exit={{ opacity: 0, y: 2, scale: 0.96 }}
                                             transition={{ duration: 0.12 }}
+                                            style={{ transformOrigin: 'top right' }}
                                             className="absolute right-0 top-full mt-1.5 w-56 bg-surface border border-border-default rounded-lg shadow-xl p-1.5 z-50 text-xs"
                                         >
                                             <div className="px-2.5 py-2 border-b border-border-subtle mb-1">
@@ -187,14 +202,16 @@ const Navbar = () => {
                                                 Dashboard Overview
                                             </Link>
 
-                                            <Link
-                                                to="/dashboard/my-exports"
-                                                onClick={() => setProfileOpen(false)}
-                                                className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-surface-hover text-foreground-secondary hover:text-foreground transition-colors"
-                                            >
-                                                <HiArrowUp className="w-4 h-4 text-foreground-muted" />
-                                                My Inventory
-                                            </Link>
+                                            {showSellerLinks && (
+                                                <Link
+                                                    to="/dashboard/my-exports"
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-surface-hover text-foreground-secondary hover:text-foreground transition-colors"
+                                                >
+                                                    <HiArrowUp className="w-4 h-4 text-foreground-muted" />
+                                                    My Inventory
+                                                </Link>
+                                            )}
 
                                             <Link
                                                 to="/dashboard/my-imports"
@@ -205,14 +222,16 @@ const Navbar = () => {
                                                 Import Orders
                                             </Link>
 
-                                            <Link
-                                                to="/dashboard/profile"
-                                                onClick={() => setProfileOpen(false)}
-                                                className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-surface-hover text-foreground-secondary hover:text-foreground transition-colors"
-                                            >
-                                                <HiUser className="w-4 h-4 text-foreground-muted" />
-                                                Corporate Settings
-                                            </Link>
+                                            {showOrgSettings && (
+                                                <Link
+                                                    to="/dashboard/profile"
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-surface-hover text-foreground-secondary hover:text-foreground transition-colors"
+                                                >
+                                                    <HiUser className="w-4 h-4 text-foreground-muted" />
+                                                    Corporate Settings
+                                                </Link>
+                                            )}
 
                                             <div className="border-t border-border-subtle my-1" />
 
@@ -247,7 +266,9 @@ const Navbar = () => {
                             size="icon"
                             className="md:hidden h-8 w-8"
                             onClick={() => setMobileOpen(!mobileOpen)}
-                            aria-label="Toggle navigation"
+                            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+                            aria-expanded={mobileOpen}
+                            aria-controls="mobile-nav-menu"
                         >
                             {mobileOpen ? <HiX className="w-5 h-5" /> : <HiMenu className="w-5 h-5" />}
                         </Button>
@@ -258,69 +279,65 @@ const Navbar = () => {
                 <AnimatePresence>
                     {mobileOpen && (
                         <motion.div
+                            id="mobile-nav-menu"
+                            role="region"
+                            aria-label="Mobile Navigation"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.15 }}
-                            className="md:hidden bg-surface border-b border-border-default overflow-hidden px-4 py-4 space-y-3"
+                            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="md:hidden bg-surface border-b border-border-default overflow-hidden"
                         >
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setMobileOpen(false);
-                                    setCommandOpen(true);
-                                }}
-                                className="flex items-center gap-2 w-full px-3 py-2 text-xs text-foreground-muted bg-surface-subtle border border-border-default rounded-md"
-                            >
-                                <HiSearch className="w-4 h-4" />
-                                <span>Search commodities, suppliers, or orders…</span>
-                            </button>
+                            <div className="px-4 py-4 space-y-3">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setMobileOpen(false);
+                                        setCommandOpen(true);
+                                    }}
+                                    className="flex items-center gap-2 w-full px-3 py-2 text-xs text-foreground-muted bg-surface-subtle border border-border-default rounded-md"
+                                >
+                                    <HiSearch className="w-4 h-4" />
+                                    <span>Search commodities, suppliers, or orders…</span>
+                                </button>
 
-                            <div className="grid gap-1 pt-2">
-                                <Link
-                                    to="/products"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="px-3 py-2 rounded-md text-xs font-medium text-foreground hover:bg-surface-subtle"
-                                >
-                                    Source Products
-                                </Link>
-                                <Link
-                                    to="/shipping"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="px-3 py-2 rounded-md text-xs font-medium text-foreground hover:bg-surface-subtle"
-                                >
-                                    Track Shipments
-                                </Link>
-                                <Link
-                                    to="/trades"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="px-3 py-2 rounded-md text-xs font-medium text-foreground hover:bg-surface-subtle"
-                                >
-                                    Recent Trades
-                                </Link>
-                                <Link
-                                    to="/about"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="px-3 py-2 rounded-md text-xs font-medium text-foreground hover:bg-surface-subtle"
-                                >
-                                    Why IEHUB
-                                </Link>
-                                <Link
-                                    to="/contact"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="px-3 py-2 rounded-md text-xs font-medium text-foreground hover:bg-surface-subtle"
-                                >
-                                    Trade Desk
-                                </Link>
-                                {user && (
-                                    <Link
-                                        to="/dashboard"
-                                        onClick={() => setMobileOpen(false)}
-                                        className="px-3 py-2 rounded-md text-xs font-medium text-accent-primary hover:bg-accent-subtle"
-                                    >
-                                        Go to Workspace
-                                    </Link>
-                                )}
+                                <div className="grid gap-1 pt-2">
+                                    {NAV_ITEMS.map((item) => {
+                                        const Icon = item.icon;
+                                        return (
+                                            <NavLink
+                                                key={item.to}
+                                                to={item.to}
+                                                onClick={() => setMobileOpen(false)}
+                                                className={({ isActive }) => cn(
+                                                    "flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium transition-colors select-none",
+                                                    isActive
+                                                        ? "bg-accent-subtle text-accent-primary font-semibold border border-accent-primary/20"
+                                                        : "text-foreground hover:bg-surface-subtle"
+                                                )}
+                                            >
+                                                <div className="flex items-center gap-2.5">
+                                                    <Icon className="w-4 h-4 shrink-0 opacity-80" aria-hidden="true" />
+                                                    <span>{item.label}</span>
+                                                </div>
+                                                <HiChevronRight className="w-4 h-4 text-foreground-muted opacity-60" aria-hidden="true" />
+                                            </NavLink>
+                                        );
+                                    })}
+                                    {user && (
+                                        <Link
+                                            to="/dashboard"
+                                            onClick={() => setMobileOpen(false)}
+                                            className="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-accent-primary bg-accent-subtle/50 hover:bg-accent-subtle border border-accent-primary/15 mt-1 transition-colors"
+                                        >
+                                            <div className="flex items-center gap-2.5">
+                                                <HiViewGrid className="w-4 h-4" aria-hidden="true" />
+                                                <span>Go to Workspace</span>
+                                            </div>
+                                            <HiChevronRight className="w-4 h-4" aria-hidden="true" />
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         </motion.div>
                     )}

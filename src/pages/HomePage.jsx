@@ -124,7 +124,7 @@ const TradeBreaksSection = () => {
                   </div>
                 ))}
               </div>
-              <Button asChild variant="secondary" className="mt-7 bg-white text-foreground hover:bg-white/90 gap-2">
+              <Button asChild variant="secondary" className="mt-7 bg-white text-[#0F172A] border-white hover:bg-white/90 gap-2">
                 <Link to="/products">
                   See the workflow in action <HiArrowRight className="w-4 h-4" />
                 </Link>
@@ -846,7 +846,7 @@ const TradeDeskSection = () => {
           </div>
 
           {/* Support workflow — editorial, not a card grid — aligns with h2 */}
-          <div className="rounded-2xl bg-foreground text-white p-7 md:p-8 lg:mt-12 lg:sticky lg:top-24">
+          <div className="rounded-2xl bg-[#0B1220] text-white border border-white/10 p-7 md:p-8 lg:mt-12 lg:sticky lg:top-24">
             <h3 className="text-[22px] font-bold tracking-tight leading-tight mb-2">How support actually works.</h3>
             <p className="text-[14px] leading-[1.6] text-white/70 mb-6">No deflect-to-help-center. Each step has a named owner.</p>
             <div className="space-y-5">
@@ -882,7 +882,7 @@ const TradeDeskSection = () => {
 // S9 — Final CTA (conversion-focused, human)
 // ─────────────────────────────────────────────────────────────
 const FinalCTA = () => (
-  <section className="relative overflow-hidden bg-foreground text-white">
+  <section className="relative overflow-hidden bg-[#0B1220] text-white">
     <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/15 via-transparent to-transparent pointer-events-none" />
     <div className="container max-w-[1280px] relative py-16 md:py-20">
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center">
@@ -896,7 +896,7 @@ const FinalCTA = () => (
         </div>
         <div className="lg:text-right">
           <div className="inline-flex flex-col gap-3 w-full sm:w-auto">
-            <Button size="lg" variant="secondary" asChild className="h-12 px-7 text-[15px] font-semibold gap-2 bg-white text-foreground hover:bg-white/90 justify-center">
+            <Button size="lg" variant="secondary" asChild className="h-12 px-7 text-[15px] font-semibold gap-2 bg-white text-[#0F172A] border-white hover:bg-white/90 justify-center">
               <Link to="/products">
                 Find verified suppliers <HiArrowRight className="w-4 h-4" />
               </Link>

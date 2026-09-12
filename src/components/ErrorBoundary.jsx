@@ -28,31 +28,33 @@ class ErrorBoundary extends React.Component {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
               </div>
-              <CardTitle className="text-3xl font-black tracking-tighter">System Interruption</CardTitle>
-              <CardDescription className="font-bold text-xs uppercase tracking-widest mt-2">Critical Process Termination Error</CardDescription>
+              <CardTitle className="text-2xl font-bold tracking-tight">Something went wrong</CardTitle>
+              <CardDescription className="text-xs text-foreground-muted mt-1">An unexpected error occurred in this workspace view.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="p-6 bg-muted/50 rounded-xl border font-mono text-[10px] leading-relaxed overflow-auto max-h-[300px]">
-                <p className="text-destructive font-black mb-2 uppercase tracking-widest">Error Log:</p>
-                <div className="opacity-70">
+              <div className="p-4 bg-surface-subtle rounded-lg border border-border-default font-mono text-[11px] leading-relaxed overflow-auto max-h-[220px]">
+                <p className="text-status-danger font-semibold mb-1 uppercase tracking-wider text-[10px]">Diagnostics:</p>
+                <div className="opacity-80 text-foreground-secondary">
                   {this.state.error && this.state.error.toString()}
                   <br /><br />
                   {this.state.errorInfo && this.state.errorInfo.componentStack}
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button 
                   onClick={() => window.location.href = '/'}
-                  className="font-black bg-figma-blue hover:bg-figma-blue/90 h-12 px-8 rounded-full shadow-lg shadow-figma-blue/20"
+                  size="default"
+                  className="font-medium px-6"
                 >
-                  REBOOT TERMINAL
+                  Return to Workspace
                 </Button>
                 <Button 
                   variant="outline"
                   onClick={() => window.location.reload()}
-                  className="font-black border-2 h-12 px-8 rounded-full"
+                  size="default"
+                  className="font-medium px-6"
                 >
-                  RETRY SEQUENCE
+                  Reload Page
                 </Button>
               </div>
             </CardContent>
