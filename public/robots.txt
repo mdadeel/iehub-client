@@ -16,4 +16,4 @@ Disallow: /register
 Disallow: /organizations/
 Disallow: /invites/
 
-Sitemap: https://iehub-client.vercel.app/sitemap.xml
+Sitemap: https://iehub.vercel.app/sitemap.xml
