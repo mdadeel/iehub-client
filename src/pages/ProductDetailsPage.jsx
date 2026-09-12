@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
+import SEOHead from '../components/SEOHead';
 import api from '../utils/api';
 import {
   HiArrowLeft,
@@ -184,8 +185,36 @@ const ProductDetailsPage = () => {
   const isVerified = product.verificationStatus === 'verified';
   const certificates = Array.isArray(product.certificates) ? product.certificates : [];
 
+  const productSchema = {
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: product.name,
+    image: [product.image],
+    description: product.description || `Export-grade ${product.category} commodity listing from ${product.origin || 'global supplier'}.`,
+    sku: `SKU-${String(product._id).slice(-8).toUpperCase()}`,
+    category: product.category,
+    offers: {
+      '@type': 'Offer',
+      url: window.location.href,
+      priceCurrency: 'USD',
+      price: product.price,
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: (product.quantity || 0) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      seller: {
+        '@type': 'Organization',
+        name: product.exporterEmail || 'Verified Exporter',
+      },
+    },
+  };
+
   return (
     <div className="min-h-screen bg-canvas pb-20">
+      <SEOHead
+        title={`${product.name} (${product.origin || 'FOB'}) — Source Verified Commodity | IEHUB`}
+        description={`Source ${product.name} from ${product.origin || 'verified suppliers'}. Category: ${product.category}. MOQ: ${moq} ${product.unit || 'units'}. Price: $${product.price} USD. Trade protected by fiduciary escrow.`}
+        ogImage={product.image}
+        schemaData={productSchema}
+      />
       <div className="container py-8 max-w-6xl">
         {/* Navigation Breadcrumb */}
         <button

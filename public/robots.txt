@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /products
+Allow: /products/*
+Allow: /categories
+Allow: /trades
+Allow: /shipping
+Allow: /about
+Allow: /contact
+
+# Disallow Private Workspace & Admin Routes
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /organizations/
+Disallow: /invites/
+
+Sitemap: https://iehub-client.vercel.app/sitemap.xml

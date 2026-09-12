@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 import {
@@ -133,8 +134,32 @@ const AllProductsPage = () => {
     return Boolean(searchTerm || category !== 'All' || incotermFilter !== 'All' || sortBy !== 'name');
   }, [searchTerm, category, incotermFilter, sortBy]);
 
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Verified Commodity Sourcing Marketplace',
+    description: 'Browse verified export-ready commodities, live FOB/CIF trade pricing, and international supply positions.',
+    url: 'https://iehub-client.vercel.app/products',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: products.length,
+      itemListElement: products.slice(0, 10).map((p, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://iehub-client.vercel.app/products/${p._id}`,
+        name: p.name,
+      })),
+    },
+  };
+
   return (
     <div className="container py-8 md:py-12 max-w-7xl">
+      <SEOHead
+        title={`${category !== 'All' ? `${category} Commodities` : 'Verified Sourcing Marketplace'} | IEHUB Trade OS`}
+        description="Browse verified export-ready commodities, live FOB/CIF pricing, and international supply positions. Filter by Incoterms 2020, named origin port, and HS tariff codes."
+        canonicalUrl="https://iehub-client.vercel.app/products"
+        schemaData={collectionSchema}
+      />
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border-default mb-6">
         <div>

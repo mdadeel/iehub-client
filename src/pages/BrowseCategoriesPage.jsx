@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { HiArrowRight } from 'react-icons/hi';
@@ -15,6 +16,11 @@ const BrowseCategoriesPage = () => {
 
   return (
     <div className="container py-12 md:py-16 max-w-6xl">
+      <SEOHead
+        title="Commodity Directory & Trade Sectors | IEHUB"
+        description="Browse international trade sectors and export commodities classified under Harmonized Tariff Schedules (HTS)."
+        canonicalUrl="https://iehub-client.vercel.app/categories"
+      />
       <div className="text-center max-w-2xl mx-auto mb-12">
         <Badge variant="neutral" size="sm" className="mb-2">
           Commodity Directory

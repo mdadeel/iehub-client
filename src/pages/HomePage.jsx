@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
+import SEOHead from '../components/SEOHead';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
@@ -924,8 +925,36 @@ const FinalCTA = () => (
 // Page
 // ─────────────────────────────────────────────────────────────
 const HomePage = () => {
+  const homeSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': 'https://iehub-client.vercel.app/#organization',
+        name: 'IEHUB Global Trade Network',
+        url: 'https://iehub-client.vercel.app',
+        logo: 'https://iehub-client.vercel.app/logo.png',
+        description: 'Global B2B commodity marketplace and ocean trade logistics infrastructure.',
+        knowsAbout: ['International Trade', 'Incoterms 2020', 'Commercial Escrow', 'Ocean Logistics'],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://iehub-client.vercel.app/#website',
+        url: 'https://iehub-client.vercel.app',
+        name: 'IEHUB',
+        publisher: { '@id': 'https://iehub-client.vercel.app/#organization' },
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <SEOHead
+        title="IEHUB | Global B2B Commodity Marketplace & Trade Infrastructure"
+        description="Source verified international commodity suppliers, issue binding commercial purchase orders under ICC Incoterms 2020, and track ocean shipments to port arrival."
+        canonicalUrl="https://iehub-client.vercel.app/"
+        schemaData={homeSchema}
+      />
       <Hero />
       <TradeBreaksSection />
       <SupplierToWarehouse />
