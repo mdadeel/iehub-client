@@ -85,13 +85,6 @@
   --color-input: var(--border-default);
   --color-ring: var(--accent-primary);
 
-  /* Legacy Bridge Tokens (remapped to disciplined system) */
-  --color-figma-blue: var(--accent-primary);
-  --color-figma-purple: var(--accent-primary);
-  --color-figma-orange: var(--status-warning);
-  --color-figma-green: var(--status-success);
-  --color-figma-pink: var(--status-danger);
-  --color-figma-black: var(--bg-surface);
 }
 
 :root {
