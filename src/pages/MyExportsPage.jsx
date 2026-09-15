@@ -31,6 +31,7 @@ import {
   TableRow,
   TableCell,
 } from '../components/ui/Table';
+import { Card } from '../components/ui/Card';
 import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
 import { Modal, ModalHeader, ModalContent, ModalFooter } from '../components/ui/Modal';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';

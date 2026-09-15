@@ -26,6 +26,7 @@ import { EmptyState } from '../components/ui/EmptyState';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { Modal, ModalHeader, ModalContent, ModalFooter } from '../components/ui/Modal';
+import { Card } from '../components/ui/Card';
 import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
 import { DropdownMenu } from '../components/ui/DropdownMenu';
 import OrderMessageThread from '../components/OrderMessageThread';
