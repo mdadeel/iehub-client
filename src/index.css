@@ -179,7 +179,7 @@
   }
 
   /* Module 1.2 & 14.5: Tabular figures for numbers, tables, metrics */
-  table, .tabular-nums, [data-tabular], .font-mono {
+  table, .tabular-nums, .font-mono {
     font-variant-numeric: tabular-nums;
   }
 
