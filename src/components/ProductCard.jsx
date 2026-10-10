@@ -94,13 +94,13 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
       <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
         <div>
           {/* Origin & Verification Details */}
-          <div className="flex items-center justify-between gap-1 text-[11px] text-foreground-muted mb-1 truncate">
+          <div className="flex items-center justify-between gap-1 text-[11px] text-foreground-muted mb-1.5 truncate">
             <div className="flex items-center gap-1 truncate">
               <HiLocationMarker className="w-3.5 h-3.5 text-foreground-subtle shrink-0" />
               <span className="truncate">{origin}</span>
             </div>
             {isVerified && (
-              <span className="inline-flex items-center gap-0.5 text-status-success text-[10px] font-medium shrink-0">
+              <span className="inline-flex items-center gap-0.5 text-status-success text-[10px] font-semibold shrink-0">
                 <HiShieldCheck className="w-3.5 h-3.5" />
                 <span>Verified</span>
               </span>
@@ -108,13 +108,20 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           </div>
 
           {/* Commodity Name */}
-          <h3 className="font-semibold text-sm text-foreground leading-snug line-clamp-1 group-hover:text-accent-primary transition-colors">
+          <h3 className="font-bold text-sm text-foreground leading-snug line-clamp-1 group-hover:text-accent-primary transition-colors">
             {product.name}
           </h3>
 
-          {/* MOQ / Lead time indicator */}
-          <div className="text-[11px] text-foreground-muted mt-1">
-            MOQ: <span className="font-medium text-foreground">{moq.toLocaleString()} {unit}</span>
+          {/* HS Code and MOQ */}
+          <div className="flex items-center gap-2 mt-1.5 text-[11px] text-foreground-muted">
+            {product.hsCode && (
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-surface-subtle border border-border-subtle text-foreground-secondary">
+                HS {product.hsCode}
+              </span>
+            )}
+            <span>
+              MOQ: <strong className="font-semibold text-foreground">{moq.toLocaleString()} {unit}</strong>
+            </span>
           </div>
         </div>
 
@@ -136,8 +143,8 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
             <div className="text-[10px] font-mono text-foreground-muted">
               {availableQty.toLocaleString()} {unit} avail.
             </div>
-            <div className="inline-flex items-center gap-1 text-xs font-medium text-accent-primary group-hover:translate-x-0.5 transition-transform mt-0.5">
-              <span>View</span>
+            <div className="inline-flex items-center gap-1 text-xs font-semibold text-[#2563EB] group-hover:translate-x-0.5 transition-transform mt-0.5">
+              <span>View Details</span>
               <HiArrowRight className="w-3 h-3" />
             </div>
           </div>

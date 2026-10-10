@@ -35,6 +35,151 @@ const SectionLabel = ({ children }) => (
 );
 
 // ─────────────────────────────────────────────────────────────
+// S1.5 — The 5-Stage Trade Lifecycle & Active Maritime Corridors
+// ─────────────────────────────────────────────────────────────
+const TradeLifecycleSection = () => {
+  const stages = [
+    {
+      num: 'STAGE 01',
+      title: 'Source & Lab Audit',
+      desc: 'Inspect SGS moisture and defect lab certificates before placing orders.',
+    },
+    {
+      num: 'STAGE 02',
+      title: 'Bilateral Contract',
+      desc: 'Binding PO locks FOB/CIF price, Laycan window, and container FCL units.',
+    },
+    {
+      num: 'STAGE 03',
+      title: 'Escrow Custody',
+      desc: 'Buyer funds are locked in fiduciary escrow, safe from counterparty default.',
+    },
+    {
+      num: 'STAGE 04',
+      title: 'Ocean Transit Telemetry',
+      desc: 'Live carrier vessel IMO, container BIC, and Bill of Lading verification.',
+    },
+    {
+      num: 'STAGE 05',
+      title: 'Port Arrival & Release',
+      desc: 'Consignee inspection sign-off triggers automated settlement to exporter.',
+    },
+  ];
+
+  return (
+    <section className="py-16 sm:py-20 bg-surface border-b border-border-default">
+      <div className="container max-w-[1280px]">
+        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+          <div className="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#2563EB]">
+            THE 5-STAGE TRADE LIFECYCLE
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] text-foreground">
+            From Origin Port to Final Delivery Sign-off
+          </h2>
+          <p className="text-base text-foreground-secondary">
+            Transparent, bilateral execution with zero email back-and-forth or wire transfer uncertainty.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {stages.map((stage) => (
+            <div
+              key={stage.num}
+              className="p-5 rounded-xl border border-border-default bg-canvas flex flex-col justify-between space-y-3 hover:border-[#2563EB]/40 transition-colors"
+            >
+              <div className="space-y-1.5">
+                <span className="font-mono text-[11px] font-bold text-[#2563EB] tracking-wider">
+                  {stage.num}
+                </span>
+                <h3 className="text-base font-bold text-foreground">{stage.title}</h3>
+              </div>
+              <p className="text-xs text-foreground-muted leading-relaxed">{stage.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CorridorsSection = () => {
+  const corridors = [
+    {
+      tag: 'CORRIDOR #1 · ACTIVE',
+      days: '22 Days Transit',
+      route: 'Haiphong (VN) → Rotterdam (NL)',
+      commodity: 'Primary Commodity: Grade 1 Robusta Coffee',
+      carriers: 'Carriers: MSC, Maersk',
+      rate: 'FCL $1,420',
+    },
+    {
+      tag: 'CORRIDOR #2 · ACTIVE',
+      days: '34 Days Transit',
+      route: 'Santos (BR) → Qingdao (CN)',
+      commodity: 'Primary Commodity: Non-GMO Soybeans',
+      carriers: 'Carriers: COSCO, CMA CGM',
+      rate: 'FCL $1,850',
+    },
+    {
+      tag: 'CORRIDOR #3 · ACTIVE',
+      days: '18 Days Transit',
+      route: 'Ho Chi Minh (VN) → Los Angeles (US)',
+      commodity: 'Primary Commodity: Jasmine Rice & Rubber',
+      carriers: 'Carriers: ONE, Evergreen',
+      rate: 'FCL $2,100',
+    },
+  ];
+
+  return (
+    <section className="py-16 sm:py-20 bg-canvas border-b border-border-default">
+      <div className="container max-w-[1280px]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <div className="text-[11px] font-bold tracking-widest uppercase text-[#2563EB] mb-2">
+              NETWORK VELOCITY
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-[-0.03em] text-foreground">
+              Key Active Maritime Corridors
+            </h2>
+            <p className="text-sm text-foreground-secondary mt-1">
+              Connecting verified origins directly to premier discharge terminals worldwide.
+            </p>
+          </div>
+          <Link
+            to="/products"
+            className="text-xs font-semibold text-[#2563EB] hover:underline flex items-center gap-1 shrink-0"
+          >
+            View All 42 Corridors →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {corridors.map((c) => (
+            <div
+              key={c.tag}
+              className="p-5 rounded-xl border border-border-default bg-surface flex flex-col justify-between space-y-4 shadow-xs"
+            >
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-mono text-[11px] font-bold text-[#059669]">{c.tag}</span>
+                <span className="text-foreground-muted">{c.days}</span>
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-foreground">{c.route}</h3>
+                <p className="text-xs text-foreground-muted">{c.commodity}</p>
+              </div>
+              <div className="pt-3 border-t border-border-subtle flex items-center justify-between text-xs">
+                <span className="text-foreground-secondary">{c.carriers}</span>
+                <span className="font-mono font-bold text-foreground">{c.rate}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────
 // S2 — How global trade usually breaks (network.jpg)
 // ─────────────────────────────────────────────────────────────
 const TradeBreaksSection = () => {
@@ -888,33 +1033,60 @@ const FinalCTA = () => (
     <div className="container max-w-[1280px] relative py-16 md:py-20">
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center">
         <div>
-          <h2 className="text-[28px] sm:text-[34px] md:text-[40px] font-bold tracking-[-0.03em] leading-[1.05] mb-4">
-            Find verified suppliers. See available inventory. Talk to a trade specialist.
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase bg-white/10 text-[#60A5FA] border border-white/15 mb-4">
+            Institutional Onboarding · &lt; 24h Approval
+          </div>
+          <h2 className="text-[28px] sm:text-[34px] md:text-[42px] font-bold tracking-[-0.03em] leading-[1.05] mb-4">
+            Eliminate Counterparty Risk Across Every Container You Move.
           </h2>
           <p className="text-[16px] md:text-[17px] leading-[1.6] text-white/70 max-w-[560px]">
-            Stop managing trade across spreadsheets, emails, freight forwarders, and disconnected systems. Run sourcing, procurement, logistics, and customs from one platform.
+            Join verified commodity importers, exporters, and logistics carriers executing cross-border trade through programmatic escrow and real-time terminal milestones.
           </p>
         </div>
         <div className="lg:text-right">
           <div className="inline-flex flex-col gap-3 w-full sm:w-auto">
-            <Button size="lg" variant="secondary" asChild className="h-12 px-7 text-[15px] font-semibold gap-2 bg-white text-[#0F172A] border-white hover:bg-white/90 justify-center">
+            <Button size="lg" variant="secondary" asChild className="h-12 px-7 text-[15px] font-semibold gap-2 bg-[#2563EB] text-white border-[#2563EB] hover:bg-[#1D4ED8] justify-center shadow-lg">
               <Link to="/products">
-                Find verified suppliers <HiArrowRight className="w-4 h-4" />
+                Source Verified Lots Now <HiArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button size="lg" variant="ghost" asChild className="h-12 px-7 text-[15px] font-medium text-white border border-white/20 hover:bg-white/10 justify-center">
-              <Link to="/products">See available inventory</Link>
+              <Link to="/contact">Schedule Port Desk Briefing</Link>
             </Button>
-            <div className="flex gap-3">
-              <Button variant="ghost" asChild className="flex-1 text-white border border-white/15 hover:bg-white/10">
-                <Link to="/contact">Talk to a trade specialist</Link>
-              </Button>
-              <Button variant="ghost" asChild className="flex-1 text-white border border-white/15 hover:bg-white/10">
-                <Link to="/contact">Book a sourcing consultation</Link>
-              </Button>
-            </div>
           </div>
-          <p className="text-[12px] text-white/50 mt-4 lg:text-right">2,500+ exporters · 120+ ports · $450M+ escrow cleared</p>
+          <p className="text-[12px] text-white/50 mt-4 lg:text-right">No subscription fees · Pay per cleared trade</p>
+        </div>
+      </div>
+
+      {/* Institutional Standards Strip */}
+      <div className="mt-14 pt-8 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs text-white/80">
+        <div className="flex items-center gap-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#60A5FA] shrink-0" />
+          <div>
+            <div className="font-bold text-white text-[13px]">ICC UCP 600 &amp; eUCP Rules</div>
+            <div className="text-[11px] text-white/60">Documentary Credits Harmonization</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#10B981] shrink-0" />
+          <div>
+            <div className="font-bold text-white text-[13px]">Incoterms® 2020 Compliance</div>
+            <div className="text-[11px] text-white/60">Standardized FOB, CIF, EXW, DDP</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B] shrink-0" />
+          <div>
+            <div className="font-bold text-white text-[13px]">UN/LOCODE Standard Taxonomy</div>
+            <div className="text-[11px] text-white/60">Official Global Port Identification</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#A78BFA] shrink-0" />
+          <div>
+            <div className="font-bold text-white text-[13px]">Fiduciary Escrow Custody</div>
+            <div className="text-[11px] text-white/60">Dual Sign-off Milestone Release</div>
+          </div>
         </div>
       </div>
     </div>
@@ -956,6 +1128,8 @@ const HomePage = () => {
         schemaData={homeSchema}
       />
       <Hero />
+      <TradeLifecycleSection />
+      <CorridorsSection />
       <TradeBreaksSection />
       <SupplierToWarehouse />
       <GlobalNetwork />

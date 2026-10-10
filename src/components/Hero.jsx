@@ -1,220 +1,136 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Button } from './ui/Button';
-import { HiArrowRight, HiArrowDown, HiCheckCircle, HiDocumentText, HiUserGroup } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
+import { HiSearch, HiCheckCircle } from 'react-icons/hi';
 
 const Hero = () => {
-  const scrollToChapterOne = (e) => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const [incoterm, setIncoterm] = useState('ALL');
+
+  const handleSearch = (e) => {
     e.preventDefault();
-    const el = document.getElementById('story-chapter-1');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    const params = new URLSearchParams();
+    if (query.trim()) params.set('search', query.trim());
+    if (incoterm !== 'ALL') params.set('incoterm', incoterm);
+    navigate(`/products?${params.toString()}`);
   };
 
   return (
-    <section className="relative overflow-hidden bg-canvas border-b border-border-default pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-16 lg:pb-24">
+    <section className="relative overflow-hidden bg-canvas border-b border-border-default pt-14 pb-20 sm:pt-20 sm:pb-28">
       <div className="container max-w-[1280px]">
-        {/* Top Editorial Header & Intro */}
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          {/* Editorial Label */}
+        <div className="max-w-4xl mx-auto text-center flex flex-col items-center gap-7">
+          {/* Institutional Badge */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center justify-center gap-2 font-mono text-[11px] font-semibold tracking-widest uppercase text-accent-primary"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE] shadow-xs"
           >
-            <span className="w-6 h-px bg-accent-primary" />
-            <span>A SHIPMENT STORY / IEHUB</span>
-            <span className="w-6 h-px bg-accent-primary" />
+            <span className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
+            <span>Institutional B2B Commodity Infrastructure</span>
           </motion.div>
 
-          {/* Single Ink Headline */}
+          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] text-balance"
+            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.03em] text-foreground leading-[1.06] text-balance"
           >
-            Someone is counting
-            <br />
-            on this shipment.
+            The Operating System for International Trade
           </motion.h1>
 
-          {/* Human Supporting Copy */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="text-base sm:text-lg text-foreground-secondary leading-relaxed max-w-2xl mx-auto"
+            className="text-lg sm:text-xl text-foreground-secondary leading-relaxed max-w-2xl text-balance"
           >
-            A buyer needs stock. A supplier has it ready. IEHUB connects the people, paperwork, and progress in between.
+            Direct bilateral contracts with SGS-Inspected suppliers. Live ocean carrier milestone telemetry and fiduciary escrow release upon port delivery.
           </motion.p>
 
-          {/* Action CTAs */}
-          <motion.div
+          {/* Sourcing Search Box with Incoterm Toggles */}
+          <motion.form
+            onSubmit={handleSearch}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2"
+            className="w-full max-w-2xl bg-surface border-2 border-border-default focus-within:border-[#2563EB] rounded-2xl p-2 sm:p-2.5 shadow-lg flex flex-col sm:flex-row items-center gap-3 transition-colors"
           >
-            <Button
-              size="lg"
-              asChild
-              className="h-11 px-6 text-xs sm:text-sm font-semibold bg-accent-primary hover:bg-accent-hover text-accent-contrast shadow-sm gap-2"
-            >
-              <Link to="/products">
-                Start sourcing <HiArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={scrollToChapterOne}
-              className="h-11 px-6 text-xs sm:text-sm font-medium border-border-default bg-surface hover:bg-surface-hover text-foreground shadow-2xs gap-2"
-            >
-              <span>Follow one shipment</span>
-              <HiArrowDown className="w-3.5 h-3.5 text-foreground-muted" />
-            </Button>
+            <div className="flex items-center gap-3 flex-1 px-3 w-full">
+              <HiSearch className="w-5 h-5 text-foreground-muted shrink-0" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search coffee, rice, rubber, metals, or HS code..."
+                className="w-full bg-transparent text-sm sm:text-base text-foreground placeholder:text-foreground-muted focus:outline-none"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end shrink-0">
+              {/* Incoterm Pills */}
+              <div className="flex items-center gap-1 bg-surface-subtle p-1 rounded-lg border border-border-subtle text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setIncoterm('ALL')}
+                  className={`px-2 py-1 rounded-md transition-colors ${incoterm === 'ALL' ? 'bg-surface text-foreground shadow-xs' : 'text-foreground-muted hover:text-foreground'}`}
+                >
+                  ALL
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIncoterm('FOB')}
+                  className={`px-2 py-1 rounded-md transition-colors ${incoterm === 'FOB' ? 'bg-surface text-[#2563EB] shadow-xs' : 'text-foreground-muted hover:text-foreground'}`}
+                >
+                  FOB
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIncoterm('CIF')}
+                  className={`px-2 py-1 rounded-md transition-colors ${incoterm === 'CIF' ? 'bg-surface text-[#2563EB] shadow-xs' : 'text-foreground-muted hover:text-foreground'}`}
+                >
+                  CIF
+                </button>
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="submit"
+                className="px-5 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold text-xs sm:text-sm shadow-md transition-all shrink-0 cursor-pointer"
+              >
+                Explore 180+ Lots
+              </button>
+            </div>
+          </motion.form>
+
+          {/* Micro Trust Indicators */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 pt-3 text-xs text-foreground-secondary font-medium"
+          >
+            <div className="flex items-center gap-1.5">
+              <HiCheckCircle className="w-4 h-4 text-[#059669]" />
+              <span>ICC UCP 600 Compliant</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <HiCheckCircle className="w-4 h-4 text-[#059669]" />
+              <span>Verified KYB Level 3</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <HiCheckCircle className="w-4 h-4 text-[#059669]" />
+              <span>100% Escrow Custody</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <HiCheckCircle className="w-4 h-4 text-[#059669]" />
+              <span>120+ Ports Connected</span>
+            </div>
           </motion.div>
         </div>
-
-        {/* Wide Visual Story Scene: Ceylon Cinnamon Journey */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="mt-12 sm:mt-16"
-        >
-          {/* Scene Border Frame */}
-          <div className="rounded-2xl border border-border-default bg-surface p-4 sm:p-6 lg:p-8 shadow-sm relative overflow-hidden">
-            {/* Top Scene Label */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-border-subtle mb-6">
-              <div className="flex items-center gap-2 font-mono text-[11px] text-foreground-muted uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-accent-primary" />
-                <span className="font-semibold text-foreground">Illustrative shipment journey</span>
-                <span>·</span>
-                <span>Ref: SHP-882194</span>
-              </div>
-              <div className="flex items-center gap-3 font-mono text-[11px] text-foreground-secondary">
-                <span className="px-2 py-0.5 rounded border border-border-subtle bg-surface-subtle">
-                  Origin: Colombo (LKCMB)
-                </span>
-                <span className="text-foreground-muted">&rarr;</span>
-                <span className="px-2 py-0.5 rounded border border-border-subtle bg-surface-subtle">
-                  Destination: Rotterdam (NLRTM)
-                </span>
-              </div>
-            </div>
-
-            {/* Main Visual Composition Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-              {/* Left Column: Buyer Procurement Brief Note */}
-              <div className="lg:col-span-4 flex flex-col justify-between p-5 rounded-xl border border-border-subtle bg-surface-subtle/60 space-y-5">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-[11px] font-mono text-foreground-muted">
-                    <span className="uppercase tracking-wider">01 / Procurement Request</span>
-                    <span className="text-accent-primary font-semibold">Buyer Brief</span>
-                  </div>
-                  <div className="p-3.5 rounded-lg border border-border-subtle bg-surface text-xs text-foreground space-y-2">
-                    <div className="font-semibold text-foreground-secondary text-[11px] uppercase tracking-wider font-mono">
-                      Role: Importer · Food & Beverage Desk
-                    </div>
-                    <p className="italic text-foreground leading-relaxed">
-                      &ldquo;Can you source 24 MT of Ceylon organic C5 cinnamon for delivery to Rotterdam Berth 14 with SGS inspection certification?&rdquo;
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-border-subtle space-y-2 text-xs text-foreground-secondary">
-                  <div className="flex items-center justify-between">
-                    <span className="text-foreground-muted">Requested Quantity:</span>
-                    <span className="font-mono font-medium text-foreground">24 MT (1x40ft HC)</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-foreground-muted">Target Incoterm:</span>
-                    <span className="font-mono font-medium text-foreground">FOB Colombo</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-foreground-muted">Document Mandate:</span>
-                    <span className="font-mono font-medium text-status-success">SGS Purity &gt;99%</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Center & Right Column: Real Documentary Photograph & Editorial Annotations */}
-              <div className="lg:col-span-8 flex flex-col justify-between space-y-4">
-                <div className="relative rounded-xl overflow-hidden border border-border-subtle bg-surface-subtle aspect-[16/9] sm:aspect-[21/9] lg:aspect-[16/8]">
-                  <img
-                    src="/images/cinnamon_inspection.jpg"
-                    alt="Workers in Sri Lanka sorting and inspecting organic Ceylon cinnamon for export"
-                    className="w-full h-full object-cover object-center filter saturate-[0.95]"
-                  />
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-                  {/* Photo Editorial Caption Overlay */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-status-success" />
-                      <span className="font-medium text-white/90 drop-shadow-xs">
-                        Stage 01: Supplier lot preparation &amp; quality sorting in Sri Lanka
-                      </span>
-                    </div>
-                    <span className="font-mono text-[10px] text-white/75 bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/20">
-                      Lanka Spices Ltd. · Export Lot #882
-                    </span>
-                  </div>
-                </div>
-
-                {/* Editorial Annotations Strip */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                  <div className="p-3 rounded-lg border border-border-subtle bg-surface-subtle/40 text-xs space-y-1">
-                    <div className="flex items-center gap-1.5 font-semibold text-foreground text-[11px]">
-                      <HiUserGroup className="w-3.5 h-3.5 text-accent-primary" />
-                      <span>Role: Buyer</span>
-                    </div>
-                    <p className="text-foreground-muted text-[11px] leading-tight">
-                      Confirms specification requirements and issues purchase order.
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg border border-border-subtle bg-surface-subtle/40 text-xs space-y-1">
-                    <div className="flex items-center gap-1.5 font-semibold text-foreground text-[11px]">
-                      <HiCheckCircle className="w-3.5 h-3.5 text-status-success" />
-                      <span>Role: Supplier</span>
-                    </div>
-                    <p className="text-foreground-muted text-[11px] leading-tight">
-                      Prepares audited stock and submits SGS pre-shipment dossier.
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg border border-border-subtle bg-surface-subtle/40 text-xs space-y-1">
-                    <div className="flex items-center gap-1.5 font-semibold text-foreground text-[11px]">
-                      <HiDocumentText className="w-3.5 h-3.5 text-accent-primary" />
-                      <span>Role: Trade Team</span>
-                    </div>
-                    <p className="text-foreground-muted text-[11px] leading-tight">
-                      Validates bill of lading and secures fiduciary escrow custody.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Continuous Route Line Motif Connector */}
-            <div className="mt-8 pt-6 border-t border-border-subtle flex items-center justify-between text-xs text-foreground-muted">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-[11px] uppercase tracking-wider font-semibold text-foreground-secondary">
-                  Continuous Trade Lifecycle
-                </span>
-                <span className="hidden sm:inline text-foreground-muted">·</span>
-                <span className="hidden sm:inline text-[11px]">Scroll down to follow the shipment journey</span>
-              </div>
-              <div className="flex items-center gap-1.5 font-mono text-[11px] text-accent-primary font-medium">
-                <span>Chapter 01 &rarr; 04</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

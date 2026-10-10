@@ -573,8 +573,62 @@ const MyImportsPage = () => {
         <TabsContent value="rfqs" className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-foreground">My Requests for Quotation (RFQ)</h2>
-              <p className="text-xs text-foreground-muted">Manage bespoke sourcing inquiries and convert agreed vendor quotes into active purchase orders.</p>
+              <h2 className="text-base font-bold text-foreground">Bilateral RFQ Negotiation Desk</h2>
+              <p className="text-xs text-foreground-muted">Direct origin quotation, counter-offer review, and 1-click binding purchase order conversion.</p>
+            </div>
+          </div>
+
+          {/* 4-Stage RFQ Pipeline Stepper */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="p-3.5 rounded-xl border border-border-default bg-surface flex items-center gap-3">
+              <div className="w-6 h-6 rounded-md bg-surface-subtle border border-border-default flex items-center justify-center font-bold text-xs text-foreground-secondary">
+                1
+              </div>
+              <div>
+                <div className="text-xs font-bold text-foreground">Buyer Submitted</div>
+                <div className="text-[11px] text-foreground-muted">
+                  {myRFQs.filter((r) => r.status === 'Submitted').length} Active
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-[#3B82F6] bg-[#EFF6FF] flex items-center gap-3">
+              <div className="w-6 h-6 rounded-md bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs">
+                2
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#1D4ED8]">
+                  <span>Exporter Countered</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
+                </div>
+                <div className="text-[11px] font-medium text-[#2563EB]">
+                  {myRFQs.filter((r) => r.status === 'Quoted').length} Needs Decision
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-border-default bg-surface flex items-center gap-3">
+              <div className="w-6 h-6 rounded-md bg-surface-subtle border border-border-default flex items-center justify-center font-bold text-xs text-foreground-secondary">
+                3
+              </div>
+              <div>
+                <div className="text-xs font-bold text-foreground">Terms Agreed</div>
+                <div className="text-[11px] text-foreground-muted">
+                  {myRFQs.filter((r) => r.status === 'Accepted').length} Ready to Convert
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-border-default bg-surface flex items-center gap-3">
+              <div className="w-6 h-6 rounded-md bg-[#DCFCE7] text-[#15803D] flex items-center justify-center font-bold text-xs">
+                ✓
+              </div>
+              <div>
+                <div className="text-xs font-bold text-foreground">Converted to PO</div>
+                <div className="text-[11px] text-foreground-muted">
+                  {myRFQs.filter((r) => r.status === 'ConvertedToPO').length} Bound Orders
+                </div>
+              </div>
             </div>
           </div>
 
@@ -609,11 +663,15 @@ const MyImportsPage = () => {
                       <TableCell>
                         {rfq.counterOfferPrice ? (
                           <div>
-                            <div className="text-xs font-bold text-accent-primary tabular-nums">
+                            <div className="text-xs font-bold text-[#2563EB] tabular-nums">
                               ${rfq.counterOfferPrice?.toLocaleString()} FOB
                             </div>
-                            <div className="text-[10px] text-foreground-muted">
-                              Lead: {rfq.counterOfferLeadDays || 14} days
+                            <div className="flex items-center gap-1.5 text-[10px] text-foreground-muted">
+                              <span className={rfq.counterOfferPrice > rfq.targetPrice ? 'text-[#D97706] font-semibold' : 'text-[#059669] font-semibold'}>
+                                {rfq.counterOfferPrice > rfq.targetPrice ? `+$${(rfq.counterOfferPrice - rfq.targetPrice).toLocaleString()}` : `-$${(rfq.targetPrice - rfq.counterOfferPrice).toLocaleString()}`}
+                              </span>
+                              <span>·</span>
+                              <span>Lead: {rfq.counterOfferLeadDays || 14}d</span>
                             </div>
                           </div>
                         ) : (
