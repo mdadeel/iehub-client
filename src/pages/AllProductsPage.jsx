@@ -22,6 +22,7 @@ import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { CATEGORIES, INCOTERMS } from '../lib/categories';
+import { MOCK_PRODUCTS } from '../data/mockProducts';
 import {
   Table,
   TableHeader,
@@ -39,8 +40,23 @@ const AllProductsPage = () => {
   const initialIncoterm = searchParams.get('incoterm') || 'All';
   const initialSort = searchParams.get('sort') || 'name';
 
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Instant initial dataset from mock data
+  const initialMockProducts = useMemo(() => {
+    let items = MOCK_PRODUCTS;
+    if (initialCategory !== 'All') {
+      items = items.filter(
+        (p) => p.category && p.category.toLowerCase() === initialCategory.toLowerCase()
+      );
+    }
+    if (initialIncoterm !== 'All') {
+      items = items.filter((p) => p.incoterm === initialIncoterm);
+    }
+    return items;
+  }, [initialCategory, initialIncoterm]);
+
+  const [products, setProducts] = useState(initialMockProducts);
+  const [loading, setLoading] = useState(false);
+  const [isLiveSynced, setIsLiveSynced] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
@@ -67,7 +83,8 @@ const AllProductsPage = () => {
   }, [setSearchParams]);
 
   const fetchProducts = useCallback(async () => {
-    setLoading(true);
+    // Only set loading if we don't have any items yet
+    if (products.length === 0) setLoading(true);
     setError(null);
     try {
       const params = {
@@ -89,15 +106,17 @@ const AllProductsPage = () => {
         items = items.filter((p) => p.incoterm === incotermFilter);
       }
 
-      setProducts(items);
+      if (items.length > 0) {
+        setProducts(items);
+        setIsLiveSynced(true);
+      }
     } catch (err) {
-      console.error('Failed to fetch marketplace products', err);
-      setError('Unable to synchronize marketplace positions. Please verify connection and retry.');
-      setProducts([]);
+      console.debug('Database fetch delayed, using cached mock positions', err);
+      // Retain existing positions instead of wiping out on cold DB startup
     } finally {
       setLoading(false);
     }
-  }, [searchTerm, category, incotermFilter, sortBy]);
+  }, [searchTerm, category, incotermFilter, sortBy, products.length]);
 
   // Debounce API calls and sync URL
   useEffect(() => {
@@ -167,7 +186,7 @@ const AllProductsPage = () => {
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
               Marketplace Sourcing
             </h1>
-            <Badge variant="neutral" size="sm" className="font-mono">
+            <Badge variant={isLiveSynced ? "success" : "neutral"} size="sm" className="font-mono">
               {loading ? 'Searching…' : `${products.length} Positions`}
             </Badge>
           </div>

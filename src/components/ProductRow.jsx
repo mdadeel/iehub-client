@@ -41,7 +41,7 @@ const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
             src={imgSrc}
             alt={product.name}
             onError={() => setImgSrc(FALLBACK_IMAGE)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            className="w-full h-full object-cover"
             loading="lazy"
           />
         </div>

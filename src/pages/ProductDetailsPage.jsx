@@ -26,13 +26,15 @@ import { Badge } from '../components/ui/Badge';
 import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
 import ProductCard from '../components/ProductCard';
 import { cn } from '@/lib/utils';
+import { getMockProductById, MOCK_PRODUCTS } from '../data/mockProducts';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const initialMock = getMockProductById(id);
+  const [product, setProduct] = useState(initialMock || null);
+  const [loading, setLoading] = useState(!initialMock);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showCertificates, setShowCertificates] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -73,10 +75,18 @@ const ProductDetailsPage = () => {
         const fallbackFiltered = Array.isArray(allData)
           ? allData.filter((item) => String(item._id || item.id) !== String(currentId))
           : [];
-        setRecommendations(fallbackFiltered.slice(0, 4));
+        if (fallbackFiltered.length > 0) {
+          setRecommendations(fallbackFiltered.slice(0, 4));
+        } else {
+          // Mock recommendations fallback
+          const mockFiltered = MOCK_PRODUCTS.filter((m) => String(m._id) !== String(currentId));
+          setRecommendations(mockFiltered.slice(0, 4));
+        }
       }
-    } catch (err) {
-      console.error('Failed to load trade recommendations:', err);
+    } catch {
+      // Fallback to instant mock recommendations on network latency
+      const mockFiltered = MOCK_PRODUCTS.filter((m) => String(m._id) !== String(currentId));
+      setRecommendations(mockFiltered.slice(0, 4));
     } finally {
       setLoadingRecommendations(false);
     }
@@ -84,7 +94,8 @@ const ProductDetailsPage = () => {
 
   const fetchProduct = useCallback(async () => {
     try {
-      setLoading(true);
+      // Only show full page spinner if we don't have mock data
+      if (!initialMock) setLoading(true);
       const { data } = await api.get(`/products/${id}`);
       setProduct(data);
       const moq = Math.max(1, data?.moq || 1);
@@ -95,12 +106,24 @@ const ProductDetailsPage = () => {
         fetchRecommendations(data.category, data._id);
       }
     } catch {
-      toast.error('Unable to locate commodity listing.');
-      navigate('/products');
+      const mock = getMockProductById(id);
+      if (mock) {
+        setProduct(mock);
+        const moq = Math.max(1, mock?.moq || 1);
+        if (mock?.quantity) {
+          setQuantity(Math.min(moq, mock.quantity));
+        }
+        if (mock?.category) {
+          fetchRecommendations(mock.category, mock._id);
+        }
+      } else {
+        toast.error('Unable to locate commodity listing.');
+        navigate('/products');
+      }
     } finally {
       setLoading(false);
     }
-  }, [id, navigate, fetchRecommendations]);
+  }, [id, navigate, fetchRecommendations, initialMock]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

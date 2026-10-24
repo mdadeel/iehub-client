@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowRight, HiLocationMarker, HiShieldCheck, HiScale } from 'react-icons/hi';
-import { motion } from 'framer-motion';
 import { Badge } from './ui/Badge';
 import { cn } from '@/lib/utils';
 
@@ -24,12 +23,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
   const isVerified = product.verificationStatus === 'verified' || !product.verificationStatus; // existing verified seed items
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -3 }}
-      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+    <div
       onClick={handleViewDetails}
       role="link"
       tabIndex={0}
@@ -39,7 +33,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           handleViewDetails();
         }
       }}
-      className="group cursor-pointer flex flex-col h-full rounded-xl border border-border-default bg-surface hover:border-accent-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary transition-all duration-200 overflow-hidden"
+      className="group cursor-pointer flex flex-col h-full rounded-lg border border-border-default bg-surface hover:border-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary transition-colors overflow-hidden"
     >
       {/* Visual Asset Container */}
       <div className="relative aspect-[16/10] overflow-hidden bg-surface-subtle">
@@ -47,7 +41,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           src={imgSrc}
           alt={product.name}
           onError={() => setImgSrc(FALLBACK_IMAGE)}
-          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+          className="w-full h-full object-cover"
           loading="lazy"
         />
 
@@ -150,7 +144,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
