@@ -17,7 +17,7 @@ const AboutUsPage = () => {
         eyebrow="Company"
         title="Trade infrastructure built by operators."
         description="IEHUB exists because too many consignments still stall in a WhatsApp thread. We put the inspection, the paperwork and the money in one auditable place."
-        image="/images/why-inspection.jpg"
+        image="/images/desk-operations.jpg"
       />
       <div className="container py-12 md:py-16 max-w-5xl">
       {/* Mission Section */}

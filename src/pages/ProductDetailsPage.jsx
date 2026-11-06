@@ -256,7 +256,7 @@ const ProductDetailsPage = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
                 />
                 <div className="absolute top-3 left-3">
                   <Badge variant="neutral" size="sm">
@@ -272,6 +272,12 @@ const ProductDetailsPage = () => {
                     {isOutOfStock ? 'Out of Stock' : `${product.quantity?.toLocaleString()} ${product.unit || 'Units'} Available`}
                   </Badge>
                 </div>
+                {isVerified && (
+                  <div className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-[#0B7A52] px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white">
+                    <HiShieldCheck className="h-3.5 w-3.5" />
+                    Lab verified
+                  </div>
+                )}
               </div>
 
               <div className="p-3 bg-surface-subtle/50 border-t border-border-subtle flex items-center justify-between text-xs">
@@ -312,6 +318,7 @@ const ProductDetailsPage = () => {
           {/* Right Column: Specification & Purchase Action */}
           <div className="lg:col-span-7 space-y-6">
             <div>
+              <div className="eyebrow mb-3">Lot detail</div>
               <div className="flex items-center gap-2 text-xs font-mono text-foreground-muted mb-2 flex-wrap">
                 <span>{product.category} &bull; {product.origin || 'Global'}</span>
                 <Badge variant="accent" size="sm" className="font-mono text-[10px]">
@@ -319,7 +326,7 @@ const ProductDetailsPage = () => {
                 </Badge>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-3">
+              <h1 className="display mb-3 text-[1.9rem] leading-tight text-foreground sm:text-[2.3rem]">
                 {product.name}
               </h1>
 
@@ -330,28 +337,35 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Pricing & Terms */}
-            <div className="p-5 rounded-lg border border-border-default bg-surface-subtle/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col gap-5 bg-[#101417] p-5 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-0.5">
-                  FOB Base Price
+                <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                  {product.incoterm || 'FOB'} base price
                 </div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl sm:text-3xl font-bold text-foreground tabular-nums">
+                <div className="flex items-baseline gap-2">
+                  <span className="font-display text-3xl font-bold tabular-nums text-white">
                     ${product.price?.toLocaleString()}
                   </span>
-                  <span className="text-xs text-foreground-muted font-mono">USD / {product.unit || 'unit'}</span>
+                  <span className="font-mono text-[11px] text-white/50">USD / {product.unit || 'unit'}</span>
                 </div>
               </div>
 
-              <div className="text-left sm:text-right">
-                <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-0.5">
-                  Available Supply
+              <div className="flex gap-8 border-t border-white/12 pt-4 sm:border-l sm:border-t-0 sm:pl-8 sm:pt-0 sm:text-right">
+                <div>
+                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                    Available
+                  </div>
+                  <div className="font-mono text-sm font-semibold tabular-nums text-white">
+                    {product.quantity?.toLocaleString()} {product.unit || 'Units'}
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-foreground tabular-nums">
-                  {product.quantity?.toLocaleString()} {product.unit || 'Units'}
-                </div>
-                <div className="text-[11px] text-foreground-muted">
-                  MOQ: {moq.toLocaleString()} {product.unit || 'Unit'}
+                <div>
+                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                    MOQ
+                  </div>
+                  <div className="font-mono text-sm font-semibold tabular-nums text-white">
+                    {moq.toLocaleString()} {product.unit || 'Unit'}
+                  </div>
                 </div>
               </div>
             </div>
@@ -452,7 +466,7 @@ const ProductDetailsPage = () => {
         </div>
 
         {/* Institutional Trade Safeguards Ribbon */}
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 p-4 rounded-xl border border-border-default bg-surface shadow-2xs">
+        <div className="mt-10 grid grid-cols-2 gap-3 border border-border-default bg-surface p-4 md:grid-cols-4">
           <div className="flex items-center gap-3 p-2">
             <div className="w-8 h-8 rounded-lg bg-accent-subtle text-accent-primary flex items-center justify-center shrink-0">
               <HiLockClosed className="w-4 h-4" />

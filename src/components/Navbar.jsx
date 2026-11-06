@@ -293,7 +293,7 @@ const Navbar = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="md:hidden h-9 w-9"
+                            className={cn("md:hidden h-9 w-9", overHero && "text-white hover:bg-white/10 hover:text-white")}
                             onClick={() => setMobileOpen(!mobileOpen)}
                             aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
                             aria-expanded={mobileOpen}

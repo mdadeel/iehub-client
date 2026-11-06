@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Card, CardContent } from '../components/ui/Card';
+import AuthShell from '../components/AuthShell';
 
 const RegisterPage = () => {
   const { registerUser } = useAuth();
@@ -45,102 +45,100 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center container py-12">
-      <div className="w-full max-w-[420px]">
-        {/* Top Branding */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-surface border border-border-default shadow-2xs mb-3">
-            <span className="font-black text-sm text-accent-primary">IE</span>
-          </div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground">
-            Create Trade Account
-          </h1>
-          <p className="text-xs text-foreground-muted mt-1">
-            Register your corporate organization for international trade access.
-          </p>
+    <AuthShell
+      title="Open a trade account"
+      subtitle="Register your company to source verified commodities and issue purchase orders under escrow."
+      asideTitle="Verified suppliers. Protected money."
+      asideCopy="KYB-checked exporters, assayed lots and escrow that releases on the bill of lading — not on a promise."
+      image="/images/desk-operations.jpg"
+    >
+      <form onSubmit={handleRegister} className="space-y-4">
+        <div className="space-y-1.5">
+          <label htmlFor="reg-name" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">
+            Representative or entity name
+          </label>
+          <Input
+            id="reg-name"
+            type="text"
+            placeholder="e.g. Apex Global Logistics Ltd"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="h-10 text-sm"
+          />
         </div>
 
-        <Card className="border border-border-default bg-surface shadow-2xs">
-          <CardContent className="p-6">
-            <form onSubmit={handleRegister} className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">
-                  Representative or Entity Name
-                </label>
-                <Input
-                  type="text"
-                  placeholder="e.g. Apex Global Logistics Ltd"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="h-9 text-xs"
-                />
-              </div>
+        <div className="space-y-1.5">
+          <label htmlFor="reg-email" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">
+            Corporate email
+          </label>
+          <Input
+            id="reg-email"
+            type="email"
+            placeholder="desk@enterprise.com"
+            required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="h-10 text-sm"
+          />
+        </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">
-                  Corporate Email
-                </label>
-                <Input
-                  type="email"
-                  placeholder="desk@enterprise.com"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="h-9 text-xs"
-                />
-              </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <label htmlFor="reg-photo" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">
+              Logo URL <span className="font-normal normal-case text-foreground-subtle">(optional)</span>
+            </label>
+            <Input
+              id="reg-photo"
+              type="url"
+              placeholder="https://…/logo.png"
+              value={formData.photo}
+              onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
+              className="h-10 text-sm"
+            />
+          </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">
-                  Avatar or Logo URL (Optional)
-                </label>
-                <Input
-                  type="url"
-                  placeholder="https://example.com/logo.png"
-                  value={formData.photo}
-                  onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
-                  className="h-9 text-xs"
-                />
-              </div>
+          <div className="space-y-1.5">
+            <label htmlFor="reg-password" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">
+              Password
+            </label>
+            <Input
+              id="reg-password"
+              type="password"
+              placeholder="••••••••"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="h-10 text-sm"
+            />
+          </div>
+        </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">
-                  Secure Password
-                </label>
-                <Input
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="h-9 text-xs"
-                />
-                <p className="text-[11px] text-foreground-muted">
-                  Minimum 6 characters with uppercase and lowercase letters.
-                </p>
-              </div>
+        <p className="text-[11px] leading-relaxed text-foreground-muted">
+          Minimum 6 characters, with at least one uppercase and one lowercase letter.
+        </p>
 
-              <Button
-                type="submit"
-                size="sm"
-                disabled={loading}
-                className="w-full h-9 text-xs font-semibold mt-2"
-              >
-                {loading ? 'Registering Account...' : 'Open Trade Account'}
-              </Button>
-            </form>
+        <Button
+          type="submit"
+          size="lg"
+          disabled={loading}
+          className="mt-1 w-full text-sm font-semibold"
+        >
+          {loading ? 'Registering account…' : 'Open trade account'}
+        </Button>
 
-            <div className="mt-4 pt-4 border-t border-border-subtle text-center text-xs text-foreground-muted">
-              Already have an account?{' '}
-              <Link to="/login" className="text-accent-primary font-medium hover:underline">
-                Sign In
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        <p className="text-[11px] leading-relaxed text-foreground-subtle">
+          By opening an account you accept the platform terms of trade and escrow disclosures.
+        </p>
+      </form>
+
+      <div className="mt-6 border-t border-border-subtle pt-4 text-[12px] text-foreground-muted">
+        Already registered?{' '}
+        <Link to="/login" className="font-semibold text-accent-primary hover:underline">
+          Sign in to your desk
+        </Link>
       </div>
-    </div>
+    </AuthShell>
   );
 };
 
