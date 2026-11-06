@@ -78,7 +78,7 @@ const ContactPage = () => {
                 </div>
 
                 <Button type="submit" size="sm" className="w-full h-9 text-xs font-semibold">
-                  Transmit Inquiry to Trade Desk
+                  Send inquiry to the desk
                 </Button>
               </form>
             </CardContent>
@@ -87,9 +87,25 @@ const ContactPage = () => {
 
         {/* Trade Desks & Directory */}
         <div className="lg:col-span-5 space-y-4">
+          <div className="relative overflow-hidden border border-border-default">
+            <img
+              src="/images/desk-operations.jpg"
+              alt="IEHUB trade desk officers coordinating live shipments"
+              className="h-44 w-full object-cover"
+              loading="lazy"
+            />
+            <div className="photo-scrim absolute inset-0" />
+            <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">
+                Chattogram · head desk
+              </div>
+              <div className="mt-1 text-sm font-semibold">A named officer on every file</div>
+            </div>
+          </div>
+
           <Card className="p-4 border border-border-default bg-surface">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-md bg-accent-subtle text-accent-primary shrink-0 mt-0.5">
+              <div className="flex h-8 w-8 items-center justify-center bg-accent-primary text-white shrink-0 mt-0.5">
                 <HiMail className="w-4 h-4" />
               </div>
               <div>
@@ -102,7 +118,7 @@ const ContactPage = () => {
 
           <Card className="p-4 border border-border-default bg-surface">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-md bg-accent-subtle text-accent-primary shrink-0 mt-0.5">
+              <div className="flex h-8 w-8 items-center justify-center bg-accent-primary text-white shrink-0 mt-0.5">
                 <HiPhone className="w-4 h-4" />
               </div>
               <div>
@@ -115,7 +131,7 @@ const ContactPage = () => {
 
           <Card className="p-4 border border-border-default bg-surface">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-md bg-accent-subtle text-accent-primary shrink-0 mt-0.5">
+              <div className="flex h-8 w-8 items-center justify-center bg-accent-primary text-white shrink-0 mt-0.5">
                 <HiLocationMarker className="w-4 h-4" />
               </div>
               <div>

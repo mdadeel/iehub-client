@@ -1,18 +1,16 @@
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
-import { Card, CardContent } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
 import { HiArrowRight } from 'react-icons/hi';
 
 import PageHeader from '../components/PageHeader';
 const BrowseCategoriesPage = () => {
   const categories = [
-    { name: 'Agricultural Commodities', count: '1,420 Listings', icon: '🌾', desc: 'Spices, organic grains, tea, coffee, edible oils, and pulses.' },
-    { name: 'Industrial & Heavy Equipment', count: '850 Listings', icon: '🏗️', desc: 'Machinery, CNC tooling, hydraulic units, and factory spares.' },
-    { name: 'Textiles, Fabrics & Apparel', count: '2,100 Listings', icon: '🧵', desc: 'Raw cotton, certified silk bolts, linen, and industrial denim.' },
-    { name: 'Chemicals, Polymers & Resins', count: '640 Listings', icon: '🧪', desc: 'TSR rubber, synthetic polymers, fertilizers, and raw compounds.' },
-    { name: 'Electronics & Microcomponents', count: '1,280 Listings', icon: '⚡', desc: 'Photovoltaic cells, copper coils, semiconductor assemblies.' },
-    { name: 'Automotive & Marine Spares', count: '430 Listings', icon: '🚢', desc: 'Marine engine assemblies, container fittings, and OEM parts.' },
+    { name: 'Agricultural Commodities', count: '1,420 listings', image: '/images/ind-agriculture.jpg', desc: 'Spices, organic grains, tea, coffee, edible oils and pulses with assay on file.' },
+    { name: 'Industrial & Heavy Equipment', count: '850 listings', image: '/images/svc-warehouse.jpg', desc: 'Machinery, CNC tooling, hydraulic units and factory spares.' },
+    { name: 'Textiles, Fabrics & Apparel', count: '2,100 listings', image: '/images/ind-textiles.jpg', desc: 'Raw cotton, certified silk bolts, linen and industrial denim.' },
+    { name: 'Chemicals, Polymers & Resins', count: '640 listings', image: '/images/com-rubber.jpg', desc: 'TSR rubber, synthetic polymers, fertilizers and raw compounds.' },
+    { name: 'Electronics & Microcomponents', count: '1,280 listings', image: '/images/com-copper.jpg', desc: 'Photovoltaic cells, copper coils and semiconductor assemblies.' },
+    { name: 'Automotive & Marine Spares', count: '430 listings', image: '/images/svc-road.jpg', desc: 'Marine engine assemblies, container fittings and OEM parts.' },
   ];
 
   return (
@@ -29,34 +27,31 @@ const BrowseCategoriesPage = () => {
         description="Browse international trade sectors and export commodities classified under Harmonized Tariff Schedules (HTS)."
         canonicalUrl="https://iehub-client.vercel.app/categories"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((cat, i) => (
-          <Card
-            key={i}
-            className="border border-border-default bg-surface hover:border-border-hover transition-colors flex flex-col justify-between"
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((cat) => (
+          <Link
+            key={cat.name}
+            to={`/products?category=${encodeURIComponent(cat.name)}`}
+            className="group flex flex-col border border-border-default bg-surface transition-colors hover:border-border-hover"
           >
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-3xl">{cat.icon}</span>
-                <Badge variant="neutral" size="sm" className="font-mono">
-                  {cat.count}
-                </Badge>
-              </div>
-              <h3 className="text-base font-semibold text-foreground mb-1.5">
+            <div className="media aspect-[16/10]">
+              <img src={cat.image} alt="" loading="lazy" />
+              <span className="absolute left-0 top-0 bg-surface/95 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary backdrop-blur">
+                {cat.count}
+              </span>
+            </div>
+            <div className="flex flex-1 flex-col p-5">
+              <h3 className="text-[16px] font-bold text-foreground transition-colors group-hover:text-accent-primary">
                 {cat.name}
               </h3>
-              <p className="text-xs text-foreground-muted leading-relaxed mb-6">
+              <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed text-foreground-secondary">
                 {cat.desc}
               </p>
-              <Link
-                to={`/products?category=${encodeURIComponent(cat.name)}`}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary hover:underline"
-              >
-                <span>View Sector Inventory</span>
-                <HiArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </CardContent>
-          </Card>
+              <span className="mt-4 inline-flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-accent-primary">
+                View sector <HiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
