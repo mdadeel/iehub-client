@@ -118,6 +118,33 @@ const CORRIDORS = [
   },
 ];
 
+const TESTIMONIALS = [
+  {
+    quote:
+      'The assay certificate came attached to the lot, not three emails later. That alone cut two weeks off our approval cycle.',
+    name: 'Farhana Islam',
+    role: 'Head of Procurement',
+    company: 'Delta Foods · Chattogram',
+    initials: 'FI',
+  },
+  {
+    quote:
+      'We had a container held at Rotterdam. The desk officer had the corrected documents filed before our bank even opened.',
+    name: 'Lukas Meier',
+    role: 'Import Manager',
+    company: 'Nordkorn GmbH · Hamburg',
+    initials: 'LM',
+  },
+  {
+    quote:
+      'Escrow released exactly when the bill of lading cleared. No chasing, no advance wire to a broker we had never met.',
+    name: 'Priya Raman',
+    role: 'Category Director',
+    company: 'Meridian Textiles · Chennai',
+    initials: 'PR',
+  },
+];
+
 const INDUSTRIES = [
   {
     name: 'Agriculture & agro-processing',
@@ -678,8 +705,52 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ─────────────────────────  Industries  ───────────────────────── */}
+      {/* ─────────────────────────  Buyer quotes  ───────────────────────── */}
       <section className="section border-t border-border-default bg-canvas">
+        <div className="container">
+          <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <div className="eyebrow mb-4">Trade desk in practice</div>
+              <h2 className="display text-3xl sm:text-4xl">What buyers say after month one.</h2>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="font-display text-2xl font-bold text-foreground">4.9</div>
+              <div className="text-[10px] font-semibold uppercase leading-relaxed tracking-[0.14em] text-foreground-muted">
+                Average buyer rating
+                <br />
+                over 1,240 settlements
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-px bg-border-default md:grid-cols-3">
+            {TESTIMONIALS.map((t) => (
+              <figure key={t.name} className="flex flex-col bg-surface p-6">
+                <div className="font-display text-3xl leading-none text-accent-primary">“</div>
+                <blockquote className="mt-3 flex-1 text-[13.5px] leading-relaxed text-foreground-secondary">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-border-subtle pt-4">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center bg-[#101417] font-mono text-[11px] font-bold text-white">
+                    {t.initials}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-[12.5px] font-semibold text-foreground">
+                      {t.name}
+                    </span>
+                    <span className="block truncate text-[11px] text-foreground-muted">
+                      {t.role} · {t.company}
+                    </span>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────  Industries  ───────────────────────── */}
+      <section className="section border-t border-border-default bg-surface">
         <div className="container">
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
@@ -748,7 +819,7 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────  Governance  ───────────────────────── */}
-      <section className="section border-t border-border-default bg-surface">
+      <section className="section border-t border-border-default bg-canvas">
         <div className="container">
           <div className="mb-10 max-w-2xl">
             <div className="eyebrow mb-4">Regulatory framework</div>
