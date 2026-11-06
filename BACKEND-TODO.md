@@ -152,10 +152,11 @@ the PUT is safely retryable.
 | PATCH | `/admin/entities/:id/kyb` | Admin queue |
 | GET | `/analytics/export?type=orders&format=csv` | CSV export |
 
-### 2.6 `/api/inquiries` — **new, the contact form is currently a lie**
+### 2.6 `/api/inquiries` — **new, and now the only thing blocking `/contact`**
 
-`/contact` validates and then shows a success toast with **no network call**. Every inquiry sent
-today is lost. Implement:
+The form is wired: it validates, posts, shows the returned reference id, and falls back to a
+prefilled `mailto:` if the endpoint is missing (404/501) or unreachable — so no inquiry is silently
+dropped while you build this. Implement:
 
 ```
 POST /api/inquiries        (public, rate-limited, no auth required)
