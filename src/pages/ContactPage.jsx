@@ -1,4 +1,6 @@
-import { HiMail, HiPhone, HiLocationMarker, HiClock } from 'react-icons/hi';
+import { useState } from 'react';
+import { HiMail, HiPhone, HiLocationMarker, HiClock, HiArrowRight } from 'react-icons/hi';
+import api from '../utils/api';
 import toast from 'react-hot-toast';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -7,11 +9,76 @@ import { Badge } from '../components/ui/Badge';
 
 import PageHeader from '../components/PageHeader';
 import SEOHead from '../components/SEOHead';
+const EMPTY_INQUIRY = {
+  name: '',
+  email: '',
+  category: 'Bulk Commodity Procurement & Sourcing',
+  message: '',
+};
+
+const DESK_EMAIL = 'desk@iehub.global';
+
 const ContactPage = () => {
-  const handleSubmit = (e) => {
+  const [form, setForm] = useState(EMPTY_INQUIRY);
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [reference, setReference] = useState(null);
+  const [deskOffline, setDeskOffline] = useState(false);
+
+  const update = (field) => (e) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  const mailtoHref = () => {
+    const subject = encodeURIComponent(`Trade inquiry — ${form.category}`);
+    const body = encodeURIComponent(
+      `${form.message}\n\n—\n${form.name}\n${form.email}`
+    );
+    return `mailto:${DESK_EMAIL}?subject=${subject}&body=${body}`;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success('Inquiry submitted. A trade desk specialist will respond within 4 business hours.');
-    e.target.reset();
+    const next = {};
+    if (!form.name.trim()) next.name = 'Tell us who is writing.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) {
+      next.email = 'Use a business email we can reply to.';
+    }
+    if (form.message.trim().length < 20) {
+      next.message = 'Add the commodity, target volume and destination port (20+ characters).';
+    }
+    setErrors(next);
+    if (Object.keys(next).length > 0) {
+      document.querySelector('[aria-invalid="true"]')?.focus();
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const { data } = await api.post('/inquiries', {
+        ...form,
+        source: 'contact-page',
+      });
+      setReference(data?.id || data?.reference || null);
+      setDeskOffline(false);
+      setForm(EMPTY_INQUIRY);
+      toast.success('Inquiry received. A desk officer replies within four working hours.');
+    } catch (error) {
+      const status = error?.response?.status;
+      // 404/501 = the endpoint is not deployed yet. Say so instead of faking a send.
+      if (!status || status === 404 || status === 501) {
+        setDeskOffline(true);
+        toast.error('The desk inbox is not connected yet — send it by email instead.');
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+            `Could not reach the desk. Email ${DESK_EMAIL} and we will reply.`
+        );
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -46,47 +113,111 @@ const ContactPage = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-foreground">
-                      Representative Name
+                    <label htmlFor="inq-name" className="text-xs font-medium text-foreground">
+                      Representative name *
                     </label>
-                    <Input required placeholder="John Doe" className="h-9 text-xs" />
+                    <Input
+                      id="inq-name"
+                      name="name"
+                      value={form.name}
+                      onChange={update('name')}
+                      error={errors.name}
+                      placeholder="Ayesha Rahman"
+                      className="h-9 text-xs"
+                    />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-foreground">
-                      Business Email
+                    <label htmlFor="inq-email" className="text-xs font-medium text-foreground">
+                      Business email *
                     </label>
-                    <Input type="email" required placeholder="desk@company.com" className="h-9 text-xs" />
+                    <Input
+                      id="inq-email"
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={update('email')}
+                      error={errors.email}
+                      placeholder="desk@company.com"
+                      className="h-9 text-xs"
+                    />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">
-                    Inquiry Category
+                  <label htmlFor="inq-category" className="text-xs font-medium text-foreground">
+                    Inquiry category
                   </label>
-                  <select className="flex h-9 w-full rounded-md border border-border-default bg-surface px-3 py-1 text-xs text-foreground focus-visible:outline-none focus-visible:border-accent-primary">
-                    <option>Bulk Commodity Procurement & Sourcing</option>
-                    <option>Exporter Accreditation & KYC Support</option>
-                    <option>Customs Manifest & Logistics Telemetry</option>
-                    <option>Letter of Credit & Escrow Facilities</option>
+                  <select
+                    id="inq-category"
+                    name="category"
+                    value={form.category}
+                    onChange={update('category')}
+                    className="flex h-9 w-full rounded-md border border-border-default bg-surface px-3 py-1 text-xs text-foreground focus-visible:outline-none focus-visible:border-accent-primary"
+                  >
+                    <option>Bulk Commodity Procurement &amp; Sourcing</option>
+                    <option>Exporter Accreditation &amp; KYC Support</option>
+                    <option>Customs Manifest &amp; Logistics Telemetry</option>
+                    <option>Letter of Credit &amp; Escrow Facilities</option>
                   </select>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">
-                    Inquiry Details / Scope
+                  <label htmlFor="inq-message" className="text-xs font-medium text-foreground">
+                    Inquiry details / scope *
                   </label>
                   <textarea
-                    required
+                    id="inq-message"
+                    name="message"
                     rows={4}
-                    placeholder="Provide commodity requirements, target volumes, Incoterms preference (FOB/CIF), and destination ports..."
-                    className="flex w-full rounded-md border border-border-default bg-surface px-3 py-2 text-xs text-foreground placeholder:text-foreground-muted focus-visible:outline-none focus-visible:border-accent-primary"
+                    value={form.message}
+                    onChange={update('message')}
+                    aria-invalid={errors.message ? 'true' : undefined}
+                    placeholder="Commodity, target volume, Incoterm (FOB/CIF) and destination port…"
+                    className={`flex w-full rounded-md border bg-surface px-3 py-2 text-xs text-foreground placeholder:text-foreground-muted focus-visible:outline-none focus-visible:border-accent-primary ${
+                      errors.message ? 'border-status-danger' : 'border-border-default'
+                    }`}
                   />
+                  {errors.message && (
+                    <p role="alert" className="text-[11px] font-medium text-status-danger">
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
 
-                <Button type="submit" size="sm" className="w-full h-9 text-xs font-semibold">
-                  Send inquiry to the desk
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={submitting}
+                  className="w-full h-9 text-xs font-semibold"
+                >
+                  {submitting ? 'Sending to the desk…' : 'Send inquiry to the desk'}
                 </Button>
+
+                {reference && (
+                  <p className="text-[11px] text-foreground-muted">
+                    Reference <span className="font-mono text-foreground">{reference}</span> — quote it
+                    if you follow up.
+                  </p>
+                )}
+
+                {deskOffline && (
+                  <div className="border border-status-warning/30 bg-status-warning-bg p-3">
+                    <p className="text-[11px] font-semibold text-status-warning">
+                      Direct line — the desk inbox is not accepting submissions yet.
+                    </p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-foreground-secondary">
+                      Your text is kept in the form. Send it by email and a named officer will reply
+                      within four working hours.
+                    </p>
+                    <a
+                      href={mailtoHref()}
+                      className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-accent-primary hover:underline"
+                    >
+                      Email {DESK_EMAIL} <HiArrowRight className="h-3 w-3" />
+                    </a>
+                  </div>
+                )}
               </form>
             </CardContent>
           </Card>
