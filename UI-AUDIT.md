@@ -97,7 +97,7 @@ These are real defects, not taste. All were reproduced by measuring the fixed la
 | Dead social links (`#`) | Open — needs real accounts |
 | No error telemetry, no analytics, no consent banner | Open |
 | No tests, no CI pipeline, no e2e smoke | Open |
-| No pagination on any list — admin tables load everything | Open (blocking at scale) |
+| No pagination on any list — admin tables load everything | **Fixed on the document vault** via `DataTable`; other lists still render everything |
 | No entitlement/tier model, so "upgrade" UI cannot exist | Open (product decision) |
 | Currency/locale handling is USD-only, no i18n | Open |
 
@@ -113,13 +113,13 @@ Legend: ✅ present · ⚠️ partial · ❌ missing
 | 2 | Skeleton loaders | ✅ | 18 `animate-pulse` blocks across 8 files (`AllProductsPage`, `DashboardPage`, `MyImports`, `MyExports`, `ProductDetails`, `GlobalLogistics`, `OrderMessageThread`, `Webhooks`). Gap: no shared `<Skeleton>` primitive — markup is duplicated and drifts |
 | 3 | Command palette | ✅ | `ui/CommandPalette.jsx`, ⌘K/Ctrl-K, arrow + enter + esc handling, theme + admin commands. Gap: navigation-only — no product/order/company search |
 | 4 | Persistent sidebar | ✅ | `DashboardLayout` sticky aside (now correctly offset). Gap: was desktop-only; a mobile switcher was added this turn |
-| 5 | Loading & empty states | ⚠️ | `EmptyState` used in MyExports (4), MyImports (4), Dashboard (2), Admin (6), Webhooks (1). Gap: `DocumentVaultPage` has none; several "error" states are a toast with no in-place retry |
+| 5 | Loading & empty states | ⚠️ | `EmptyState` in MyExports (4), MyImports (4), Dashboard (2), Admin (6), Webhooks (1); the vault now gets one through `DataTable`. Gap: several "error" states are still a toast with no in-place retry |
 | 6 | Autosave | ❌ | Only theme + guest session in `localStorage`. Listing/PO forms lose work on refresh — needs debounced draft persistence + "saved 2m ago" |
 | 7 | Debouncing | ✅ | `/products` search debounces the API call 300ms (`AllProductsPage.jsx:124`). Gap: only applied there |
 | 8 | Throttling | ⚠️ | Navbar scroll now `requestAnimationFrame`-throttled. Gap: no `AbortController` on superseded product searches, no rate-limit backoff |
 | 9 | Smart form validation | ⚠️ | HTML5 `required` + toast errors; password rules in Register. `utils/validation.js` exists but is barely wired. Gap: **no inline field-level errors**, no disabled-until-valid, no server-field-error mapping |
-| 10 | Bulk actions on lists | ❌ | No selection model anywhere (no `selectAll`/`selectedRows`). Needed on inventory, POs, document vault, admin queues |
-| 11 | Reusable data table | ⚠️ | `ui/Table.jsx` gives primitives only. No sorting, no pagination, no column config, no selection, no sticky header — every page re-implements rows |
+| 10 | Bulk actions on lists | ⚠️ | `DataTable` now provides a selection model, a select-all-per-page header box and a contextual bulk bar — wired on the document vault (bulk download + confirm-gated bulk delete via `Promise.allSettled`). Still to wire: inventory, POs, admin queues |
+| 11 | Reusable data table | ✅ | `ui/DataTable.jsx` — declarative columns, click-to-sort with `aria-sort`, pagination with page-size control, selection + bulk bar, built-in skeleton and empty slots, and a card fallback below `md`. Integrated on the document vault; four more lists to migrate |
 | 12 | Advanced filtering | ⚠️ | `/products` is genuinely good: search + category + Incoterm + sort, synced to the URL. Gaps: no price/quantity/date ranges, no saved views, no filter chips persistence across navigation |
 | 13 | Keyboard shortcuts | ⚠️ | ⌘K / Ctrl-K, `/` (added this turn), arrows + Enter + Esc in palette, Esc in dropdowns. Gap: no `g`-chords, no shortcuts help sheet, no focus trap parity |
 | 14 | Tier-based UI indicators | ❌ | No plan, entitlement or quota model exists. "Demo vs Live" badge is a user state, not a tier. Requires product definition before UI |
@@ -146,6 +146,13 @@ inline validation, autosave, bulk actions, and one real data table — are the m
 | Vary section composition | **Partial** — 01–07 index numerals replace eight identical eyebrow kickers and headings get a 620ms entrance curve. A full-bleed image band and an asymmetric split are still to do |
 | Replace the home data table with lot cards | **Done** — four photographic lot cards (price, incoterm, origin, MOQ, tonnage) in a hairline grid; the six-column table now lives only on `/products` |
 | One radius language | **Done** — the last `rounded-xl/2xl` outliers (12/16px) were folded onto the 6px system radius |
+
+## 5c. Tier 3 progress
+
+`DataTable` (sort · paginate · select · bulk bar · mobile cards) is built and live on the
+document vault, closing capabilities 10 and 11 and removing the pagination blocker for that list.
+Remaining Tier 3 work: migrate inventory, POs, and admin queues onto it; inline validation;
+autosave; error telemetry.
 
 ## 6. Fix order (highest perceived-quality gain per hour)
 

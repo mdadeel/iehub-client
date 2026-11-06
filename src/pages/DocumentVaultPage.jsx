@@ -22,6 +22,8 @@ import { Badge } from '../components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { Modal, ModalHeader, ModalContent, ModalFooter } from '../components/ui/Modal';
 import DocumentUploadModal from '../components/DocumentUploadModal';
+import DataTable from '../components/ui/DataTable';
+import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 
 const CATEGORY_TABS = [
   { label: 'All Documents', value: 'All' },
@@ -117,6 +119,26 @@ export default function DocumentVaultPage() {
     } finally {
       setIsSubmittingReview(false);
     }
+  };
+
+  const [bulkDeleteIds, setBulkDeleteIds] = useState([]);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
+
+  const handleBulkDelete = async () => {
+    if (bulkDeleteIds.length === 0) return;
+    setIsBulkDeleting(true);
+    const results = await Promise.allSettled(
+      bulkDeleteIds.map((id) => api.delete(`/documents/${id}`))
+    );
+    const failed = results.filter((r) => r.status === 'rejected').length;
+    if (failed > 0) {
+      toast.error(`${failed} of ${bulkDeleteIds.length} documents could not be removed.`);
+    } else {
+      toast.success(`${bulkDeleteIds.length} documents removed from the registry.`);
+    }
+    setBulkDeleteIds([]);
+    setIsBulkDeleting(false);
+    fetchDocuments();
   };
 
   const handleDeleteConfirm = async () => {
@@ -339,131 +361,205 @@ export default function DocumentVaultPage() {
             Tenant Document Ledger ({filteredDocs.length})
           </CardTitle>
         </CardHeader>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-surface-subtle border-b border-border-default text-foreground-muted uppercase tracking-wider font-semibold text-[10px]">
-              <tr>
-                <th className="py-3 px-4">Document Details</th>
-                <th className="py-3 px-4">Classification</th>
-                <th className="py-3 px-4">Size</th>
-                <th className="py-3 px-4">Audit Status</th>
-                <th className="py-3 px-4">Uploader / Timestamp</th>
-                <th className="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {isLoading ? (
-                <tr>
-                  <td colSpan="6" className="py-12 text-center text-foreground-muted">
-                    Loading vault registry...
-                  </td>
-                </tr>
-              ) : filteredDocs.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="py-12 text-center">
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <HiDocumentText className="w-10 h-10 text-foreground-muted" />
-                      <div className="text-sm font-semibold text-foreground">No documents found</div>
-                      <div className="text-xs text-foreground-muted">
-                        Upload your bills of lading, commercial invoices, and export licenses here.
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mt-2"
-                        onClick={() => setIsUploadModalOpen(true)}
-                      >
-                        Upload First Document
-                      </Button>
+        <DataTable
+          rows={filteredDocs}
+          rowKey={(doc) => doc._id}
+          isLoading={isLoading}
+          skeletonRows={6}
+          selectable
+          initialSort={{ key: 'uploadedAt', dir: 'desc' }}
+          pageSize={8}
+          columns={[
+            {
+              key: 'fileName',
+              header: 'Document',
+              sortable: true,
+              render: (doc) => (
+                <div className="min-w-0">
+                  <div className="max-w-[22rem] truncate font-semibold text-foreground">
+                    {doc.fileName}
+                  </div>
+                  {doc.metadata?.customsReference && (
+                    <div className="text-[12px] text-foreground-muted">
+                      Ref: <span className="font-mono">{doc.metadata.customsReference}</span>
                     </div>
-                  </td>
-                </tr>
-              ) : (
-                filteredDocs.map((doc) => (
-                  <tr key={doc._id} className="hover:bg-surface-hover/50 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="font-semibold text-foreground truncate max-w-xs">{doc.fileName}</div>
-                      {doc.metadata?.customsReference && (
-                        <div className="text-[11px] text-foreground-muted">
-                          Ref: <span className="font-mono">{doc.metadata.customsReference}</span>
-                        </div>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="font-medium text-foreground">{doc.documentType}</span>
-                    </td>
-                    <td className="py-3 px-4 text-foreground-muted">
-                      {formatBytes(doc.fileSizeBytes)}
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="space-y-1">
-                        <div>{getStatusBadge(doc.status)}</div>
-                        {doc.verificationNotes && (
-                          <div className="text-[10px] text-foreground-muted italic max-w-xs truncate">
-                            Note: {doc.verificationNotes}
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-foreground-muted">
-                      <div className="truncate max-w-[160px]">{doc.uploadedByEmail}</div>
-                      <div className="text-[10px]">{new Date(doc.createdAt).toLocaleDateString()}</div>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setInspectedDoc(doc)}
-                          title="Inspect Cryptographic Audit & Lab Parameters"
-                        >
-                          <HiEye className="w-3.5 h-3.5 text-accent-primary" />
-                        </Button>
-
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDownload(doc)}
-                          title="Download Document"
-                          disabled={doc.status === 'PendingUpload'}
-                        >
-                          <HiDownload className="w-3.5 h-3.5" />
-                        </Button>
-
-                        {/* Verify / Reject action (visible to admin or demo-admin) */}
-                        {(user?.isAdmin || user?.userType === 'demo-admin') && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setReviewDoc(doc);
-                              setReviewStatus('Verified');
-                              setReviewNotes('');
-                            }}
-                            title="Review Compliance"
-                          >
-                            <HiShieldCheck className="w-3.5 h-3.5 text-accent-primary" />
-                          </Button>
-                        )}
-
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setDocToDelete(doc)}
-                          title="Delete Document"
-                          className="hover:text-status-danger"
-                        >
-                          <HiTrash className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                  )}
+                </div>
+              ),
+            },
+            {
+              key: 'documentType',
+              header: 'Classification',
+              sortable: true,
+              render: (doc) => <span className="font-medium text-foreground">{doc.documentType}</span>,
+            },
+            {
+              key: 'fileSizeBytes',
+              header: 'Size',
+              sortable: true,
+              hideBelow: 'sm',
+              render: (doc) => <span className="font-mono">{formatBytes(doc.fileSizeBytes)}</span>,
+            },
+            {
+              key: 'status',
+              header: 'Audit status',
+              sortable: true,
+              render: (doc) => (
+                <div className="space-y-1">
+                  <div>{getStatusBadge(doc.status)}</div>
+                  {doc.verificationNotes && (
+                    <div className="max-w-[14rem] truncate text-[12px] italic text-foreground-muted">
+                      Note: {doc.verificationNotes}
+                    </div>
+                  )}
+                </div>
+              ),
+            },
+            {
+              key: 'uploadedAt',
+              header: 'Uploaded',
+              sortable: true,
+              hideBelow: 'lg',
+              sortValue: (doc) => new Date(doc.createdAt).getTime(),
+              render: (doc) => (
+                <div className="min-w-0">
+                  <div className="max-w-[13rem] truncate">{doc.uploadedByEmail}</div>
+                  <div className="text-[12px] text-foreground-muted">
+                    {new Date(doc.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              key: 'actions',
+              header: 'Actions',
+              align: 'right',
+              render: (doc) => (
+                <div className="flex items-center justify-end gap-1.5">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setInspectedDoc(doc)}
+                    title="Inspect audit trail"
+                  >
+                    <HiEye className="h-3.5 w-3.5 text-accent-primary" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDownload(doc)}
+                    title="Download document"
+                    disabled={doc.status === 'PendingUpload'}
+                  >
+                    <HiDownload className="h-3.5 w-3.5" />
+                  </Button>
+                  {(user?.isAdmin || user?.userType === 'demo-admin') && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      title="Review compliance"
+                      onClick={() => {
+                        setReviewDoc(doc);
+                        setReviewStatus('Verified');
+                        setReviewNotes('');
+                      }}
+                    >
+                      <HiShieldCheck className="h-3.5 w-3.5 text-accent-primary" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setDocToDelete(doc)}
+                    title="Delete document"
+                    className="hover:text-status-danger"
+                  >
+                    <HiTrash className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              ),
+            },
+          ]}
+          bulkActions={(selectedRows, clear) => (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  selectedRows.forEach((doc) => handleDownload(doc));
+                  clear();
+                }}
+              >
+                <HiDownload className="h-3.5 w-3.5" /> Download
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => setBulkDeleteIds(selectedRows.map((doc) => doc._id))}
+              >
+                <HiTrash className="h-3.5 w-3.5" /> Delete
+              </Button>
+            </>
+          )}
+          renderMobileCard={(doc) => (
+            <div className="space-y-1.5">
+              <div className="truncate font-semibold text-foreground">{doc.fileName}</div>
+              <div className="flex flex-wrap items-center gap-2 text-[12px] text-foreground-muted">
+                <span>{doc.documentType}</span>
+                <span>·</span>
+                <span className="font-mono">{formatBytes(doc.fileSizeBytes)}</span>
+                <span>·</span>
+                <span>{new Date(doc.createdAt).toLocaleDateString()}</span>
+              </div>
+              <div>{getStatusBadge(doc.status)}</div>
+              <div className="flex items-center gap-2 pt-1">
+                <Button variant="outline" size="sm" onClick={() => setInspectedDoc(doc)}>
+                  Inspect
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleDownload(doc)}>
+                  Download
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="ml-auto hover:text-status-danger"
+                  onClick={() => setDocToDelete(doc)}
+                >
+                  <HiTrash className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+          )}
+          emptyState={
+            <div className="flex flex-col items-center justify-center gap-2 px-6 py-14 text-center">
+              <HiDocumentText className="h-9 w-9 text-foreground-muted" />
+              <div className="t-h3">No documents found</div>
+              <p className="max-w-sm text-[13px] text-foreground-secondary">
+                Upload your bills of lading, commercial invoices and export licences here — every
+                file is scoped to this organisation.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-2"
+                onClick={() => setIsUploadModalOpen(true)}
+              >
+                Upload first document
+              </Button>
+            </div>
+          }
+        />
       </Card>
+
+      <ConfirmDialog
+        open={bulkDeleteIds.length > 0}
+        onClose={() => setBulkDeleteIds([])}
+        onConfirm={handleBulkDelete}
+        title={`Delete ${bulkDeleteIds.length} document${bulkDeleteIds.length === 1 ? '' : 's'}?`}
+        description="Removed files leave the tenant ledger immediately and cannot be recovered. Keep a local copy if the customs file is still open."
+        confirmText="Delete permanently"
+        loading={isBulkDeleting}
+      />
 
       {/* Upload Modal */}
       <DocumentUploadModal
