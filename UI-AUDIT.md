@@ -143,8 +143,8 @@ inline validation, autosave, bulk actions, and one real data table — are the m
 | Remove borders from non-interactive containers | **Done** — `.panel` + `.panel-lift` replace `border border-border-default` on capability, lane and category cards; the trade board lost its outer box |
 | Three visible surface layers | **Done** — canvas `#F3EFE9`, sunken `#EAE4DC`, surface `#FFFFFF`, hover `#E1DAD0`; the old set differed by 2–3% luminance and read as one flat white |
 | One photographic grade | **Done** — every `.media` image now runs `saturate(.93) contrast(1.05) brightness(.99)` |
-| Vary section composition | **Partial** — sections now carry 01–07 index numerals instead of eight identical eyebrow kickers, and headings have a 620ms entrance curve. Full-bleed image bands and an asymmetric split are still to do |
-| Replace the home data table with lot cards | **Not started** — the board is still a table (six columns, three hidden by breakpoint) |
+| Vary section composition | **Partial** — 01–07 index numerals replace eight identical eyebrow kickers and headings get a 620ms entrance curve. A full-bleed image band and an asymmetric split are still to do |
+| Replace the home data table with lot cards | **Done** — four photographic lot cards (price, incoterm, origin, MOQ, tonnage) in a hairline grid; the six-column table now lives only on `/products` |
 | One radius language | **Done** — the last `rounded-xl/2xl` outliers (12/16px) were folded onto the 6px system radius |
 
 ## 6. Fix order (highest perceived-quality gain per hour)
