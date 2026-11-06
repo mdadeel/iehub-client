@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiChevronDown, HiChevronLeft, HiChevronRight, HiChevronUp, HiX } from 'react-icons/hi';
 import { cn } from '@/lib/utils';
+import Skeleton from './Skeleton';
 
 /**
  * DataTable — one table for the whole workspace.
@@ -132,10 +133,10 @@ const DataTable = ({
         <div className="divide-y divide-border-subtle">
           {Array.from({ length: skeletonRows }).map((_, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-4">
-              <div className="h-3 flex-1 animate-pulse bg-surface-subtle" />
-              <div className="h-3 w-24 animate-pulse bg-surface-subtle" />
-              <div className="hidden h-3 w-20 animate-pulse bg-surface-subtle sm:block" />
-              <div className="h-3 w-16 animate-pulse bg-surface-subtle" />
+              <Skeleton className="h-3 flex-1" />
+              <Skeleton className="h-3 w-24" />
+              <Skeleton className="hidden h-3 w-20 sm:block" />
+              <Skeleton className="h-3 w-16" />
             </div>
           ))}
         </div>

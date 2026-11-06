@@ -110,7 +110,7 @@ Legend: ✅ present · ⚠️ partial · ❌ missing
 | # | Capability | Verdict | Evidence / gap |
 |---|---|---|---|
 | 1 | Optimistic UI updates | ⚠️ | Was absent. Now: inventory delete removes the row immediately and **rolls back** on API failure (`MyExportsPage.jsx`). Everything else is `await → setState`. Next: quantity/price edits, PO status changes |
-| 2 | Skeleton loaders | ✅ | 18 `animate-pulse` blocks across 8 files (`AllProductsPage`, `DashboardPage`, `MyImports`, `MyExports`, `ProductDetails`, `GlobalLogistics`, `OrderMessageThread`, `Webhooks`). Gap: no shared `<Skeleton>` primitive — markup is duplicated and drifts |
+| 2 | Skeleton loaders | ✅ | Shared `ui/Skeleton` primitive now backs `DataTable`; 17 `animate-pulse` blocks remain in 8 page files (`AllProductsPage`, `DashboardPage`, `MyImports`, `MyExports`, `ProductDetails`, `GlobalLogistics`, `OrderMessageThread`, `Webhooks`). Gap: no shared `<Skeleton>` primitive — markup is duplicated and drifts |
 | 3 | Command palette | ✅ | `ui/CommandPalette.jsx`, ⌘K/Ctrl-K, arrow + enter + esc handling, theme + admin commands. Gap: navigation-only — no product/order/company search |
 | 4 | Persistent sidebar | ✅ | `DashboardLayout` sticky aside (now correctly offset). Gap: was desktop-only; a mobile switcher was added this turn |
 | 5 | Loading & empty states | ⚠️ | `EmptyState` in MyExports (4), MyImports (4), Dashboard (2), Admin (6), Webhooks (1); the vault now gets one through `DataTable`. Gap: several "error" states are still a toast with no in-place retry |
@@ -128,7 +128,7 @@ Legend: ✅ present · ⚠️ partial · ❌ missing
 | 17 | Custom 404 page | ✅ | `NotFoundPage` + `<Route path="*">` added this turn |
 | 18 | Mobile-optimised SaaS layouts | ⚠️ | Top switcher added, sidebar behaviour fixed, home mosaic fixed. Still: table-scroll on mobile, no bottom nav, some 28px tap targets |
 | 19 | Destructive action protection | ✅ | `ConfirmDialog` on inventory delete (`MyExportsPage:867`) and purchase-order actions (`MyImportsPage:990`). Gap: not applied to every destructive path (document delete, webhook delete, org removal) |
-| 20 | Graceful error recovery | ⚠️ | Global `ErrorBoundary` (`main.jsx`), retry button on `/products`, mock-data fallback when the API is cold. Gaps: no automatic retry with backoff, no offline banner, no error telemetry, least-effort messages ("Failed to remove listing") |
+| 20 | Graceful error recovery | ✅ | Global `ErrorBoundary` now reports to `POST /api/telemetry/client-error` via `sendBeacon` (survives a closing tab); `OfflineBanner` states the network is down instead of letting each action fail separately; retry on `/products`, optimistic rollbacks restore removed rows. Gap: no exponential backoff on 5xx |
 
 **Score: 4 present · 8 partial · 8 missing.** The four that matter most for how it *feels* —
 inline validation, autosave, bulk actions, and one real data table — are the missing ones.

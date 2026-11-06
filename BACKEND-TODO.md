@@ -259,11 +259,16 @@ exact strings for now, fix both sides in one coordinated release.
 
 - **Rate limits:** `POST /inquiries` and `POST /webhooks/:id/test` → 5/min per IP; auth routes →
   10/min per IP; everything else → 120/min per token. Return `429` with `Retry-After`.
-- **Telemetry (new, small):** `POST /api/telemetry/client-error` accepting
-  `{ message, stack, url, correlationId, userAgent }`. The client's `ErrorBoundary` is ready to
-  post here; without it, production failures are invisible.
-- **Health:** `GET /api/health` → `{ status: "ok", version, db: "ok|degraded" }`, used by the
-  offline/degraded banner.
+- **Telemetry — the client is already sending.** `ErrorBoundary.componentDidCatch` calls
+  `utils/telemetry.js`, which posts with `sendBeacon` (falling back to `fetch` + `keepalive`) so the
+  report survives a tab that is closing. Payload:
+  `{ message, stack, componentStack, url, userAgent, correlationId, at }`. Right now the POST 404s
+  and is swallowed. Accept it, store it, alert on rate-of-change:
+  `POST /api/telemetry/client-error` → `202 { id }`. Public (no auth — the error may be an auth
+  failure), rate-limited to 60/min per IP, body cap 16 KB.
+- **Health:** `GET /api/health` → `{ status: "ok", version, db: "ok|degraded" }`. The offline
+  banner ships and currently relies on `navigator.onLine`; the health probe is what would let it
+  distinguish "your wifi died" from "our API is down".
 - **CSV export:** `GET /analytics/export` must stream, not buffer — an admin exporting 50k orders
   currently risks a timeout.
 - **Correlation:** log `X-Correlation-ID` on every request; include it in `500` bodies so a support
@@ -299,6 +304,38 @@ curl -s -X PUT localhost:5000/api/products/drafts/$(uuidgen) -H "Authorization: 
 
 ---
 
+## 8b. Product-gated features — spec first, then build
+
+These three are the reason the client cannot show tiers, onboarding or referrals. Each needs a
+decision from you (pricing model / capture fields / reward scheme) before the frontend has anything
+to render. Suggested contracts:
+
+**Entitlements (unlocks tier badges, quota walls, upgrade prompts)**
+
+```
+GET /api/entitlements -> { plan: "starter|growth|enterprise", limits: { listings: 10, seats: 3, apiCalls: 1000 },
+                           usage: { listings: 4, seats: 2, apiCalls: 120 }, renewsAt: "2026-12-01" }
+```
+Every quota-exceeding mutation must return `402` `{ code: "LIMIT_REACHED", limit, used, plan }`.
+
+**Onboarding capture (unlocks personalisation + first-run checklist)**
+
+```
+POST /api/onboarding  { role: "buyer|exporter|both", commodities: ["Spices"], monthlyVolume: "50-200t",
+                        destinations: ["Rotterdam"], referralSource: "…" }
+GET  /api/onboarding  -> 200 { completedAt } | 404 if never captured
+```
+
+**Referral / affiliate**
+
+```
+GET  /api/referrals/me        -> { code: "IEHUB-AYESHA", link, invites: 4, converted: 2, credited: 120.00 }
+POST /api/referrals/invite    { email }  -> 202
+```
+Attribution needs a `?ref=CODE` capture at signup — settle that with the auth owner before the UI.
+
+---
+
 ## 9. Order of work (each row unblocks a shipped screen)
 
 1. `422 { errors }` envelope on `POST/PATCH /products` — the inline validation UI is dead without it.
@@ -308,5 +345,5 @@ curl -s -X PUT localhost:5000/api/products/drafts/$(uuidgen) -H "Authorization: 
 5. `?page&limit&sort&order` + `meta` on `/products` and `/documents`.
 6. Draft endpoints for cross-device autosave.
 7. `Idempotency-Key` on create endpoints.
-8. `/telemetry/client-error` + `/health`.
+8. `/telemetry/client-error` (client already posting) + `/health`.
 9. Move listing images to presigned upload; cap JSON bodies at 1 MB.

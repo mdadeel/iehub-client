@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthProvider'
 import { OrgsProvider } from './context/OrgsContext'
 import ErrorBoundary from './components/ErrorBoundary'
+import OfflineBanner from './components/OfflineBanner'
 import './index.css'
 import App from './App.jsx'
 
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <AuthProvider>
         <OrgsProvider>
+          <OfflineBanner />
           <ErrorBoundary>
             <App />
           </ErrorBoundary>

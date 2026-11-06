@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from './ui/Button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/Card';
+import { reportClientError } from '../utils/telemetry';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     this.setState({ error, errorInfo });
     console.error("Uncaught error:", error, errorInfo);
+    reportClientError(error, errorInfo);
   }
 
   render() {
