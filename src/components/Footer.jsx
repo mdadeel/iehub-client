@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import { HiArrowRight, HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker } from 'react-icons/hi';
+import { HiArrowRight, HiOutlineLocationMarker } from 'react-icons/hi';
 import Logo from './Logo';
 
 const Footer = () => {
@@ -49,20 +49,6 @@ const Footer = () => {
             </p>
 
             <div className="mt-6 space-y-2.5 text-[14px] text-white/55">
-              <a
-                href="tel:+880312345678"
-                className="flex items-center gap-2.5 transition-colors hover:text-white"
-              >
-                <HiOutlinePhone className="h-4 w-4 shrink-0 text-white/35" />
-                +880 31 234 5678
-              </a>
-              <a
-                href="mailto:tradedesk@iehub.com"
-                className="flex items-center gap-2.5 transition-colors hover:text-white"
-              >
-                <HiOutlineMail className="h-4 w-4 shrink-0 text-white/35" />
-                tradedesk@iehub.com
-              </a>
               <div className="flex items-start gap-2.5">
                 <HiOutlineLocationMarker className="mt-0.5 h-4 w-4 shrink-0 text-white/35" />
                 Agrabad C/A, Chattogram 4100, Bangladesh
