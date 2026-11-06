@@ -134,13 +134,31 @@ const Footer = () => {
             </form>
 
             <div className="mt-5 flex items-center gap-3 text-white/45">
-              <a href="#" className="transition-colors hover:text-white" aria-label="X Twitter">
+              <a
+                href="https://x.com/mdmoft"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white"
+                aria-label="IEHUB on X"
+              >
                 <FaXTwitter size={14} />
               </a>
-              <a href="#" className="transition-colors hover:text-white" aria-label="LinkedIn">
+              <a
+                href="https://www.linkedin.com/in/shahnawasadee1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white"
+                aria-label="IEHUB on LinkedIn"
+              >
                 <FaLinkedin size={14} />
               </a>
-              <a href="#" className="transition-colors hover:text-white" aria-label="GitHub">
+              <a
+                href="https://github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white"
+                aria-label="IEHUB on GitHub"
+              >
                 <FaGithub size={14} />
               </a>
             </div>

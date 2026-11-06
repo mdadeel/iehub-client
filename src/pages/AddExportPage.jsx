@@ -13,6 +13,9 @@ const AddExportPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [draftSavedAt, setDraftSavedAt] = useState(null);
+  const DRAFT_KEY = 'iehub.draft.export-listing';
   const [formData, setFormData] = useState({
     name: '',
     image: '',
@@ -37,6 +40,33 @@ const AddExportPage = () => {
     }
   }, [user, navigate]);
 
+  // Draft autosave — survives a refresh or a dropped connection mid-form.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        window.localStorage.setItem(DRAFT_KEY, JSON.stringify(formData));
+        setDraftSavedAt(new Date());
+      } catch {
+        /* storage full or blocked — the form still works, just without a draft */
+      }
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [formData]);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw);
+      if (draft?.name || draft?.description) {
+        setFormData((prev) => ({ ...prev, ...draft }));
+        toast('Unsaved draft restored.', { icon: '↩' });
+      }
+    } catch {
+      /* ignore malformed drafts */
+    }
+  }, []);
+
   if (user?.isGuest) return null;
 
   const handleImageChange = (e) => {
@@ -54,8 +84,48 @@ const AddExportPage = () => {
     }
   };
 
+  const validate = (values) => {
+    const next = {};
+    if (!values.name || values.name.trim().length < 3) {
+      next.name = 'Give the commodity a name of at least 3 characters.';
+    }
+    if (values.price === '' || Number.isNaN(Number(values.price)) || Number(values.price) <= 0) {
+      next.price = 'Enter a price per unit above zero.';
+    }
+    if (
+      values.quantity === '' ||
+      !Number.isInteger(Number(values.quantity)) ||
+      Number(values.quantity) <= 0
+    ) {
+      next.quantity = 'Volume must be a whole number of units, above zero.';
+    }
+    if (!values.origin || values.origin.trim().length < 2) {
+      next.origin = 'Name the country or region of origin.';
+    }
+    if (values.hsCode && !/^\d{4,8}(\.\d{1,2})?$/.test(values.hsCode.trim())) {
+      next.hsCode = 'An HS code is 4–8 digits (e.g. 0906.11).';
+    }
+    if (!values.description || values.description.trim().length < 20) {
+      next.description = 'Describe the grade, packing and spec in at least 20 characters.';
+    }
+    return next;
+  };
+
+  const validateField = (field) => {
+    const fieldErrors = validate(formData);
+    setErrors((prev) => ({ ...prev, [field]: fieldErrors[field] }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const found = validate(formData);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      toast.error('Check the highlighted fields before publishing.');
+      const first = document.querySelector('[aria-invalid="true"]');
+      if (first) first.focus();
+      return;
+    }
     setSubmitting(true);
     try {
       await api.post('/products', {
@@ -64,6 +134,7 @@ const AddExportPage = () => {
         price: parseFloat(formData.price),
         quantity: parseInt(formData.quantity, 10),
       });
+      window.localStorage.removeItem(DRAFT_KEY);
       toast.success('Commodity registered to global marketplace.');
       navigate('/dashboard/my-exports');
     } catch (error) {
@@ -88,9 +159,16 @@ const AddExportPage = () => {
         <h1 className="text-xl font-bold tracking-tight text-foreground">
           Register Export Commodity
         </h1>
-        <p className="text-xs text-foreground-muted mt-1">
-          Create a marketplace listing visible to international buyers. Fields marked * are required.
-        </p>
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <p className="text-xs text-foreground-muted">
+            Create a marketplace listing visible to international buyers. Fields marked * are required.
+          </p>
+          {draftSavedAt && (
+            <span className="font-mono text-[11px] text-foreground-subtle">
+              · draft saved {draftSavedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          )}
+        </div>
       </div>
 
       <Card className="border border-border-default bg-surface shadow-2xs">
@@ -157,6 +235,8 @@ const AddExportPage = () => {
                   placeholder="e.g. Organic Ceylon Cinnamon Grade ALBA"
                   required
                   value={formData.name}
+                  error={errors.name}
+                  onBlur={() => validateField('name')}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="h-9 text-xs"
                 />
@@ -192,6 +272,8 @@ const AddExportPage = () => {
                   placeholder="0.00"
                   required
                   value={formData.price}
+                  error={errors.price}
+                  onBlur={() => validateField('price')}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   className="h-9 text-xs font-mono"
                 />
@@ -206,6 +288,8 @@ const AddExportPage = () => {
                   placeholder="e.g. 500"
                   required
                   value={formData.quantity}
+                  error={errors.quantity}
+                  onBlur={() => validateField('quantity')}
                   onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                   className="h-9 text-xs font-mono"
                 />
@@ -219,6 +303,8 @@ const AddExportPage = () => {
                   placeholder="e.g. Colombo Port, Sri Lanka"
                   required
                   value={formData.origin}
+                  error={errors.origin}
+                  onBlur={() => validateField('origin')}
                   onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
                   className="h-9 text-xs"
                 />
@@ -257,6 +343,8 @@ const AddExportPage = () => {
                 <Input
                   placeholder="e.g. 0904.11"
                   value={formData.hsCode}
+                  error={errors.hsCode}
+                  onBlur={() => validateField('hsCode')}
                   onChange={(e) => setFormData({ ...formData, hsCode: e.target.value })}
                   className="h-9 text-xs font-mono"
                 />
@@ -301,6 +389,8 @@ const AddExportPage = () => {
               <textarea
                 rows={3}
                 value={formData.description}
+                  error={errors.description}
+                  onBlur={() => validateField('description')}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Provide details on harvest purity, moisture content, ISO compliance, and packaging standard..."
                 className="flex w-full rounded-md border border-border-default bg-surface px-3 py-2 text-xs text-foreground placeholder:text-foreground-muted focus-visible:outline-none focus-visible:border-accent-primary"
