@@ -30,6 +30,7 @@ import { Card } from '../components/ui/Card';
 import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/Sheet';
 import { DropdownMenu } from '../components/ui/DropdownMenu';
 import OrderMessageThread from '../components/OrderMessageThread';
+import DataTable from '../components/ui/DataTable';
 import {
   Table,
   TableHeader,
@@ -452,120 +453,196 @@ const MyImportsPage = () => {
               No orders match &ldquo;{searchTerm}&rdquo;.
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>PO Reference / Commodity</TableHead>
-                  <TableHead>Destination Port</TableHead>
-                  <TableHead className="text-right">Total Commitment</TableHead>
-                  <TableHead>Escrow / Acceptance</TableHead>
-                  <TableHead className="text-center">Status</TableHead>
-                  <TableHead className="w-10"><span className="sr-only">Actions</span></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredImports.map((item) => {
-                  const prod = item.productId || item;
-                  const unitPrice = item.unitPrice || prod.price || 0;
-                  const totalVal = item.totalAmount || (item.quantity || 1) * unitPrice;
-                  const statusText = item.status || 'Confirmed';
-                  const statusVariant =
-                    statusText === 'Delivered'
-                      ? 'success'
-                      : statusText === 'In Transit'
-                      ? 'accent'
-                      : statusText === 'Disputed'
-                      ? 'danger'
-                      : statusText === 'Customs Clearance'
-                      ? 'warning'
-                      : 'neutral';
-                  const poNumber = item.poNumber || `PO-${String(item._id).slice(-6).toUpperCase()}`;
-
-                  return (
-                    <TableRow key={item._id} className="cursor-pointer hover:bg-surface-subtle/50" onClick={() => openPODetails(item)}>
-                      <TableCell className="py-2.5">
-                        <div className="flex items-center gap-2.5">
-                          {prod.image ? (
-                            <div className="w-9 h-9 rounded-md overflow-hidden bg-surface-subtle border border-border-default shrink-0">
-                              <img
-                                src={prod.image}
-                                alt={prod.name}
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-9 h-9 rounded-md bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-[10px] shrink-0">
-                              {prod.name?.charAt(0)?.toUpperCase() || 'P'}
-                            </div>
-                          )}
-                          <div className="min-w-0">
-                            <div className="font-semibold text-xs text-foreground truncate max-w-[200px]">
-                              {prod.name}
-                            </div>
-                            <div className="flex items-center gap-1.5 text-[10px] text-foreground-muted font-mono mt-0.5">
-                              <span className="text-foreground-secondary">{poNumber}</span>
-                              <span>&bull;</span>
-                              <span className="text-accent-primary font-bold">{item.incoterm || prod.incoterm || 'FOB'}</span>
-                              <span>&bull;</span>
-                              <span className="text-foreground-muted">{(item.quantity || 1).toLocaleString()} {item.unit || prod.unit || 'MT'}</span>
-                            </div>
+            <DataTable
+              rows={filteredImports}
+              rowKey={(item) => item._id}
+              pageSize={8}
+              initialSort={{ key: 'totalAmount', dir: 'desc' }}
+              onRowClick={openPODetails}
+              columns={[
+                {
+                  key: 'poNumber',
+                  header: 'PO / commodity',
+                  sortable: true,
+                  sortValue: (item) =>
+                    item.poNumber || `PO-${String(item._id).slice(-6).toUpperCase()}`,
+                  render: (item) => {
+                    const prod = item.productId || item;
+                    const poNumber =
+                      item.poNumber || `PO-${String(item._id).slice(-6).toUpperCase()}`;
+                    return (
+                      <div className="flex items-center gap-2.5">
+                        {prod.image ? (
+                          <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-surface-subtle">
+                            <img src={prod.image} alt="" className="h-full w-full object-cover" loading="lazy" />
+                          </div>
+                        ) : (
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-subtle text-[11px] font-bold text-accent-primary">
+                            {prod.name?.charAt(0)?.toUpperCase() || 'P'}
+                          </div>
+                        )}
+                        <div className="min-w-0">
+                          <div className="max-w-[15rem] truncate font-semibold text-foreground">
+                            {prod.name}
+                          </div>
+                          <div className="mt-0.5 flex items-center gap-1.5 font-mono text-[12px] text-foreground-muted">
+                            <span className="text-foreground-secondary">{poNumber}</span>
+                            <span>·</span>
+                            <span className="font-bold text-accent-primary">
+                              {item.incoterm || prod.incoterm || 'FOB'}
+                            </span>
+                            <span>·</span>
+                            <span>
+                              {(item.quantity || 1).toLocaleString()} {item.unit || prod.unit || 'MT'}
+                            </span>
                           </div>
                         </div>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-xs text-foreground-secondary">
-                        <div className="truncate max-w-[170px] font-medium text-foreground">
-                          {item.destinationPort || 'Designated Port of Entry'}
+                      </div>
+                    );
+                  },
+                },
+                {
+                  key: 'destinationPort',
+                  header: 'Destination',
+                  sortable: true,
+                  hideBelow: 'sm',
+                  render: (item) => {
+                    const prod = item.productId || item;
+                    return (
+                      <div>
+                        <div className="max-w-[11rem] truncate font-medium text-foreground">
+                          {item.destinationPort || 'Designated port of entry'}
                         </div>
-                        <div className="text-[10px] text-foreground-muted font-mono">
-                          Origin: {prod.origin || 'Global Port'}
+                        <div className="font-mono text-[12px] text-foreground-muted">
+                          Origin: {prod.origin || 'Global'
+                          }
                         </div>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-right font-mono text-xs font-semibold tabular-nums text-foreground">
-                        ${totalVal.toLocaleString()}
-                      </TableCell>
-
-                      <TableCell className="py-2.5">
-                        <div className="flex flex-col gap-1">
-                          <Badge
-                            variant={item.escrowStatus === 'Funded' ? 'accent' : item.escrowStatus === 'Released' ? 'success' : 'neutral'}
-                            size="sm"
-                            className="text-[10px] w-fit"
-                          >
-                            Escrow: {item.escrowStatus || 'None'}
-                          </Badge>
-                          <span className="text-[10px] text-foreground-muted">
-                            Seller: {item.sellerAccepted || 'Pending'}
-                          </span>
-                        </div>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-center">
-                        <Badge variant={statusVariant} size="sm" hasDot>
-                          {statusText}
-                        </Badge>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-right" onClick={(e) => e.stopPropagation()}>
+                      </div>
+                    );
+                  },
+                },
+                {
+                  key: 'totalAmount',
+                  header: 'Commitment',
+                  align: 'right',
+                  sortable: true,
+                  className: 'font-mono font-semibold tabular-nums',
+                  sortValue: (item) => {
+                    const prod = item.productId || item;
+                    const unitPrice = item.unitPrice || prod.price || 0;
+                    return item.totalAmount || (item.quantity || 1) * unitPrice;
+                  },
+                  render: (item) => {
+                    const prod = item.productId || item;
+                    const unitPrice = item.unitPrice || prod.price || 0;
+                    const totalVal = item.totalAmount || (item.quantity || 1) * unitPrice;
+                    return <span className="text-foreground">${totalVal.toLocaleString()}</span>;
+                  },
+                },
+                {
+                  key: 'escrowStatus',
+                  header: 'Escrow / acceptance',
+                  sortable: true,
+                  hideBelow: 'lg',
+                  render: (item) => (
+                    <div className="flex flex-col gap-1">
+                      <Badge
+                        variant={
+                          item.escrowStatus === 'Funded'
+                            ? 'accent'
+                            : item.escrowStatus === 'Released'
+                              ? 'success'
+                              : 'neutral'
+                        }
+                        size="sm"
+                        className="w-fit text-[11px]"
+                      >
+                        Escrow: {item.escrowStatus || 'None'}
+                      </Badge>
+                      <span className="text-[12px] text-foreground-muted">
+                        Seller: {item.sellerAccepted || 'Pending'}
+                      </span>
+                    </div>
+                  ),
+                },
+                {
+                  key: 'status',
+                  header: 'Status',
+                  align: 'center',
+                  sortable: true,
+                  render: (item) => {
+                    const statusText = item.status || 'Confirmed';
+                    const statusVariant =
+                      statusText === 'Delivered'
+                        ? 'success'
+                        : statusText === 'In Transit'
+                          ? 'accent'
+                          : statusText === 'Disputed'
+                            ? 'danger'
+                            : statusText === 'Customs Clearance'
+                              ? 'warning'
+                              : 'neutral';
+                    return (
+                      <Badge variant={statusVariant} size="sm" hasDot>
+                        {statusText}
+                      </Badge>
+                    );
+                  },
+                },
+                {
+                  key: 'actions',
+                  header: '',
+                  align: 'right',
+                  render: (item) => {
+                    const poNumber =
+                      item.poNumber || `PO-${String(item._id).slice(-6).toUpperCase()}`;
+                    return (
+                      <div onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu
                           items={[
                             { label: 'View contract & tracking', icon: HiEye, onSelect: () => openPODetails(item) },
                             { label: 'Copy PO reference', icon: HiClipboardCopy, onSelect: () => copyPO(poNumber) },
                             ...(item.escrowStatus !== 'Funded' && item.escrowStatus !== 'Released'
-                              ? [{ label: 'Fund Escrow Vault', icon: HiCurrencyDollar, onSelect: () => handleFundEscrow(item._id) }]
+                              ? [{ label: 'Fund escrow vault', icon: HiCurrencyDollar, onSelect: () => handleFundEscrow(item._id) }]
                               : []),
-                            { label: 'Raise Dispute / Claim', icon: HiScale, onSelect: () => openDisputeModal(item) },
+                            { label: 'Raise dispute / claim', icon: HiScale, onSelect: () => openDisputeModal(item) },
                             { label: 'Cancel purchase order', icon: HiTrash, danger: true, onSelect: () => openCancelPrompt(item) },
                           ]}
                         />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                      </div>
+                    );
+                  },
+                },
+              ]}
+              renderMobileCard={(item) => {
+                const prod = item.productId || item;
+                const statusText = item.status || 'Confirmed';
+                const unitPrice = item.unitPrice || prod.price || 0;
+                const totalVal = item.totalAmount || (item.quantity || 1) * unitPrice;
+                return (
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="truncate font-semibold text-foreground">{prod.name}</div>
+                        <div className="font-mono text-[12px] text-foreground-muted">
+                          {item.poNumber || `PO-${String(item._id).slice(-6).toUpperCase()}`} ·{' '}
+                          {item.destinationPort || 'Port of entry'}
+                        </div>
+                      </div>
+                      <Badge variant={statusText === 'Delivered' ? 'success' : 'neutral'} size="sm">
+                        {statusText}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between font-mono text-[13px]">
+                      <span className="text-foreground-muted">
+                        Escrow: {item.escrowStatus || 'None'}
+                      </span>
+                      <span className="font-semibold text-foreground">${totalVal.toLocaleString()}</span>
+                    </div>
+                  </div>
+                );
+              }}
+            />
           )}
         </TabsContent>
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HiMail, HiPhone, HiLocationMarker, HiClock, HiArrowRight } from 'react-icons/hi';
 import api from '../utils/api';
+import { extractFieldErrors } from '../utils/formErrors';
 import toast from 'react-hot-toast';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -70,6 +71,9 @@ const ContactPage = () => {
       if (!status || status === 404 || status === 501) {
         setDeskOffline(true);
         toast.error('The desk inbox is not connected yet — send it by email instead.');
+      } else if (Object.keys(extractFieldErrors(error)).length > 0) {
+        setErrors(extractFieldErrors(error));
+        toast.error(error.response?.data?.message || 'Check the highlighted fields.');
       } else {
         toast.error(
           error.response?.data?.message ||

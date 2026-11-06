@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { HiCloudUpload, HiArrowLeft } from 'react-icons/hi';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
+import { extractFieldErrors } from '../utils/formErrors';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card, CardContent } from '../components/ui/Card';
@@ -138,8 +139,17 @@ const AddExportPage = () => {
       toast.success('Commodity registered to global marketplace.');
       navigate('/dashboard/my-exports');
     } catch (error) {
-      console.error('Failed to add product:', error.response?.data || error.message);
-      toast.error(error.response?.data?.message || 'Failed to register commodity.');
+      const serverErrors = extractFieldErrors(error);
+      if (Object.keys(serverErrors).length > 0) {
+        // Highlight the fields the API rejected, not just a toast.
+        setErrors(serverErrors);
+        const key = Object.keys(serverErrors)[0];
+        document.getElementById(key)?.focus();
+        document.querySelector(`[name="${key}"]`)?.focus();
+        toast.error(error.response?.data?.message || 'Check the highlighted fields.');
+      } else {
+        toast.error(error.response?.data?.message || 'Failed to register commodity.');
+      }
     } finally {
       setSubmitting(false);
     }
