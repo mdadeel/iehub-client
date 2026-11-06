@@ -142,7 +142,7 @@ const Footer = () => {
                 <FaLinkedin size={14} />
               </a>
               <a
-                href="https://github.com/"
+                href="https://github.com/mdadeel"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-white"
