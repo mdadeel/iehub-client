@@ -12,7 +12,7 @@ const EmptyState = ({
   return (
     <div
       className={cn(
-        "flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-border-default bg-surface-subtle/30 p-8 text-center",
+        "flex min-h-[300px] flex-col items-center justify-center rounded-lg border border-dashed border-border-default bg-surface-subtle/30 p-8 text-center",
         className
       )}
     >

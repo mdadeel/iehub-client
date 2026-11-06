@@ -506,7 +506,7 @@ const ProductDetailsPage = () => {
         </div>
 
         {/* Deep Commodity Details & Operations Tabs */}
-        <div className="mt-8 rounded-xl border border-border-default bg-surface overflow-hidden shadow-2xs">
+        <div className="mt-8 rounded-lg border border-border-default bg-surface overflow-hidden shadow-2xs">
           {/* Tab Navigation */}
           <div className="flex items-center border-b border-border-default bg-surface-subtle/50 px-4 gap-2 overflow-x-auto no-scrollbar">
             {[
@@ -708,7 +708,7 @@ const ProductDetailsPage = () => {
           {loadingRecommendations ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="h-72 rounded-xl bg-surface-subtle animate-pulse border border-border-default" />
+                <div key={i} className="h-72 rounded-lg bg-surface-subtle animate-pulse border border-border-default" />
               ))}
             </div>
           ) : recommendations.length > 0 ? (
@@ -718,7 +718,7 @@ const ProductDetailsPage = () => {
               ))}
             </div>
           ) : (
-            <div className="p-8 rounded-xl border border-dashed border-border-default bg-surface text-center">
+            <div className="p-8 rounded-lg border border-dashed border-border-default bg-surface text-center">
               <p className="text-xs text-foreground-muted">
                 No adjacent listings currently open in {product.category}. Contact the trade desk to initiate a custom commodity sourcing mandate.
               </p>

@@ -190,7 +190,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: -4 }}
             transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-50 w-full max-w-xl overflow-hidden rounded-xl border border-border-default bg-surface shadow-2xl"
+            className="relative z-50 w-full max-w-xl overflow-hidden rounded-lg border border-border-default bg-surface shadow-2xl"
           >
             {/* Search Input Bar */}
             <div className="flex items-center border-b border-border-default px-4">

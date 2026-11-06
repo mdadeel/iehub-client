@@ -49,7 +49,7 @@ const Modal = ({ open, onClose, children, className, maxWidth = 'max-w-lg' }) =>
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'relative z-50 w-full rounded-xl border border-border-default bg-surface shadow-2xl overflow-hidden',
+              'relative z-50 w-full rounded-lg border border-border-default bg-surface shadow-2xl overflow-hidden',
               maxWidth,
               className
             )}

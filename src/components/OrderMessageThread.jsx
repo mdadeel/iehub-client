@@ -106,7 +106,7 @@ export default function OrderMessageThread({ orderId, poNumber, className = '' }
   };
 
   return (
-    <div className={`flex flex-col border border-border-default rounded-xl bg-surface overflow-hidden ${className}`}>
+    <div className={`flex flex-col border border-border-default rounded-lg bg-surface overflow-hidden ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border-default bg-surface-subtle/50">
         <div className="flex items-center gap-2">

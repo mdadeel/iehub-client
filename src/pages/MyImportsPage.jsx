@@ -580,7 +580,7 @@ const MyImportsPage = () => {
 
           {/* 4-Stage RFQ Pipeline Stepper */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="p-3.5 rounded-xl border border-border-default bg-surface flex items-center gap-3">
+            <div className="p-3.5 rounded-lg border border-border-default bg-surface flex items-center gap-3">
               <div className="w-6 h-6 rounded-md bg-surface-subtle border border-border-default flex items-center justify-center font-bold text-xs text-foreground-secondary">
                 1
               </div>
@@ -592,7 +592,7 @@ const MyImportsPage = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl border border-accent-primary/30 bg-accent-subtle flex items-center gap-3">
+            <div className="p-3.5 rounded-lg border border-accent-primary/30 bg-accent-subtle flex items-center gap-3">
               <div className="w-6 h-6 rounded-md bg-accent-primary text-white flex items-center justify-center font-bold text-xs">
                 2
               </div>
@@ -607,7 +607,7 @@ const MyImportsPage = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl border border-border-default bg-surface flex items-center gap-3">
+            <div className="p-3.5 rounded-lg border border-border-default bg-surface flex items-center gap-3">
               <div className="w-6 h-6 rounded-md bg-surface-subtle border border-border-default flex items-center justify-center font-bold text-xs text-foreground-secondary">
                 3
               </div>
@@ -619,7 +619,7 @@ const MyImportsPage = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl border border-border-default bg-surface flex items-center gap-3">
+            <div className="p-3.5 rounded-lg border border-border-default bg-surface flex items-center gap-3">
               <div className="w-6 h-6 rounded-md bg-[#DCFCE7] text-[#15803D] flex items-center justify-center font-bold text-xs">
                 ✓
               </div>
@@ -723,7 +723,7 @@ const MyImportsPage = () => {
 
             <SheetContent className="space-y-6">
               {/* Escrow Status & Action Banner */}
-              <div className="p-4 rounded-xl border border-accent-primary/20 bg-accent-subtle/30 space-y-3">
+              <div className="p-4 rounded-lg border border-accent-primary/20 bg-accent-subtle/30 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
                     <HiShieldCheck className="w-4 h-4 text-accent-primary" />
@@ -790,7 +790,7 @@ const MyImportsPage = () => {
               </div>
 
               {/* Ocean Carrier & Bill of Lading Logistics */}
-              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-3">
+              <div className="p-4 rounded-lg border border-border-default bg-surface space-y-3">
                 <div className="text-xs font-semibold text-foreground">
                   Carrier & Logistics Documentation
                 </div>
@@ -821,7 +821,7 @@ const MyImportsPage = () => {
               </div>
 
               {/* Trade & Shipping Documents Attached */}
-              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-3">
+              <div className="p-4 rounded-lg border border-border-default bg-surface space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                     <HiDocumentText className="w-4 h-4 text-accent-primary" />
@@ -873,7 +873,7 @@ const MyImportsPage = () => {
               />
 
               {/* Milestone Stepper */}
-              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-4">
+              <div className="p-4 rounded-lg border border-border-default bg-surface space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="text-xs font-semibold text-foreground">
                     Transit & Customs Lifecycle
@@ -925,7 +925,7 @@ const MyImportsPage = () => {
               </div>
 
               {/* Commercial Terms */}
-              <div className="p-4 rounded-xl border border-border-default bg-surface space-y-3">
+              <div className="p-4 rounded-lg border border-border-default bg-surface space-y-3">
                 <div className="text-xs font-semibold text-foreground">
                   Contract Particulars
                 </div>

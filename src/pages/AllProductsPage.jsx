@@ -383,7 +383,7 @@ const AllProductsPage = () => {
             </div>
           )
         ) : error ? (
-          <div className="text-center py-16 px-4 rounded-xl border border-status-danger/20 bg-status-danger-bg/20 space-y-3">
+          <div className="text-center py-16 px-4 rounded-lg border border-status-danger/20 bg-status-danger-bg/20 space-y-3">
             <div className="text-status-danger font-semibold text-sm">{error}</div>
             <Button variant="outline" size="sm" onClick={fetchProducts} className="gap-1.5">
               <HiRefresh className="w-3.5 h-3.5" />
@@ -419,7 +419,7 @@ const AllProductsPage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="rounded-xl border border-border-default bg-surface overflow-x-auto shadow-2xs"
+              className="rounded-lg border border-border-default bg-surface overflow-x-auto shadow-2xs"
             >
               <Table>
                 <TableHeader>
@@ -452,7 +452,7 @@ const AllProductsPage = () => {
             </motion.div>
           )
         ) : (
-          <div className="text-center py-20 px-4 rounded-xl border border-border-default bg-surface space-y-4">
+          <div className="text-center py-20 px-4 rounded-lg border border-border-default bg-surface space-y-4">
             <div className="w-12 h-12 rounded-full bg-surface-subtle text-foreground-muted flex items-center justify-center mx-auto">
               <HiSearch className="w-6 h-6" />
             </div>
@@ -478,7 +478,7 @@ const AllProductsPage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
-            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-surface/95 backdrop-blur-md border border-border-default rounded-xl shadow-xl px-4 py-3 flex items-center gap-4 text-xs"
+            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-surface/95 backdrop-blur-md border border-border-default rounded-lg shadow-xl px-4 py-3 flex items-center gap-4 text-xs"
           >
             <div className="flex items-center gap-2 font-medium text-foreground">
               <HiScale className="w-4 h-4 text-accent-primary" />
@@ -517,7 +517,7 @@ const AllProductsPage = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-surface border border-border-default rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 text-foreground"
+              className="bg-surface border border-border-default rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 text-foreground"
             >
               <div className="flex items-center justify-between pb-4 border-b border-border-subtle mb-6">
                 <div className="flex items-center gap-2 text-base font-bold">
@@ -539,7 +539,7 @@ const AllProductsPage = () => {
                 {comparedProducts.map((p) => (
                   <div
                     key={p._id || p.id}
-                    className="rounded-xl border border-border-default bg-canvas p-4 space-y-4 flex flex-col justify-between"
+                    className="rounded-lg border border-border-default bg-canvas p-4 space-y-4 flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="aspect-[16/10] rounded-lg overflow-hidden bg-surface-subtle">

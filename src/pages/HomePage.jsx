@@ -335,7 +335,10 @@ const HomePage = () => {
         <div className="container">
           <div className="mb-10 flex flex-col gap-6 sm:mb-14 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <div className="eyebrow mb-4">What we do</div>
+              <div className="mb-4 flex items-baseline gap-3">
+                <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">01</span>
+                <span className="t-meta">What we do</span>
+              </div>
               <h2 className="t-h2 reveal">
                 From the origin floor to the port gate.
               </h2>
@@ -428,7 +431,10 @@ const HomePage = () => {
           </div>
 
           <div>
-            <div className="eyebrow mb-4">Why IEHUB</div>
+            <div className="mb-4 flex items-baseline gap-3">
+              <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">02</span>
+              <span className="t-meta">Why IEHUB</span>
+            </div>
             <h2 className="t-h2 reveal">
               Built for buyers who cannot afford surprises.
             </h2>
@@ -472,7 +478,10 @@ const HomePage = () => {
         <div className="container">
           <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <div className="eyebrow mb-4">Live trade board</div>
+              <div className="mb-4 flex items-baseline gap-3">
+                <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">03</span>
+                <span className="t-meta">Live trade board</span>
+              </div>
               <h2 className="t-h2 reveal">Open export positions.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Active supply with assayed specs, named-port pricing and allocation available this
@@ -655,7 +664,10 @@ const HomePage = () => {
         <div className="container">
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <div className="eyebrow mb-4">Terminal network</div>
+              <div className="mb-4 flex items-baseline gap-3">
+                <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">04</span>
+                <span className="t-meta">Terminal network</span>
+              </div>
               <h2 className="t-h2 reveal">Lanes we are moving this week.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Direct liner routing from origin facility to primary discharge port — with the
@@ -710,7 +722,10 @@ const HomePage = () => {
         <div className="container">
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <div className="eyebrow mb-4">Trade desk in practice</div>
+              <div className="mb-4 flex items-baseline gap-3">
+                <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">05</span>
+                <span className="t-meta">Trade desk in practice</span>
+              </div>
               <h2 className="t-h2 reveal">What buyers say after month one.</h2>
             </div>
             <div className="flex items-center gap-3">
@@ -754,7 +769,10 @@ const HomePage = () => {
         <div className="container">
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <div className="eyebrow mb-4">Industries we serve</div>
+              <div className="mb-4 flex items-baseline gap-3">
+                <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">06</span>
+                <span className="t-meta">Industries we serve</span>
+              </div>
               <h2 className="t-h2 reveal">Sectors we know by name.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Category-specific paperwork, inspection norms and packaging rules — not a generic
@@ -822,7 +840,10 @@ const HomePage = () => {
       <section className="section border-t border-border-subtle bg-canvas">
         <div className="container">
           <div className="mb-10 max-w-2xl">
-            <div className="eyebrow mb-4">Regulatory framework</div>
+            <div className="mb-4 flex items-baseline gap-3">
+              <span className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-primary">07</span>
+              <span className="t-meta">Regulatory framework</span>
+            </div>
             <h2 className="t-h2 reveal">The paperwork is our problem.</h2>
             <p className="mt-3 text-sm text-foreground-secondary">
               Every contract and settlement on IEHUB follows published international trade rules —
