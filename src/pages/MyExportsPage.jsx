@@ -22,6 +22,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Badge } from '../components/ui/Badge';
 import { EmptyState } from '../components/ui/EmptyState';
+import DataTable from '../components/ui/DataTable';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
 import {
   Table,
@@ -460,113 +461,185 @@ const MyExportsPage = () => {
               No listings match &ldquo;{searchTerm}&rdquo;.
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Commodity / HS Code</TableHead>
-                  <TableHead>Sector / Origin</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Volume</TableHead>
-                  <TableHead className="text-right">FOB Price</TableHead>
-                  <TableHead className="text-right">Valuation</TableHead>
-                  <TableHead className="w-10"><span className="sr-only">Actions</span></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredExports.map((item) => {
-                  const valuation = (item.quantity || 0) * (item.price || 0);
-                  const isLow = (item.quantity || 0) < 20;
-
-                  return (
-                    <TableRow key={item._id}>
-                      <TableCell className="py-2.5">
-                        <div className="flex items-center gap-2.5">
-                          {item.image ? (
-                            <div className="w-9 h-9 rounded-md overflow-hidden bg-surface-subtle border border-border-default shrink-0">
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-9 h-9 rounded-md bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-[10px] shrink-0">
-                              {item.name?.charAt(0)?.toUpperCase() || 'C'}
-                            </div>
-                          )}
-                          <div className="min-w-0">
-                            <div className="font-semibold text-xs text-foreground truncate max-w-[200px]">
-                              {item.name}
-                            </div>
-                            <div className="text-[10px] text-accent-primary font-mono">
-                              HS: {item.hsCode || 'Standard Tariff'}
-                            </div>
-                          </div>
+            <DataTable
+              rows={filteredExports}
+              rowKey={(item) => item._id}
+              pageSize={8}
+              initialSort={{ key: 'valuation', dir: 'desc' }}
+              columns={[
+                {
+                  key: 'name',
+                  header: 'Commodity',
+                  sortable: true,
+                  render: (item) => (
+                    <div className="flex items-center gap-2.5">
+                      {item.image ? (
+                        <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-surface-subtle">
+                          <img src={item.image} alt="" className="h-full w-full object-cover" loading="lazy" />
                         </div>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-xs">
-                        <div className="font-medium text-foreground">{item.category}</div>
-                        <div className="text-[10px] text-foreground-muted">{item.origin || 'Global'}</div>
-                      </TableCell>
-
-                      <TableCell className="py-2.5">
-                        <Badge
-                          variant={item.verificationStatus === 'verified' ? 'success' : item.verificationStatus === 'rejected' ? 'danger' : 'warning'}
-                          size="sm"
-                        >
-                          {item.verificationStatus === 'verified' ? (item.verificationBadge || 'Verified') : (item.verificationStatus || 'Pending')}
-                        </Badge>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-right">
-                        <Badge variant={isLow ? 'warning' : 'success'} size="sm" hasDot>
-                          {item.quantity?.toLocaleString()} {item.unit || 'units'}
-                        </Badge>
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-right font-mono text-xs text-foreground tabular-nums">
-                        ${item.price?.toLocaleString()}
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-right font-mono text-xs font-medium text-foreground tabular-nums">
-                        ${valuation.toLocaleString()}
-                      </TableCell>
-
-                      <TableCell className="py-2.5 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleOpenEdit(item)}
-                            className="h-7 text-[10px] px-2 gap-1 text-foreground-secondary hover:text-foreground"
-                          >
-                            <HiPencil className="w-3 h-3" />
-                            Edit
-                          </Button>
-                          <DropdownMenu
-                            items={[
-                              {
-                                label: 'View listing',
-                                icon: HiExternalLink,
-                                onSelect: () => window.open(`/products/${item._id}`, '_blank'),
-                              },
-                              {
-                                label: 'Remove listing',
-                                icon: HiTrash,
-                                danger: true,
-                                onSelect: () => handleDeletePrompt(item._id, item.name),
-                              },
-                            ]}
-                          />
+                      ) : (
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-subtle text-[11px] font-bold text-accent-primary">
+                          {item.name?.charAt(0)?.toUpperCase() || 'C'}
                         </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                      )}
+                      <div className="min-w-0">
+                        <div className="max-w-[13rem] truncate font-semibold text-foreground">{item.name}</div>
+                        <div className="font-mono text-[12px] text-accent-primary">
+                          HS {item.hsCode || 'standard'}
+                        </div>
+                      </div>
+                    </div>
+                  ),
+                },
+                {
+                  key: 'category',
+                  header: 'Sector / origin',
+                  sortable: true,
+                  hideBelow: 'sm',
+                  render: (item) => (
+                    <div>
+                      <div className="font-medium text-foreground">{item.category}</div>
+                      <div className="text-[12px] text-foreground-muted">{item.origin || 'Global'}</div>
+                    </div>
+                  ),
+                },
+                {
+                  key: 'verificationStatus',
+                  header: 'Status',
+                  sortable: true,
+                  render: (item) => (
+                    <Badge
+                      variant={
+                        item.verificationStatus === 'verified'
+                          ? 'success'
+                          : item.verificationStatus === 'rejected'
+                            ? 'danger'
+                            : 'warning'
+                      }
+                      size="sm"
+                    >
+                      {item.verificationStatus === 'verified'
+                        ? item.verificationBadge || 'Verified'
+                        : item.verificationStatus || 'Pending'}
+                    </Badge>
+                  ),
+                },
+                {
+                  key: 'quantity',
+                  header: 'Volume',
+                  align: 'right',
+                  sortable: true,
+                  hideBelow: 'md',
+                  render: (item) => (
+                    <Badge variant={(item.quantity || 0) < 20 ? 'warning' : 'success'} size="sm" hasDot>
+                      {item.quantity?.toLocaleString()} {item.unit || 'units'}
+                    </Badge>
+                  ),
+                },
+                {
+                  key: 'price',
+                  header: 'FOB price',
+                  align: 'right',
+                  sortable: true,
+                  hideBelow: 'md',
+                  className: 'font-mono tabular-nums',
+                  render: (item) => <span className="text-foreground">${item.price?.toLocaleString()}</span>,
+                },
+                {
+                  key: 'valuation',
+                  header: 'Valuation',
+                  align: 'right',
+                  sortable: true,
+                  hideBelow: 'lg',
+                  className: 'font-mono font-medium tabular-nums',
+                  sortValue: (item) => (item.quantity || 0) * (item.price || 0),
+                  render: (item) => (
+                    <span className="text-foreground">
+                      ${((item.quantity || 0) * (item.price || 0)).toLocaleString()}
+                    </span>
+                  ),
+                },
+                {
+                  key: 'actions',
+                  header: '',
+                  align: 'right',
+                  render: (item) => (
+                    <div className="flex items-center justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleOpenEdit(item)}
+                        className="h-7 gap-1 px-2 text-[12px] text-foreground-secondary hover:text-foreground"
+                      >
+                        <HiPencil className="h-3 w-3" />
+                        Edit
+                      </Button>
+                      <DropdownMenu
+                        items={[
+                          {
+                            label: 'View listing',
+                            icon: HiExternalLink,
+                            onSelect: () => window.open(`/products/${item._id}`, '_blank'),
+                          },
+                          {
+                            label: 'Remove listing',
+                            icon: HiTrash,
+                            danger: true,
+                            onSelect: () => handleDeletePrompt(item._id, item.name),
+                          },
+                        ]}
+                      />
+                    </div>
+                  ),
+                },
+              ]}
+              renderMobileCard={(item) => (
+                <div className="space-y-2">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="truncate font-semibold text-foreground">{item.name}</div>
+                      <div className="font-mono text-[12px] text-accent-primary">
+                        HS {item.hsCode || 'standard'} · {item.origin || 'Global'}
+                      </div>
+                    </div>
+                    <Badge
+                      variant={
+                        item.verificationStatus === 'verified'
+                          ? 'success'
+                          : item.verificationStatus === 'rejected'
+                            ? 'danger'
+                            : 'warning'
+                      }
+                      size="sm"
+                    >
+                      {item.verificationStatus === 'verified' ? 'Verified' : item.verificationStatus || 'Pending'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-4 font-mono text-[13px] text-foreground-secondary">
+                    <span>
+                      {item.quantity?.toLocaleString()} {item.unit || 'units'}
+                    </span>
+                    <span>${item.price?.toLocaleString()}</span>
+                    <span className="font-semibold text-foreground">
+                      ${((item.quantity || 0) * (item.price || 0)).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 pt-1">
+                    <Button variant="outline" size="sm" onClick={() => handleOpenEdit(item)}>
+                      Edit listing
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="ml-auto text-status-danger"
+                      onClick={() => handleDeletePrompt(item._id, item.name)}
+                    >
+                      <HiTrash className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            />
           )}
         </TabsContent>
 

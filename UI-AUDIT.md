@@ -97,7 +97,7 @@ These are real defects, not taste. All were reproduced by measuring the fixed la
 | Dead social links (`#`) | Open — needs real accounts |
 | No error telemetry, no analytics, no consent banner | Open |
 | No tests, no CI pipeline, no e2e smoke | Open |
-| No pagination on any list — admin tables load everything | **Fixed on the document vault** via `DataTable`; other lists still render everything |
+| No pagination on any list — admin tables load everything | **Fixed on the document vault and export inventory**; POs and admin queues still render everything |
 | No entitlement/tier model, so "upgrade" UI cannot exist | Open (product decision) |
 | Currency/locale handling is USD-only, no i18n | Open |
 
@@ -118,8 +118,8 @@ Legend: ✅ present · ⚠️ partial · ❌ missing
 | 7 | Debouncing | ✅ | `/products` search debounces the API call 300ms (`AllProductsPage.jsx:124`). Gap: only applied there |
 | 8 | Throttling | ⚠️ | Navbar scroll now `requestAnimationFrame`-throttled. Gap: no `AbortController` on superseded product searches, no rate-limit backoff |
 | 9 | Smart form validation | ⚠️ | HTML5 `required` + toast errors; password rules in Register. `utils/validation.js` exists but is barely wired. Gap: **no inline field-level errors**, no disabled-until-valid, no server-field-error mapping |
-| 10 | Bulk actions on lists | ⚠️ | `DataTable` now provides a selection model, a select-all-per-page header box and a contextual bulk bar — wired on the document vault (bulk download + confirm-gated bulk delete via `Promise.allSettled`). Still to wire: inventory, POs, admin queues |
-| 11 | Reusable data table | ✅ | `ui/DataTable.jsx` — declarative columns, click-to-sort with `aria-sort`, pagination with page-size control, selection + bulk bar, built-in skeleton and empty slots, and a card fallback below `md`. Integrated on the document vault; four more lists to migrate |
+| 10 | Bulk actions on lists | ⚠️ | `DataTable` now provides a selection model, a select-all-per-page header box and a contextual bulk bar — wired on the document vault (bulk download + confirm-gated bulk delete via `Promise.allSettled`). Still to wire: POs and admin queues |
+| 11 | Reusable data table | ✅ | `ui/DataTable.jsx` — declarative columns, click-to-sort with `aria-sort`, pagination with page-size control, selection + bulk bar, built-in skeleton and empty slots, and a card fallback below `md`. Integrated on the document vault and the export inventory; POs and the admin queues still use the older primitives |
 | 12 | Advanced filtering | ⚠️ | `/products` is genuinely good: search + category + Incoterm + sort, synced to the URL. Gaps: no price/quantity/date ranges, no saved views, no filter chips persistence across navigation |
 | 13 | Keyboard shortcuts | ⚠️ | ⌘K / Ctrl-K, `/` (added this turn), arrows + Enter + Esc in palette, Esc in dropdowns. Gap: no `g`-chords, no shortcuts help sheet, no focus trap parity |
 | 14 | Tier-based UI indicators | ❌ | No plan, entitlement or quota model exists. "Demo vs Live" badge is a user state, not a tier. Requires product definition before UI |
