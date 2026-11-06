@@ -27,6 +27,7 @@ import { Sheet, SheetHeader, SheetContent, SheetFooter } from '../components/ui/
 import ProductCard from '../components/ProductCard';
 import { cn } from '@/lib/utils';
 import { getMockProductById, MOCK_PRODUCTS } from '../data/mockProducts';
+import { resolveProductImage } from '../utils/commodityImages';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -254,8 +255,11 @@ const ProductDetailsPage = () => {
             <Card className="overflow-hidden border border-border-default bg-surface shadow-2xs">
               <div className="aspect-[4/3] relative bg-surface-subtle overflow-hidden">
                 <img
-                  src={product.image}
+                  src={resolveProductImage(product)}
                   alt={product.name}
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/com-coffee.jpg';
+                  }}
                   className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
                 />
                 <div className="absolute top-3 left-3">

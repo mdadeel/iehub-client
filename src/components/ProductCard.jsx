@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowRight, HiLocationMarker, HiShieldCheck, HiScale } from 'react-icons/hi';
 import { Badge } from './ui/Badge';
 import { cn } from '@/lib/utils';
+import { resolveProductImage } from '../utils/commodityImages';
 
 const FALLBACK_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='%23F1EDE8'%3E%3Crect width='400' height='300' fill='%23F1EDE8'/%3E%3Cpath d='M150 170l35-38 45 48 24-24 46 52H150z' fill='%239AA0A4' opacity='0.35'/%3E%3Ccircle cx='180' cy='106' r='16' fill='%239AA0A4' opacity='0.35'/%3E%3Ctext x='50%25' y='82%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='11' letter-spacing='2' fill='%236C7378'%3ECARGO LOT%3C/text%3E%3C/svg%3E";
 
 const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
   const navigate = useNavigate();
-  const [imgSrc, setImgSrc] = useState(product.image || FALLBACK_IMAGE);
+  const [imgSrc, setImgSrc] = useState(() => resolveProductImage(product));
+
+  useEffect(() => {
+    setImgSrc(resolveProductImage(product));
+  }, [product]);
 
   const handleViewDetails = () => {
     navigate(`/products/${product._id || product.id}`);

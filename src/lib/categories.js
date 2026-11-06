@@ -2,14 +2,13 @@
 // Used by marketplace facets, listing forms, and seed data — one home per business rule.
 // NOTE: these values must match existing DB records (seed.js); do not rename without a migration.
 export const CATEGORIES = [
-  'Spices',
+  'Agriculture',
   'Beverages',
-  'Textiles',
+  'Spices',
+  'Metals',
+  'Industrial Materials',
   'Food',
-  'Eco-Friendly',
-  'Fashion',
-  'Tech',
-  'Other',
+  'Textiles',
 ];
 
 export const INCOTERMS = ['FOB', 'CIF', 'EXW', 'DDP'];

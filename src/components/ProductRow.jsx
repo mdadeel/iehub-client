@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiLocationMarker, HiArrowRight, HiShieldCheck } from 'react-icons/hi';
 import { TableRow, TableCell } from './ui/Table';
 import { Badge } from './ui/Badge';
 import { Button } from './ui/Button';
+import { resolveProductImage } from '../utils/commodityImages';
 
 const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80' fill='%23F1F5F9'%3E%3Crect width='80' height='80' fill='%23F1F5F9'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='10' fill='%2364748B'%3EAsset%3C/text%3E%3C/svg%3E";
 
 const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
   const navigate = useNavigate();
-  const [imgSrc, setImgSrc] = useState(product.image || FALLBACK_IMAGE);
+  const [imgSrc, setImgSrc] = useState(() => resolveProductImage(product));
+
+  useEffect(() => {
+    setImgSrc(resolveProductImage(product));
+  }, [product]);
 
   const handleViewDetails = () => {
     navigate(`/products/${product._id || product.id}`);

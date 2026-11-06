@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import SEOHead from '../components/SEOHead';
 import api from '../utils/api';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
+import { resolveProductImage } from '../utils/commodityImages';
 import {
   HiArrowRight,
   HiShieldCheck,
@@ -547,13 +548,14 @@ const HomePage = () => {
                           className="group flex flex-col bg-surface transition-colors hover:bg-surface-subtle/60"
                         >
                           <div className="media relative aspect-[5/4] w-full">
-                            {p.image ? (
-                              <img src={p.image} alt="" loading="lazy" />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center font-mono text-[11px] uppercase tracking-[0.16em] text-foreground-muted">
-                                Lot {String(id).slice(-4)}
-                              </div>
-                            )}
+                            <img
+                              src={resolveProductImage(p)}
+                              alt={p.name || 'Commodity lot'}
+                              loading="lazy"
+                              onError={(e) => {
+                                e.currentTarget.src = '/images/com-coffee.jpg';
+                              }}
+                            />
                             {isVerified && (
                               <span className="absolute left-3 top-3 inline-flex items-center gap-1 bg-surface/95 px-2 py-1 text-[11px] font-semibold text-status-success backdrop-blur">
                                 <HiShieldCheck className="h-3.5 w-3.5" />
