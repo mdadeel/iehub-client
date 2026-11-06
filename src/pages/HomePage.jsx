@@ -517,29 +517,21 @@ const HomePage = () => {
             })}
           </div>
 
-          <div className="overflow-hidden bg-surface shadow-card">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-left text-xs">
-                <thead>
-                  <tr className="border-b border-border-default bg-surface-subtle text-[11px] uppercase tracking-[0.14em] text-foreground-muted">
-                    <th className="px-4 py-3 font-semibold">Commodity &amp; spec</th>
-                    <th className="hidden sm:table-cell px-4 py-3 font-semibold">Origin &amp; port</th>
-                    <th className="hidden lg:table-cell px-4 py-3 font-semibold">Available</th>
-                    <th className="px-4 py-3 font-semibold">Incoterm price</th>
-                    <th className="hidden px-4 py-3 font-semibold md:table-cell">Inspection</th>
-                    <th className="px-4 py-3 text-right font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border-subtle">
+          <div className="overflow-hidden shadow-card">
+              <div className="grid grid-cols-1 gap-px bg-border-subtle sm:grid-cols-2 xl:grid-cols-4">
                   {filteredProducts.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="py-10 text-center text-foreground-muted">
-                        No active lots under this category right now — ask the desk for
-                        off-market allocation.
-                      </td>
-                    </tr>
+                    <div className="col-span-full bg-surface px-6 py-14 text-center">
+                      <div className="t-h3">No active lots under this category</div>
+                      <p className="mx-auto mt-2 max-w-md text-[14px] text-foreground-secondary">
+                        Allocation moves weekly. The desk can usually source off-market volume
+                        inside three working days.
+                      </p>
+                      <Link to="/contact" className="link-underline mt-4 text-[14px]">
+                        Ask for allocation <HiArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
                   ) : (
-                    filteredProducts.map((p) => {
+                    filteredProducts.slice(0, 4).map((p) => {
                       const id = p._id || p.id;
                       const origin = p.origin || p.portOfOrigin || 'Global';
                       const incoterm = p.incoterm || 'FOB';
@@ -549,98 +541,75 @@ const HomePage = () => {
                         p.verificationStatus === 'verified' || !p.verificationStatus;
 
                       return (
-                        <tr
+                        <Link
                           key={id}
-                          className="group transition-colors hover:bg-surface-subtle/70"
+                          to={`/products/${id}`}
+                          className="group flex flex-col bg-surface transition-colors hover:bg-surface-subtle/60"
                         >
-                          <td className="px-4 py-3">
-                            <div className="flex items-center gap-3">
-                              {p.image ? (
-                                <img
-                                  src={p.image}
-                                  alt=""
-                                  className="h-11 w-11 shrink-0 border border-border-subtle object-cover"
-                                  loading="lazy"
-                                />
-                              ) : (
-                                <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-border-subtle bg-surface-subtle font-mono text-[11px] text-foreground-muted">
-                                  LOT
-                                </div>
-                              )}
-                              <div className="min-w-0">
-                                <Link
-                                  to={`/products/${id}`}
-                                  className="block truncate text-[14px] font-semibold text-foreground group-hover:text-accent-primary"
-                                >
-                                  {p.name}
-                                </Link>
-                                <div className="mt-0.5 flex items-center gap-1.5 text-[13px] text-foreground-muted">
-                                  <span>{p.category}</span>
-                                  {p.hsCode && (
-                                    <>
-                                      <span>·</span>
-                                      <span className="font-mono">HS {p.hsCode}</span>
-                                    </>
-                                  )}
-                                </div>
+                          <div className="media relative aspect-[5/4] w-full">
+                            {p.image ? (
+                              <img src={p.image} alt="" loading="lazy" />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center font-mono text-[11px] uppercase tracking-[0.16em] text-foreground-muted">
+                                Lot {String(id).slice(-4)}
                               </div>
-                            </div>
-                          </td>
-
-                          <td className="hidden sm:table-cell px-4 py-3 text-foreground-secondary">
-                            <div className="flex items-center gap-1.5">
-                              <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-foreground-subtle" />
-                              <span className="truncate">{origin}</span>
-                            </div>
-                          </td>
-
-                          <td className="hidden lg:table-cell px-4 py-3 font-mono">
-                            <div className="font-semibold text-foreground">
-                              {(p.quantity || 0).toLocaleString()} {unit}
-                            </div>
-                            <div className="text-[13px] text-foreground-muted">
-                              MOQ {moq.toLocaleString()} {unit}
-                            </div>
-                          </td>
-
-                          <td className="px-4 py-3">
-                            <div className="font-mono text-[14px] font-bold text-foreground">
-                              ${(p.price || 0).toLocaleString()}
-                              <span className="ml-0.5 text-[13px] font-normal text-foreground-muted">
-                                /{unit}
-                              </span>
-                            </div>
-                            <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-primary">
-                              {incoterm} named port
-                            </div>
-                          </td>
-
-                          <td className="hidden px-4 py-3 md:table-cell">
-                            {isVerified ? (
-                              <span className="inline-flex items-center gap-1 border border-status-success/25 bg-status-success-bg px-2 py-1 text-[11px] font-semibold text-status-success">
-                                <HiShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                            )}
+                            {isVerified && (
+                              <span className="absolute left-3 top-3 inline-flex items-center gap-1 bg-surface/95 px-2 py-1 text-[11px] font-semibold text-status-success backdrop-blur">
+                                <HiShieldCheck className="h-3.5 w-3.5" />
                                 Lab verified
                               </span>
-                            ) : (
-                              <span className="text-[13px] text-foreground-muted">In review</span>
                             )}
-                          </td>
+                          </div>
 
-                          <td className="px-4 py-3 text-right">
-                            <Link
-                              to={`/products/${id}`}
-                              className="inline-flex items-center gap-1 text-[13px] font-semibold text-accent-primary hover:underline"
-                            >
-                              Inspect <HiArrowRight className="h-3 w-3" />
-                            </Link>
-                          </td>
-                        </tr>
+                          <div className="flex flex-1 flex-col p-4">
+                            <div className="t-meta">
+                              {p.category}
+                              {p.hsCode ? ` · HS ${p.hsCode}` : ''}
+                            </div>
+                            <h3 className="t-h3 mt-1.5 leading-snug group-hover:text-accent-primary">
+                              {p.name}
+                            </h3>
+
+                            <div className="mt-3 flex items-baseline gap-1.5 font-mono">
+                              <span className="text-[17px] font-bold text-foreground">
+                                ${(p.price || 0).toLocaleString()}
+                              </span>
+                              <span className="text-[13px] text-foreground-muted">/{unit}</span>
+                              <span className="ml-auto text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-primary">
+                                {incoterm}
+                              </span>
+                            </div>
+
+                            <div className="mt-3 space-y-1.5 border-t border-border-subtle pt-3 text-[13px] text-foreground-secondary">
+                              <div className="flex items-center gap-1.5">
+                                <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-foreground-subtle" />
+                                <span className="truncate">{origin}</span>
+                              </div>
+                              <div className="flex items-center justify-between font-mono">
+                                <span className="text-foreground-muted">MOQ</span>
+                                <span className="font-semibold text-foreground">
+                                  {moq.toLocaleString()} {unit}
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between font-mono">
+                                <span className="text-foreground-muted">Available</span>
+                                <span className="font-semibold text-foreground">
+                                  {(p.quantity || 0).toLocaleString()} {unit}
+                                </span>
+                              </div>
+                            </div>
+
+                            <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-accent-primary">
+                              Inspect lot
+                              <HiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                            </span>
+                          </div>
+                        </Link>
                       );
                     })
                   )}
-                </tbody>
-              </table>
-            </div>
+                </div>
 
             <div className="flex flex-col gap-2 border-t border-border-default bg-surface-subtle px-4 py-3 text-[13px] text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
               <span className="flex items-center gap-2 font-mono">
