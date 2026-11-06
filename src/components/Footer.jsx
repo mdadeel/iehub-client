@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { HiArrowRight, HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker } from 'react-icons/hi';
+import Logo from './Logo';
 
 const Footer = () => {
   const columns = [
@@ -40,19 +41,7 @@ const Footer = () => {
         {/* Top */}
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/10 py-14 sm:grid-cols-3 lg:grid-cols-12 lg:gap-8">
           <div className="col-span-2 sm:col-span-3 lg:col-span-4">
-            <Link to="/" className="inline-flex items-center gap-3" aria-label="IEHUB Home">
-              <span className="flex h-9 w-9 items-center justify-center bg-accent-primary font-display text-sm font-extrabold leading-none text-white">
-                IE
-              </span>
-              <span className="flex flex-col leading-none">
-                <span className="font-display text-base font-extrabold tracking-tight text-white">
-                  IEHUB
-                </span>
-                <span className="mt-1 text-[8px] font-semibold uppercase tracking-[0.22em] text-white/40">
-                  Trade network
-                </span>
-              </span>
-            </Link>
+            <Logo size="lg" overHero />
 
             <p className="mt-5 max-w-sm text-[14px] leading-relaxed text-white/55">
               Verified commodity sourcing, escrow-protected settlement and maritime logistics

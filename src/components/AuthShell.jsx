@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { HiArrowRight } from 'react-icons/hi';
+import Logo from './Logo';
 
 const STATS = [
   { k: '120+', v: 'Ports' },
@@ -25,17 +26,7 @@ const AuthShell = ({
             <div className="absolute inset-0 bg-gradient-to-t from-[#07090B] via-[#07090B]/70 to-[#07090B]/25" />
 
             <div className="relative flex h-full flex-col justify-between p-10 text-white">
-              <Link to="/" className="inline-flex items-center gap-2.5" aria-label="IEHUB Home">
-                <span className="flex h-8 w-8 items-center justify-center bg-accent-primary font-display text-[13px] font-extrabold leading-none text-white">
-                  IE
-                </span>
-                <span className="flex flex-col leading-none">
-                  <span className="font-display text-[15px] font-extrabold tracking-tight">IEHUB</span>
-                  <span className="mt-1 text-[8px] font-semibold uppercase tracking-[0.22em] text-white/50">
-                    Trade network
-                  </span>
-                </span>
-              </Link>
+              <Logo size="md" overHero />
 
               <div>
                 <div className="eyebrow eyebrow-light mb-5">Trade desk</div>
@@ -61,13 +52,8 @@ const AuthShell = ({
           {/* Form panel */}
           <div className="p-6 sm:p-10">
             <div className="mb-6">
-              <div className="mb-4 flex items-center gap-2.5 lg:hidden">
-                <span className="flex h-8 w-8 items-center justify-center bg-accent-primary font-display text-[13px] font-extrabold leading-none text-white">
-                  IE
-                </span>
-                <span className="font-display text-[15px] font-extrabold tracking-tight text-foreground">
-                  IEHUB
-                </span>
+              <div className="mb-4 lg:hidden">
+                <Logo size="md" />
               </div>
               <div className="eyebrow mb-3">Secure access</div>
               <h1 className="display text-2xl sm:text-[2rem]">{title}</h1>

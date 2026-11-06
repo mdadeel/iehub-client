@@ -9,6 +9,7 @@ import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 import { CommandPalette } from './ui/CommandPalette';
 import OrganizationSwitcher from './OrganizationSwitcher';
+import Logo from './Logo';
 import {
     HiMenu, HiX, HiMoon, HiSun, HiLogout,
     HiChevronDown, HiChevronRight, HiUser, HiSearch,
@@ -100,16 +101,8 @@ const Navbar = () => {
                 <nav className="container flex items-center justify-between h-full no-scrollbar">
                     {/* Left: Brand, Search Bar & Animated Nav Links */}
                     <div className="flex items-center gap-3 lg:gap-4 min-w-0">
-                        {/* Logo mark only (no text) */}
-                        <Link to="/" className="flex items-center gap-2.5 group select-none shrink-0" aria-label="IEHUB Home">
-                            <div className="w-8 h-8 bg-accent-primary flex items-center justify-center text-white transition-colors group-hover:bg-accent-hover">
-                                <span className="font-display font-extrabold text-[13px] leading-none tracking-tight">IE</span>
-                            </div>
-                            <div className="hidden sm:flex flex-col leading-none">
-                                <span className={cn("font-display text-[15px] font-extrabold tracking-tight", overHero ? "text-white" : "text-foreground")}>IEHUB</span>
-                                <span className={cn("mt-1 text-[8px] font-semibold uppercase tracking-[0.22em]", overHero ? "text-white/50" : "text-foreground-subtle")}>Trade network</span>
-                            </div>
-                        </Link>
+                        {/* Institutional Brand Logo & Trade Mark */}
+                        <Logo overHero={overHero} size="md" />
 
                         {/* Search Bar on the Left */}
                         <div className="hidden xl:flex items-center">

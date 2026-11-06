@@ -1,4 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IEHUB">
-  <rect width="64" height="64" fill="#C2181F"/>
-  <text x="32" y="44" font-family="Archivo, Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="-1">IE</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="iehub-crimson" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F0433F" />
+      <stop offset="100%" stop-color="#B91C1C" />
+    </linearGradient>
+    <linearGradient id="iehub-base" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#161B20" />
+      <stop offset="100%" stop-color="#080A0C" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base Squircle with Subdued Border -->
+  <rect width="64" height="64" rx="14" fill="url(#iehub-base)" />
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="13.25" stroke="rgba(255, 255, 255, 0.14)" stroke-width="1.5" />
+
+  <!-- Inbound Trade Pillar: 'I' (Import) -->
+  <path d="M14 16 H24 V48 H14 Z" fill="#FFFFFF" />
+
+  <!-- Central Inbound Vector (Arrow pointing into the Hub) -->
+  <path d="M24 26 L32 32 L24 38 Z" fill="#FFFFFF" />
+
+  <!-- Outbound Trade Hub: 'E' (Export) with Integrated Directional Vector -->
+  <path d="M33 16 H50 V24 H41 V28 H47 V36 H41 V40 H50 V48 H33 Z" fill="url(#iehub-crimson)" />
+
+  <!-- Directional Outbound Arrowhead on E's Center Bar -->
+  <path d="M47 28 L54 32 L47 36 Z" fill="#F0433F" />
 </svg>
