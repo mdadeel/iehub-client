@@ -135,6 +135,18 @@ inline validation, autosave, bulk actions, and one real data table — are the m
 
 ---
 
+## 5b. Tier 1 status (in progress)
+
+| Tier 1 item | Status |
+|---|---|
+| Cut the type scale to a small set of roles | **Done** — `.t-display / .t-h2 / .t-h3 / .t-body / .t-meta` now govern marketing pages; the home page dropped from 13 ad-hoc sizes to 6 roles (11 meta / 13 dense / 14 body / 19 h3 / clamp h2 / clamp display) |
+| Remove borders from non-interactive containers | **Done** — `.panel` + `.panel-lift` replace `border border-border-default` on capability, lane and category cards; the trade board lost its outer box |
+| Three visible surface layers | **Done** — canvas `#F3EFE9`, sunken `#EAE4DC`, surface `#FFFFFF`, hover `#E1DAD0`; the old set differed by 2–3% luminance and read as one flat white |
+| One photographic grade | **Done** — every `.media` image now runs `saturate(.93) contrast(1.05) brightness(.99)` |
+| Vary section composition | **Partial** — sections now carry 01–07 index numerals instead of eight identical eyebrow kickers, and headings have a 620ms entrance curve. Full-bleed image bands and an asymmetric split are still to do |
+| Replace the home data table with lot cards | **Not started** — the board is still a table (six columns, three hidden by breakpoint) |
+| One radius language | **Done** — the last `rounded-xl/2xl` outliers (12/16px) were folded onto the 6px system radius |
+
 ## 6. Fix order (highest perceived-quality gain per hour)
 
 **Tier 1 — makes it feel designed (2–3 days)**
