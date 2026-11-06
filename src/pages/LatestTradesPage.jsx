@@ -2,6 +2,7 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { HiGlobeAlt } from 'react-icons/hi';
 
+import PageHeader from '../components/PageHeader';
 const LatestTradesPage = () => {
   const trades = [
     {
@@ -55,19 +56,14 @@ const LatestTradesPage = () => {
   ];
 
   return (
-    <div className="container py-12 md:py-16 max-w-5xl">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Examples
-        </Badge>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          Recent Trades
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted">
-          Sample contracts showing how purchase orders, bills of lading, and settlement values are structured on IEHUB.
-        </p>
-      </div>
-
+        <>
+      <PageHeader
+        eyebrow="Executed trades"
+        title="Recent movement on the network."
+        description="Sample contracts showing how purchase orders, bills of lading and settlement values are structured on IEHUB."
+        image="/images/hero-port.jpg"
+      />
+      <div className="container py-12 md:py-16 max-w-5xl">
       <div className="space-y-4">
         {trades.map((trade, i) => (
           <Card key={i} className="border border-border-default bg-surface hover:border-border-hover transition-colors">
@@ -132,6 +128,7 @@ const LatestTradesPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

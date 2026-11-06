@@ -182,16 +182,17 @@ const AllProductsPage = () => {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border-default mb-6">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              Marketplace Sourcing
+          <div className="eyebrow mb-3">Marketplace</div>
+          <div className="flex flex-wrap items-center gap-2.5 mb-2">
+            <h1 className="display text-[1.9rem] leading-none sm:text-4xl">
+              Verified sourcing.
             </h1>
             <Badge variant={isLiveSynced ? "success" : "neutral"} size="sm" className="font-mono">
-              {loading ? 'Searching…' : `${products.length} Positions`}
+              {loading ? 'Searching…' : `${products.length} positions`}
             </Badge>
           </div>
-          <p className="text-xs text-foreground-muted max-w-xl leading-relaxed">
-            Verified international trade commodities, live FOB/CIF pricing, and export supply positions.
+          <p className="text-[13px] text-foreground-secondary max-w-xl leading-relaxed">
+            Lab-verified export lots with named-origin ports, live FOB/CIF pricing and inspection paperwork on file.
           </p>
         </div>
 
@@ -365,10 +366,10 @@ const AllProductsPage = () => {
       <AnimatePresence mode="wait">
         {loading ? (
           viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <div key={i} className="space-y-2">
-                  <div className="aspect-[16/10] rounded-xl bg-surface-subtle animate-pulse border border-border-default" />
+                  <div className="aspect-[4/3] bg-surface-subtle animate-pulse border border-border-default" />
                   <div className="h-4 w-3/4 rounded bg-surface-subtle animate-pulse" />
                   <div className="h-3 w-1/2 rounded bg-surface-subtle animate-pulse" />
                 </div>
@@ -396,7 +397,7 @@ const AllProductsPage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
             >
               {products.map((product) => {
                 const isCompared = comparedProducts.some(

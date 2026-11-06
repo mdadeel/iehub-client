@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { useOrgs } from '../context/OrgsContext';
@@ -18,11 +18,11 @@ import {
 } from 'react-icons/hi';
 
 const NAV_ITEMS = [
-    { to: '/products', label: 'Source Products', icon: HiOutlineShoppingBag, activeIcon: HiShoppingBag },
-    { to: '/shipping', label: 'Track Shipments', icon: HiOutlineTruck, activeIcon: HiTruck },
-    { to: '/trades', label: 'Recent Trades', icon: HiOutlineDocumentText, activeIcon: HiDocumentText },
+    { to: '/products', label: 'Source', icon: HiOutlineShoppingBag, activeIcon: HiShoppingBag },
+    { to: '/shipping', label: 'Shipments', icon: HiOutlineTruck, activeIcon: HiTruck },
+    { to: '/trades', label: 'Trades', icon: HiOutlineDocumentText, activeIcon: HiDocumentText },
     { to: '/about', label: 'Why IEHUB', icon: HiOutlineShieldCheck, activeIcon: HiShieldCheck },
-    { to: '/contact', label: 'Trade Desk', icon: HiOutlineSupport, activeIcon: HiSupport },
+    { to: '/contact', label: 'Trade desk', icon: HiOutlineSupport, activeIcon: HiSupport },
 ];
 
 const Navbar = () => {
@@ -35,6 +35,10 @@ const Navbar = () => {
     const [profileOpen, setProfileOpen] = useState(false);
     const [commandOpen, setCommandOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const location = useLocation();
+
+    // Home page carries its own photographic hero — let the nav sit over it until scroll.
+    const overHero = location.pathname === '/' && !scrolled && !mobileOpen;
 
     // Global Cmd+K / Ctrl+K keyboard shortcut listener
     useEffect(() => {
@@ -67,18 +71,22 @@ const Navbar = () => {
     return (
         <>
             <header className={cn(
-                "fixed top-0 left-0 right-0 z-40 h-14 transition-colors duration-150 border-b no-scrollbar",
-                scrolled
-                    ? "bg-surface/85 backdrop-blur-md border-border-default shadow-2xs"
-                    : "bg-surface border-border-subtle"
+                "fixed top-0 left-0 right-0 z-40 h-16 transition-all duration-300 border-b no-scrollbar",
+                overHero && "bg-transparent border-white/10",
+                !overHero && scrolled && "bg-surface/92 backdrop-blur-md border-border-default shadow-[0_1px_0_0_rgba(16,20,23,0.04)]",
+                !overHero && !scrolled && "bg-surface border-border-subtle"
             )}>
-                <nav className="flex items-center justify-between h-full px-4 sm:px-6 lg:px-8 no-scrollbar">
+                <nav className="container flex items-center justify-between h-full no-scrollbar">
                     {/* Left: Brand, Search Bar & Animated Nav Links */}
                     <div className="flex items-center gap-3 lg:gap-4 min-w-0">
                         {/* Logo mark only (no text) */}
-                        <Link to="/" className="flex items-center group select-none shrink-0" aria-label="IEHUB Home">
-                            <div className="w-7 h-7 bg-accent-primary rounded-md flex items-center justify-center p-1 text-accent-contrast shadow-xs group-hover:bg-accent-hover transition-colors">
-                                <span className="font-mono font-bold text-xs tracking-tighter">IE</span>
+                        <Link to="/" className="flex items-center gap-2.5 group select-none shrink-0" aria-label="IEHUB Home">
+                            <div className="w-8 h-8 bg-accent-primary flex items-center justify-center text-white transition-colors group-hover:bg-accent-hover">
+                                <span className="font-display font-extrabold text-[13px] leading-none tracking-tight">IE</span>
+                            </div>
+                            <div className="hidden sm:flex flex-col leading-none">
+                                <span className={cn("font-display text-[15px] font-extrabold tracking-tight", overHero ? "text-white" : "text-foreground")}>IEHUB</span>
+                                <span className={cn("mt-1 text-[8px] font-semibold uppercase tracking-[0.22em]", overHero ? "text-white/50" : "text-foreground-subtle")}>Trade network</span>
                             </div>
                         </Link>
 
@@ -87,45 +95,47 @@ const Navbar = () => {
                             <button
                                 type="button"
                                 onClick={() => setCommandOpen(true)}
-                                className="flex items-center gap-2 w-48 xl:w-60 px-2.5 py-1.5 text-xs text-foreground-muted bg-surface-subtle border border-border-default rounded-md hover:border-border-hover transition-colors"
+                                className={cn(
+                                    "flex items-center gap-2 w-44 xl:w-56 px-2.5 py-1.5 text-[11px] border transition-colors",
+                                    overHero
+                                        ? "text-white/65 bg-white/10 border-white/20 hover:border-white/40 backdrop-blur-sm"
+                                        : "text-foreground-muted bg-surface-subtle border-border-default hover:border-border-hover"
+                                )}
                             >
-                                <HiSearch className="w-3.5 h-3.5 text-foreground-muted shrink-0" />
+                                <HiSearch className="w-3.5 h-3.5 shrink-0 opacity-70" />
                                 <span className="flex-1 text-left truncate">Search…</span>
-                                <kbd className="rounded bg-surface px-1.5 py-0.5 text-[10px] font-mono text-foreground-muted border border-border-default shrink-0">
+                                <kbd className={cn("px-1.5 py-0.5 text-[10px] font-mono shrink-0 border", overHero ? "bg-white/10 border-white/15 text-white/60" : "bg-surface border-border-default text-foreground-subtle")}>
                                     ⌘K
                                 </kbd>
                             </button>
                         </div>
 
-                        {/* Desktop Nav Links with Icons & Active Indicator */}
+                        {/* Desktop nav links */}
                         <div className="hidden md:flex items-center gap-1 text-xs overflow-x-auto no-scrollbar">
                             {NAV_ITEMS.map((item) => (
                                 <NavLink
                                     key={item.to}
                                     to={item.to}
                                     className={({ isActive }) => cn(
-                                        "relative flex items-center gap-2 px-2.5 lg:px-3 py-1.5 rounded-md font-medium transition-colors select-none",
+                                        "relative flex items-center px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors select-none",
                                         isActive
-                                            ? "text-foreground font-semibold"
-                                            : "text-foreground-secondary hover:text-foreground hover:bg-surface-hover/40"
+                                            ? overHero ? "text-white" : "text-foreground"
+                                            : overHero
+                                                ? "text-white/65 hover:text-white"
+                                                : "text-foreground-muted hover:text-foreground"
                                     )}
                                 >
-                                    {({ isActive }) => {
-                                        const Icon = isActive ? item.activeIcon : item.icon;
-                                        return (
-                                            <>
-                                                <Icon className={cn("relative z-10 w-4 h-4 shrink-0 transition-colors", isActive ? "text-accent-primary" : "text-foreground-muted")} aria-hidden="true" />
-                                                <span className="relative z-10">{item.label}</span>
-                                                {isActive && (
-                                                    <motion.div
-                                                        layoutId="navbar-active-pill"
-                                                        className="absolute inset-0 bg-surface-subtle border border-border-default/70 rounded-md z-0 shadow-2xs"
-                                                        transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                                                    />
+                                    {({ isActive }) => (
+                                        <>
+                                            <span className="relative z-10">{item.label}</span>
+                                            <span
+                                                className={cn(
+                                                    "absolute bottom-0 left-3 right-3 h-[2px] transition-transform origin-left",
+                                                    isActive ? "bg-accent-primary scale-x-100" : "scale-x-0 bg-transparent"
                                                 )}
-                                            </>
-                                        );
-                                    }}
+                                            />
+                                        </>
+                                    )}
                                 </NavLink>
                             ))}
                         </div>
@@ -142,20 +152,30 @@ const Navbar = () => {
                         <button
                             type="button"
                             onClick={toggleTheme}
-                            className="h-8 w-8 rounded-lg border border-border-default/80 bg-surface hover:bg-surface-hover text-foreground-secondary hover:text-foreground flex items-center justify-center transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                            className={cn(
+                                "h-8 w-8 border flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
+                                overHero
+                                    ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
+                                    : "border-border-default bg-surface hover:bg-surface-subtle text-foreground-secondary hover:text-foreground"
+                            )}
                             aria-label="Toggle theme"
                         >
                             {theme === 'light' ? <HiMoon className="w-4 h-4" /> : <HiSun className="w-4 h-4 text-status-warning" />}
                         </button>
 
-                        <div className="h-4 w-px bg-border-default mx-0.5 hidden sm:block" />
+                        <div className={cn("h-4 w-px mx-0.5 hidden sm:block", overHero ? "bg-white/25" : "bg-border-default")} />
 
                         {user ? (
                             <div className="relative" ref={dropdownRef}>
                                 <button
                                     type="button"
                                     onClick={() => setProfileOpen(!profileOpen)}
-                                    className="flex items-center gap-2 px-2.5 py-1 rounded-lg border border-border-default/80 bg-surface hover:bg-surface-hover text-xs transition-all shadow-2xs group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                                    className={cn(
+                                        "flex items-center gap-2 px-2.5 py-1.5 border text-xs transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
+                                        overHero
+                                            ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
+                                            : "border-border-default bg-surface hover:bg-surface-subtle"
+                                    )}
                                     aria-label="User account menu"
                                     aria-expanded={profileOpen}
                                 >
@@ -166,11 +186,11 @@ const Navbar = () => {
                                             user.displayName?.charAt(0) || "U"
                                         )}
                                     </div>
-                                    <span className="hidden sm:inline font-semibold text-foreground max-w-[90px] truncate text-left">
+                                    <span className={cn("hidden sm:inline font-semibold max-w-[90px] truncate text-left", overHero ? "text-white" : "text-foreground")}>
                                         {user.displayName?.split(' ')[0] || 'Account'}
                                     </span>
                                     <span className="hidden lg:inline-block w-1.5 h-1.5 rounded-full bg-status-success shrink-0" title="Active Trader" />
-                                    <HiChevronDown className={cn("w-3.5 h-3.5 text-foreground-muted group-hover:text-foreground transition-transform shrink-0", profileOpen && "rotate-180")} />
+                                    <HiChevronDown className={cn("w-3.5 h-3.5 transition-transform shrink-0", overHero ? "text-white/60 group-hover:text-white" : "text-foreground-muted group-hover:text-foreground", profileOpen && "rotate-180")} />
                                 </button>
 
                                 <AnimatePresence>
@@ -250,13 +270,22 @@ const Navbar = () => {
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="sm" asChild>
-                                    <Link to="/login">Sign in</Link>
-                                </Button>
-                                <Button size="sm" asChild>
-                                    <Link to="/register">Start Sourcing</Link>
-                                </Button>
+                            <div className="flex items-center gap-1.5">
+                                <Link
+                                    to="/login"
+                                    className={cn(
+                                        "hidden sm:inline-flex items-center px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors",
+                                        overHero ? "text-white/75 hover:text-white" : "text-foreground-secondary hover:text-foreground"
+                                    )}
+                                >
+                                    Sign in
+                                </Link>
+                                <Link
+                                    to="/register"
+                                    className="inline-flex items-center gap-1.5 bg-accent-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-accent-hover"
+                                >
+                                    Request quote
+                                </Link>
                             </div>
                         )}
 
@@ -264,7 +293,7 @@ const Navbar = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="md:hidden h-8 w-8"
+                            className="md:hidden h-9 w-9"
                             onClick={() => setMobileOpen(!mobileOpen)}
                             aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
                             aria-expanded={mobileOpen}

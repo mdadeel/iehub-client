@@ -3,6 +3,7 @@ import { Badge } from '../components/ui/Badge';
 import { HiArrowRight } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 
+import PageHeader from '../components/PageHeader';
 const MarketInsightsPage = () => {
   const articles = [
     {
@@ -29,19 +30,14 @@ const MarketInsightsPage = () => {
   ];
 
   return (
-    <div className="container py-12 md:py-16 max-w-4xl">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Intelligence & Analysis
-        </Badge>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          Global Trade Insights
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted">
-          Macroeconomic research, regulatory updates, and supply chain telemetry compiled by IEHUB market analysts.
-        </p>
-      </div>
-
+        <>
+      <PageHeader
+        eyebrow="Intelligence"
+        title="Global trade insights."
+        description="Macro research, regulatory updates and supply-chain telemetry, written by the desk that clears the cargo."
+        image="/images/com-coffee.jpg"
+      />
+      <div className="container py-12 md:py-16 max-w-4xl">
       <div className="space-y-4">
         {articles.map((article, i) => (
           <Card key={i} className="border border-border-default bg-surface hover:border-border-hover transition-colors">
@@ -73,6 +69,7 @@ const MarketInsightsPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

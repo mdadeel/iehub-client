@@ -4,7 +4,8 @@ import { HiArrowRight, HiLocationMarker, HiShieldCheck, HiScale } from 'react-ic
 import { Badge } from './ui/Badge';
 import { cn } from '@/lib/utils';
 
-const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250' fill='%23F1F5F9'%3E%3Crect width='400' height='250' fill='%23F1F5F9'/%3E%3Cpath d='M160 140l30-30 40 40 20-20 30 30H160z' fill='%2394A3B8' opacity='0.4'/%3E%3Ccircle cx='180' cy='90' r='15' fill='%2394A3B8' opacity='0.4'/%3E%3Ctext x='50%25' y='80%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%2364748B'%3ETrade Commodity Asset%3C/text%3E%3C/svg%3E";
+const FALLBACK_IMAGE =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='%23F1EDE8'%3E%3Crect width='400' height='300' fill='%23F1EDE8'/%3E%3Cpath d='M150 170l35-38 45 48 24-24 46 52H150z' fill='%239AA0A4' opacity='0.35'/%3E%3Ccircle cx='180' cy='106' r='16' fill='%239AA0A4' opacity='0.35'/%3E%3Ctext x='50%25' y='82%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='11' letter-spacing='2' fill='%236C7378'%3ECARGO LOT%3C/text%3E%3C/svg%3E";
 
 const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
   const availableQty = product.quantity || 0;
   const isOutOfStock = availableQty < 1;
   const moq = product.moq || 1;
-  const isVerified = product.verificationStatus === 'verified' || !product.verificationStatus; // existing verified seed items
+  const isVerified = product.verificationStatus === 'verified' || !product.verificationStatus;
 
   return (
     <div
@@ -33,27 +34,33 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           handleViewDetails();
         }
       }}
-      className="group cursor-pointer flex flex-col h-full rounded-lg border border-border-default bg-surface hover:border-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary transition-colors overflow-hidden"
+      className="group flex h-full cursor-pointer flex-col overflow-hidden border border-border-default bg-surface transition-all duration-200 hover:border-foreground/25 hover:shadow-[0_18px_40px_-32px_rgba(16,20,23,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
     >
-      {/* Visual Asset Container */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-surface-subtle">
+      {/* Visual asset */}
+      <div className="media aspect-[4/3]">
         <img
           src={imgSrc}
           alt={product.name}
           onError={() => setImgSrc(FALLBACK_IMAGE)}
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
           loading="lazy"
         />
 
-        {/* Top Tag: Category & Compare Checkbox */}
-        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
-          <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-surface/90 backdrop-blur-md text-foreground-secondary border border-border-subtle shadow-2xs">
-            {product.category}
+        {/* Category chip */}
+        <span className="absolute left-0 top-0 bg-surface/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground-secondary backdrop-blur">
+          {product.category}
+        </span>
+
+        {/* Verification stamp */}
+        {isVerified && (
+          <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 bg-[#0B7A52] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white">
+            <HiShieldCheck className="h-3 w-3" />
+            Lab verified
           </span>
-        </div>
+        )}
 
         {onToggleCompare && (
-          <div className="absolute top-2.5 right-2.5 z-10">
+          <div className="absolute right-2 top-2 z-10">
             <button
               type="button"
               onClick={(e) => {
@@ -61,85 +68,75 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
                 onToggleCompare(product);
               }}
               className={cn(
-                "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium transition-all shadow-xs backdrop-blur-md select-none",
+                'flex select-none items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] transition-all',
                 isCompared
-                  ? "bg-accent-primary text-white border border-accent-primary shadow-sm ring-2 ring-accent-primary/25"
-                  : "bg-surface/90 hover:bg-surface text-foreground border border-border-default/80 hover:border-border-hover"
+                  ? 'bg-accent-primary text-white'
+                  : 'bg-surface/92 text-foreground-secondary hover:bg-surface hover:text-foreground'
               )}
-              title={isCompared ? "Remove from comparison" : "Add to comparison"}
+              title={isCompared ? 'Remove from comparison' : 'Add to comparison'}
               aria-pressed={isCompared}
             >
-              <HiScale className={cn("w-3.5 h-3.5 transition-transform", isCompared && "scale-110")} />
-              <span>{isCompared ? "Comparing" : "Compare"}</span>
+              <HiScale className="h-3.5 w-3.5" />
+              <span>{isCompared ? 'Comparing' : 'Compare'}</span>
             </button>
           </div>
         )}
 
         {isOutOfStock && !onToggleCompare && (
-          <div className="absolute top-2.5 right-2.5">
-            <Badge variant="danger" size="sm" hasDot className="bg-surface/95 backdrop-blur-md text-[10px]">
+          <div className="absolute right-2 top-2">
+            <Badge variant="danger" size="sm" hasDot className="bg-surface/95 text-[10px] backdrop-blur">
               Allocated
             </Badge>
           </div>
         )}
       </div>
 
-      {/* Card Body */}
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-        <div>
-          {/* Origin & Verification Details */}
-          <div className="flex items-center justify-between gap-1 text-[11px] text-foreground-muted mb-1.5 truncate">
-            <div className="flex items-center gap-1 truncate">
-              <HiLocationMarker className="w-3.5 h-3.5 text-foreground-subtle shrink-0" />
-              <span className="truncate">{origin}</span>
-            </div>
-            {isVerified && (
-              <span className="inline-flex items-center gap-0.5 text-status-success text-[10px] font-semibold shrink-0">
-                <HiShieldCheck className="w-3.5 h-3.5" />
-                <span>Verified</span>
-              </span>
-            )}
-          </div>
-
-          {/* Commodity Name */}
-          <h3 className="font-bold text-sm text-foreground leading-snug line-clamp-1 group-hover:text-accent-primary transition-colors">
-            {product.name}
-          </h3>
-
-          {/* HS Code and MOQ */}
-          <div className="flex items-center gap-2 mt-1.5 text-[11px] text-foreground-muted">
-            {product.hsCode && (
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-surface-subtle border border-border-subtle text-foreground-secondary">
-                HS {product.hsCode}
-              </span>
-            )}
-            <span>
-              MOQ: <strong className="font-semibold text-foreground">{moq.toLocaleString()} {unit}</strong>
-            </span>
-          </div>
+      {/* Body */}
+      <div className="flex flex-1 flex-col p-4">
+        <div className="mb-2 flex items-center gap-1.5 text-[11px] text-foreground-muted">
+          <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-foreground-subtle" />
+          <span className="truncate">{origin}</span>
         </div>
 
-        {/* Pricing & Supply Row */}
-        <div className="pt-3 border-t border-border-subtle flex items-end justify-between gap-2">
-          <div>
-            <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted">
-              Unit Price ({incoterm})
-            </div>
-            <div className="text-sm font-bold text-foreground tabular-nums font-mono">
-              ${product.price?.toLocaleString()}
-              <span className="text-[11px] font-normal text-foreground-muted ml-0.5">
-                /{unit}
-              </span>
-            </div>
-          </div>
+        <h3 className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground transition-colors group-hover:text-accent-primary">
+          {product.name}
+        </h3>
 
-          <div className="text-right">
-            <div className="text-[10px] font-mono text-foreground-muted">
-              {availableQty.toLocaleString()} {unit} avail.
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-foreground-muted">
+          {product.hsCode && (
+            <span className="border border-border-subtle bg-surface-subtle px-1.5 py-0.5 font-mono text-[10px] text-foreground-secondary">
+              HS {product.hsCode}
+            </span>
+          )}
+          <span>
+            MOQ{' '}
+            <strong className="font-semibold text-foreground">
+              {moq.toLocaleString()} {unit}
+            </strong>
+          </span>
+        </div>
+
+        <div className="mt-auto pt-4">
+          <div className="flex items-end justify-between border-t border-border-subtle pt-3">
+            <div>
+              <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-foreground-subtle">
+                {incoterm} unit price
+              </div>
+              <div className="mt-0.5 font-display text-[17px] font-bold tabular-nums text-foreground">
+                ${product.price?.toLocaleString()}
+                <span className="ml-0.5 text-[11px] font-medium text-foreground-muted">
+                  /{unit}
+                </span>
+              </div>
             </div>
-            <div className="inline-flex items-center gap-1 text-xs font-semibold text-[#2563EB] group-hover:translate-x-0.5 transition-transform mt-0.5">
-              <span>View Details</span>
-              <HiArrowRight className="w-3 h-3" />
+
+            <div className="text-right">
+              <div className="font-mono text-[10px] text-foreground-muted">
+                {availableQty.toLocaleString()} {unit} avail.
+              </div>
+              <div className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-accent-primary">
+                View lot <HiArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              </div>
             </div>
           </div>
         </div>

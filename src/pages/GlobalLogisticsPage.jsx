@@ -8,6 +8,7 @@ import { Button } from '../components/ui/Button';
 import { HiDocumentText, HiClock, HiArrowRight } from 'react-icons/hi';
 import { FaShip } from 'react-icons/fa';
 
+import PageHeader from '../components/PageHeader';
 // Reference transit times for common corridors — static reference data, not live telemetry.
 const CORRIDORS = [
   { name: 'Trans-Pacific Eastbound', route: 'Shanghai / Ningbo → Los Angeles / Long Beach', transitTime: '14–18 days' },
@@ -44,19 +45,14 @@ const GlobalLogisticsPage = () => {
   }, [fetchMyShipments]);
 
   return (
-    <div className="container py-10 md:py-14 max-w-5xl">
-      <div className="max-w-2xl mb-10">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Shipping Reference
-        </Badge>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          Track Shipments
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted">
-          Live status for your cargo lives on each purchase order. Below: your shipments in motion, typical corridor transit times, and how customs clearance works.
-        </p>
-      </div>
-
+        <>
+      <PageHeader
+        eyebrow="Logistics"
+        title="Where your cargo is, right now."
+        description="Shipment status, corridor transit times and customs clearance reference — pulled from the purchase order, not a spreadsheet."
+        image="/images/svc-ocean.jpg"
+      />
+      <div className="container py-10 md:py-14 max-w-5xl">
       {/* My Shipments — real data first */}
       <section className="mb-10">
         <div className="flex items-center justify-between mb-3">
@@ -171,6 +167,7 @@ const GlobalLogisticsPage = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

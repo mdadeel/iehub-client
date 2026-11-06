@@ -4,6 +4,7 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { HiArrowRight } from 'react-icons/hi';
 
+import PageHeader from '../components/PageHeader';
 const BrowseCategoriesPage = () => {
   const categories = [
     { name: 'Agricultural Commodities', count: '1,420 Listings', icon: '🌾', desc: 'Spices, organic grains, tea, coffee, edible oils, and pulses.' },
@@ -15,24 +16,19 @@ const BrowseCategoriesPage = () => {
   ];
 
   return (
-    <div className="container py-12 md:py-16 max-w-6xl">
+        <>
+      <PageHeader
+        eyebrow="Directory"
+        title="Every sector we clear."
+        description="Verified export-grade commodities classified under the Harmonized Tariff Schedule, with live supply counts."
+        image="/images/ind-agriculture.jpg"
+      />
+      <div className="container py-12 md:py-16 max-w-6xl">
       <SEOHead
         title="Commodity Directory & Trade Sectors | IEHUB"
         description="Browse international trade sectors and export commodities classified under Harmonized Tariff Schedules (HTS)."
         canonicalUrl="https://iehub-client.vercel.app/categories"
       />
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Commodity Directory
-        </Badge>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          International Trade Sectors
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted">
-          Browse verified export-grade commodities classified according to the Harmonized Tariff Schedule (HTS).
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((cat, i) => (
           <Card
@@ -64,6 +60,7 @@ const BrowseCategoriesPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

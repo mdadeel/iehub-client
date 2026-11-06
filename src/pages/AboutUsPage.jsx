@@ -2,6 +2,7 @@ import { HiGlobeAlt, HiShieldCheck, HiTrendingUp, HiUsers, HiOutlineCheckCircle 
 import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 
+import PageHeader from '../components/PageHeader';
 const AboutUsPage = () => {
   const stats = [
     { label: "Trading Jurisdictions", value: "120+", icon: <HiGlobeAlt />, desc: "Regulatory compliance across 120+ ports." },
@@ -11,20 +12,14 @@ const AboutUsPage = () => {
   ];
 
   return (
-    <div className="container py-12 md:py-16 max-w-5xl">
-      {/* Top Banner */}
-      <div className="text-center max-w-2xl mx-auto mb-16">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Corporate Background
-        </Badge>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3">
-          Institutional Trade Infrastructure
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted leading-relaxed">
-          IEHUB is an international trade operating system engineered to eliminate fraud, reduce document latency, and connect verified global suppliers with institutional buyers.
-        </p>
-      </div>
-
+        <>
+      <PageHeader
+        eyebrow="Company"
+        title="Trade infrastructure built by operators."
+        description="IEHUB exists because too many consignments still stall in a WhatsApp thread. We put the inspection, the paperwork and the money in one auditable place."
+        image="/images/why-inspection.jpg"
+      />
+      <div className="container py-12 md:py-16 max-w-5xl">
       {/* Mission Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
         <div className="space-y-4 text-xs sm:text-sm text-foreground-secondary leading-relaxed">
@@ -80,6 +75,7 @@ const AboutUsPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

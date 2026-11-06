@@ -2,6 +2,7 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { HiMail, HiOutlineGlobeAlt } from 'react-icons/hi';
 
+import PageHeader from '../components/PageHeader';
 const TradeExpertsPage = () => {
   const experts = [
     {
@@ -28,19 +29,14 @@ const TradeExpertsPage = () => {
   ];
 
   return (
-    <div className="container py-12 md:py-16 max-w-5xl">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Advisory Team
-        </Badge>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          Trade Desk Specialists
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted">
-          Our certified customs brokers, freight forwarders, and trade finance legal advisors assist your team on high-value cross-border transactions.
-        </p>
-      </div>
-
+        <>
+      <PageHeader
+        eyebrow="Advisory team"
+        title="People who answer the phone."
+        description="Customs brokers, freight forwarders and trade-finance specialists who stay on a high-value file until it clears."
+        image="/images/why-inspection.jpg"
+      />
+      <div className="container py-12 md:py-16 max-w-5xl">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {experts.map((expert, i) => (
           <Card key={i} className="border border-border-default bg-surface flex flex-col justify-between">
@@ -65,6 +61,7 @@ const TradeExpertsPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

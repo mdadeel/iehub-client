@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* Font Family Definitions (Module 1.2 & 14.5: 2 typefaces max) */
+  /* Font Family Definitions (2 typefaces: Archivo display + Inter text) */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Golden Ratio Typography Scale (Module 1.2: 16px -> 26px -> 42px -> 68px) */
-  --text-body: 1rem;            /* 16px */
-  --text-subheading: 1.625rem;   /* 26px */
-  --text-heading: 2.625rem;      /* 42px */
-  --text-display: 4.25rem;       /* 68px */
+  /* Type scale */
+  --text-body: 1rem;
+  --text-subheading: 1.625rem;
+  --text-heading: 2.625rem;
+  --text-display: 4.25rem;
 
-  /* Golden Ratio Spacing Scale (Module 1.1: 8 -> 13 -> 21 -> 34 -> 55 -> 89) */
+  /* Spacing scale */
   --spacing-gr-1: 8px;
   --spacing-gr-2: 13px;
   --spacing-gr-3: 21px;
@@ -19,14 +20,14 @@
   --spacing-gr-5: 55px;
   --spacing-gr-6: 89px;
 
-  /* Concentric Radius System (Module 1.5: 4px -> 8px -> 16px -> full) */
+  /* Concentric radius system — tighter, more industrial */
   --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
   --radius-pill: 9999px;
 
-  /* Animation Easing Curves (Module 1.3 & 14.8) */
+  /* Animation easing curves */
   --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-symmetric: cubic-bezier(0.65, 0, 0.35, 1);
@@ -48,7 +49,7 @@
   --color-border-default: var(--border-default);
   --color-border-hover: var(--border-hover);
 
-  /* Primary Accent Token: Cobalt Blue & Maritime Navy */
+  /* Accent Token: Signal Crimson + Ink neutrals */
   --color-accent-primary: var(--accent-primary);
   --color-accent-hover: var(--accent-hover);
   --color-accent-subtle: var(--accent-subtle);
@@ -57,7 +58,7 @@
   --color-surface-inverse: var(--bg-surface-inverse);
   --color-foreground-inverse: var(--text-inverse);
 
-  /* Status Semantics: Restrained Teal, Amber, Crimson */
+  /* Status Semantics */
   --color-status-success: var(--status-success);
   --color-status-success-bg: var(--status-success-bg);
   --color-status-warning: var(--status-warning);
@@ -84,77 +85,73 @@
   --color-border: var(--border-default);
   --color-input: var(--border-default);
   --color-ring: var(--accent-primary);
-
 }
 
 :root {
-  /* LIGHT MODE (Maritime Navy & Cobalt Blue — Enterprise Trade Foundation) */
-  --bg-app: #F7F9FC; /* Page background */
+  /* LIGHT MODE — Signal Crimson on warm paper & ink */
+  --bg-app: #F6F4F1; /* Warm paper canvas */
   --bg-surface: #FFFFFF; /* Primary surface */
-  --bg-surface-subtle: #F1F5F9; /* Secondary surface */
-  --bg-surface-hover: #E2E8F0; /* Tactile hover */
-  --bg-surface-inverse: #0B1220; /* Inverse navy surface */
+  --bg-surface-subtle: #F1EDE8; /* Secondary surface */
+  --bg-surface-hover: #E8E2DA; /* Tactile hover */
+  --bg-surface-inverse: #101417; /* Ink surface */
 
-  --text-primary: #0F172A; /* Primary text */
-  --text-secondary: #475569; /* Secondary text */
-  --text-muted: #64748B; /* Muted text */
-  --text-subtle: #94A3B8; /* Subtle helper text */
-  --text-inverse: #F8FAFC; /* Text on inverse surface */
+  --text-primary: #14181B; /* Ink */
+  --text-secondary: #494F53;
+  --text-muted: #6C7378;
+  --text-subtle: #9AA0A4;
+  --text-inverse: #F8F6F3;
 
-  --border-subtle: #EDF2F7;
-  --border-default: #E2E8F0; /* Decorative border */
-  --border-hover: #CBD5E1;
+  --border-subtle: #EDE8E2;
+  --border-default: #E1DBD3; /* Decorative border */
+  --border-hover: #C9C1B7;
 
-  --accent-primary: #2563EB; /* Cobalt primary button & action */
-  --accent-hover: #1D4ED8; /* Cobalt hover */
-  --accent-subtle: rgba(37, 99, 235, 0.08);
-  --accent-contrast: #FFFFFF; /* Crisp white text on cobalt */
-  --color-link: #1D4ED8;
+  --accent-primary: #C2181F; /* Signal crimson */
+  --accent-hover: #9C1016;
+  --accent-subtle: rgba(194, 24, 31, 0.07);
+  --accent-contrast: #FFFFFF;
+  --color-link: #A81218;
 
   /* Status text tiers: AA contrast */
-  --status-success: #047857;
-  --status-success-bg: rgba(4, 120, 87, 0.08);
-  --status-warning: #B45309;
-  --status-warning-bg: rgba(180, 83, 9, 0.08);
-  --status-danger: #B91C1C;
-  --status-danger-bg: rgba(185, 28, 28, 0.08);
+  --status-success: #0B7A52;
+  --status-success-bg: rgba(11, 122, 82, 0.08);
+  --status-warning: #A65A00;
+  --status-warning-bg: rgba(166, 90, 0, 0.08);
+  --status-danger: #B42318;
+  --status-danger-bg: rgba(180, 35, 24, 0.08);
 
   color-scheme: light;
 }
 
 .dark {
-  /* DARK MODE (Maritime Navy & Cobalt Blue — Enterprise Trade Foundation) */
-  --bg-app: #0B1220; /* Page background: deep maritime navy */
-  --bg-surface: #111C2E; /* Primary surface */
-  --bg-surface-subtle: #172338; /* Secondary surface */
-  --bg-surface-hover: #1E2D47; /* Tactile hover */
-  --bg-surface-inverse: #F7F9FC; /* Inverse surface */
+  /* DARK MODE — Ink surfaces, warm greys, brighter crimson */
+  --bg-app: #0D1114;
+  --bg-surface: #13181B;
+  --bg-surface-subtle: #1A2024;
+  --bg-surface-hover: #232B30;
+  --bg-surface-inverse: #F6F4F1;
 
-  /* Text hierarchy */
-  --text-primary: #F8FAFC; /* Primary text */
-  --text-secondary: #CBD5E1; /* Secondary text */
-  --text-muted: #94A3B8; /* Muted text */
-  --text-subtle: #64748B;
-  --text-inverse: #0F172A;
+  --text-primary: #F6F3EF;
+  --text-secondary: #C2C8CB;
+  --text-muted: #949B9F;
+  --text-subtle: #6A7276;
+  --text-inverse: #14181B;
 
-  /* Borders: restrained maritime slate */
-  --border-subtle: #1E2D47;
-  --border-default: #2A3950; /* Decorative border */
-  --border-hover: #3E516F;
+  --border-subtle: #20272B;
+  --border-default: #2B3338;
+  --border-hover: #3D474C;
 
-  --accent-primary: #2563EB; /* Cobalt primary button */
-  --accent-hover: #3B82F6; /* Cobalt hover */
-  --accent-subtle: rgba(37, 99, 235, 0.16);
-  --accent-contrast: #FFFFFF; /* Crisp white text on cobalt */
-  --color-link: #60A5FA;
+  --accent-primary: #E23A40;
+  --accent-hover: #F15A5F;
+  --accent-subtle: rgba(226, 58, 64, 0.14);
+  --accent-contrast: #FFFFFF;
+  --color-link: #F28286;
 
-  /* Status text tiers */
-  --status-success: #34D399;
-  --status-success-bg: rgba(52, 211, 153, 0.12);
-  --status-warning: #FBBF24;
-  --status-warning-bg: rgba(251, 191, 36, 0.12);
-  --status-danger: #F87171;
-  --status-danger-bg: rgba(248, 113, 113, 0.12);
+  --status-success: #3DD69A;
+  --status-success-bg: rgba(61, 214, 154, 0.12);
+  --status-warning: #F5B145;
+  --status-warning-bg: rgba(245, 177, 69, 0.12);
+  --status-danger: #F97066;
+  --status-danger-bg: rgba(249, 112, 102, 0.12);
 
   color-scheme: dark;
 }
@@ -163,29 +160,30 @@
   * {
     border-color: var(--border-default);
   }
-  
+
   html {
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--bg-app);
     color: var(--text-primary);
     min-height: 100vh;
-    line-height: 1.55; /* Module 1.2: 1.4-1.6 for body */
+    line-height: 1.6;
   }
 
-  /* Module 1.2 & 14.5: Tabular figures for numbers, tables, metrics */
   table, .tabular-nums, .font-mono {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Module 1.2: Line height 1.1-1.2 for headings */
   h1, h2, h3, h4, h5, h6 {
-    line-height: 1.18;
+    font-family: var(--font-display);
+    line-height: 1.08;
+    letter-spacing: -0.022em;
     text-wrap: balance;
   }
 
@@ -193,17 +191,14 @@
     text-wrap: pretty;
   }
 
-  /* Module 1.4: Dim images to 90% in dark mode */
   .dark img {
-    filter: brightness(0.9);
+    filter: brightness(0.92);
   }
 
-  /* Module 14.6: Icons inherit text color by default */
   svg:not([fill*="#"]):not([stroke*="#"]) {
     color: currentColor;
   }
 
-  /* Module 8.1 & 14.10: Focus visible ring with 3:1 contrast */
   :focus-visible {
     outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
@@ -212,8 +207,8 @@
 
 /* Precision Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -221,15 +216,14 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-default);
+  background: var(--border-hover);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
+  background: var(--text-subtle);
 }
 
-/* Utility to hide scrollbars while maintaining scrollability */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -238,7 +232,6 @@
   scrollbar-width: none;
 }
 
-/* Reduced Motion Override */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
@@ -250,13 +243,14 @@
   }
 }
 
-/* Utility Containers & Elevation */
+@layer components {
+/* Layout containers */
 .container {
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
-  max-width: 80rem;
+  max-width: 82rem;
 }
 
 @media (min-width: 640px) {
@@ -268,8 +262,8 @@
 
 @media (min-width: 1024px) {
   .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
   }
 }
 
@@ -277,14 +271,134 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ————————————————————————————————————————————————
+   Editorial / industrial marketing primitives
+   ———————————————————————————————————————————————— */
 
-
-/* Hide scrollbars while preserving scrollability (nav overflow, drawers) */
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Small uppercase kicker used above section headings */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.eyebrow-light {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.eyebrow-light::before {
+  background: #F0433F;
+}
+
+/* Display heading */
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+}
+
+/* Section rhythm */
+.section {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* Subtle blueprint grid backdrop for light sections */
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(20, 24, 27, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 24, 27, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.dark .grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Image treatment: never washed out, never neon */
+.media {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-surface-subtle);
+}
+
+.media > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .media > img {
+  transform: scale(1.045);
+}
+
+/* Photo card scrim for text over imagery */
+.photo-scrim {
+  background: linear-gradient(to top, rgba(8, 11, 13, 0.92) 0%, rgba(8, 11, 13, 0.55) 42%, rgba(8, 11, 13, 0.08) 78%, rgba(8, 11, 13, 0) 100%);
+}
+
+/* Red square marker used for list bullets / indices */
+.marker-square {
+  width: 7px;
+  height: 7px;
+  background: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+/* Hairline vertical divider for stat strips */
+.stat-divide > * + * {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Underlined editorial link */
+.link-underline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.999);
+  transform-origin: left;
+  opacity: 0.35;
+  transition: opacity 0.2s ease;
+}
+
+.link-underline:hover::after {
+  opacity: 1;
+}
 }

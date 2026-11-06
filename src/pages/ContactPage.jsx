@@ -5,6 +5,7 @@ import { Input } from '../components/ui/Input';
 import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 
+import PageHeader from '../components/PageHeader';
 const ContactPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,20 +14,14 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="container py-12 md:py-16 max-w-5xl">
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <Badge variant="neutral" size="sm" className="mb-2">
-          Global Trade Desk
-        </Badge>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          Contact Commercial Operations
-        </h1>
-        <p className="text-xs sm:text-sm text-foreground-muted">
-          Our international trade specialists, customs brokers, and escrow analysts are available across major global maritime corridors.
-        </p>
-      </div>
-
+        <>
+      <PageHeader
+        eyebrow="Trade desk"
+        title="Tell us what needs to move."
+        description="Send the commodity, the volume and the discharge port. A desk officer replies within four working hours, Dhaka time."
+        image="/images/cta-port-night.jpg"
+      />
+      <div className="container py-12 md:py-16 max-w-5xl">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Contact Form */}
         <div className="lg:col-span-7">
@@ -150,6 +145,7 @@ const ContactPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -592,16 +592,16 @@ const MyImportsPage = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl border border-[#3B82F6] bg-[#EFF6FF] flex items-center gap-3">
-              <div className="w-6 h-6 rounded-md bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs">
+            <div className="p-3.5 rounded-xl border border-accent-primary/30 bg-accent-subtle flex items-center gap-3">
+              <div className="w-6 h-6 rounded-md bg-accent-primary text-white flex items-center justify-center font-bold text-xs">
                 2
               </div>
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#1D4ED8]">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-accent-primary">
                   <span>Exporter Countered</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse" />
                 </div>
-                <div className="text-[11px] font-medium text-[#2563EB]">
+                <div className="text-[11px] font-medium text-accent-primary">
                   {myRFQs.filter((r) => r.status === 'Quoted').length} Needs Decision
                 </div>
               </div>
@@ -663,7 +663,7 @@ const MyImportsPage = () => {
                       <TableCell>
                         {rfq.counterOfferPrice ? (
                           <div>
-                            <div className="text-xs font-bold text-[#2563EB] tabular-nums">
+                            <div className="text-xs font-bold text-accent-primary tabular-nums">
                               ${rfq.counterOfferPrice?.toLocaleString()} FOB
                             </div>
                             <div className="flex items-center gap-1.5 text-[10px] text-foreground-muted">
