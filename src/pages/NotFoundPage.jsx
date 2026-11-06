@@ -43,7 +43,7 @@ const NotFoundPage = () => {
         <div className="relative container py-16 sm:py-24">
           <div className="max-w-2xl">
             <div className="eyebrow eyebrow-light mb-5">Error 404</div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/40">
+            <div className="font-mono text-[13px] uppercase tracking-[0.22em] text-white/40">
               Document not on file
             </div>
             <h1 className="display mt-3 text-[2.4rem] leading-[1.03] sm:text-6xl">
@@ -74,7 +74,7 @@ const NotFoundPage = () => {
 
       <section className="bg-canvas py-14">
         <div className="container">
-          <div className="mb-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground-muted">
+          <div className="mb-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground-muted">
             Try one of these instead
           </div>
           <div className="grid grid-cols-1 gap-px bg-border-default md:grid-cols-3">
@@ -89,11 +89,11 @@ const NotFoundPage = () => {
                   <span className="flex h-9 w-9 items-center justify-center bg-accent-primary text-white">
                     <Icon className="h-[18px] w-[18px]" />
                   </span>
-                  <span className="mt-4 text-[15px] font-bold text-foreground">{item.title}</span>
-                  <span className="mt-1.5 flex-1 text-[13px] leading-relaxed text-foreground-secondary">
+                  <span className="mt-4 text-[14px] font-bold text-foreground">{item.title}</span>
+                  <span className="mt-1.5 flex-1 text-[14px] leading-relaxed text-foreground-secondary">
                     {item.copy}
                   </span>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-accent-primary">
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.12em] text-accent-primary">
                     Open <HiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </Link>

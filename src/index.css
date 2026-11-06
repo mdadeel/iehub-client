@@ -37,6 +37,9 @@
   --color-surface: var(--bg-surface);
   --color-surface-subtle: var(--bg-surface-subtle);
   --color-surface-hover: var(--bg-surface-hover);
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
+  --shadow-float: var(--shadow-float);
 
   /* Foreground Text Tokens */
   --color-foreground: var(--text-primary);
@@ -89,10 +92,10 @@
 
 :root {
   /* LIGHT MODE — Signal Crimson on warm paper & ink */
-  --bg-app: #F6F4F1; /* Warm paper canvas */
+  --bg-app: #F3EFE9; /* Warm paper canvas */
   --bg-surface: #FFFFFF; /* Primary surface */
-  --bg-surface-subtle: #F1EDE8; /* Secondary surface */
-  --bg-surface-hover: #E8E2DA; /* Tactile hover */
+  --bg-surface-subtle: #EAE4DC; /* Sunken / secondary surface */
+  --bg-surface-hover: #E1DAD0; /* Tactile hover — must sit a step below sunken */
   --bg-surface-inverse: #101417; /* Ink surface */
 
   --text-primary: #14181B; /* Ink */
@@ -104,6 +107,11 @@
   --border-subtle: #EDE8E2;
   --border-default: #E1DBD3; /* Decorative border */
   --border-hover: #C9C1B7;
+
+  /* Elevation — hierarchy comes from tone + light, not from borders */
+  --shadow-card: 0 1px 2px rgba(20, 24, 27, 0.04), 0 10px 24px -18px rgba(20, 24, 27, 0.35);
+  --shadow-card-hover: 0 1px 2px rgba(20, 24, 27, 0.05), 0 22px 44px -20px rgba(20, 24, 27, 0.42);
+  --shadow-float: 0 2px 6px rgba(20, 24, 27, 0.06), 0 32px 60px -28px rgba(20, 24, 27, 0.45);
 
   --accent-primary: #C2181F; /* Signal crimson */
   --accent-hover: #9C1016;
@@ -124,8 +132,8 @@
 
 .dark {
   /* DARK MODE — Ink surfaces, warm greys, brighter crimson */
-  --bg-app: #0D1114;
-  --bg-surface: #13181B;
+  --bg-app: #0B0F11;
+  --bg-surface: #141A1E;
   --bg-surface-subtle: #1A2024;
   --bg-surface-hover: #232B30;
   --bg-surface-inverse: #F6F4F1;
@@ -349,6 +357,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* One grade across every photograph: slightly cooler, slightly richer */
+  filter: saturate(0.93) contrast(1.05) brightness(0.99);
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -401,4 +411,106 @@
 .link-underline:hover::after {
   opacity: 1;
 }
+
+/* ------------------------------------------------------------------
+   TYPE SCALE — five roles, used on every marketing surface.
+   Replaces the 13 ad-hoc sizes that made the site read as a dashboard.
+   ------------------------------------------------------------------ */
+.t-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.4vw, 4.15rem);
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.1vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  font-weight: 650;
+}
+
+.t-body {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 62ch;
+}
+
+.t-meta {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------------
+   PANELS — tone + light instead of a 1px border on every rectangle.
+   ------------------------------------------------------------------ */
+.panel {
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.panel-lift {
+  transition:
+    box-shadow 0.28s var(--ease-entrance),
+    transform 0.28s var(--ease-entrance);
+}
+
+.panel-lift:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* Editorial hairline grid: cells separated by 1px of canvas tone */
+.hairline-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--border-subtle);
+}
+
+.hairline-grid > * {
+  background: var(--bg-surface);
+}
+
+/* Rule that fades out — used instead of full-width boxed dividers */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(to right, var(--border-default), transparent);
+}
+
+/* Entrance choreography (disabled under prefers-reduced-motion, see above) */
+@keyframes ie-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: ie-rise 0.62s var(--ease-entrance) both;
+}
+
+.reveal-1 { animation-delay: 0.06s; }
+.reveal-2 { animation-delay: 0.12s; }
+.reveal-3 { animation-delay: 0.18s; }
+.reveal-4 { animation-delay: 0.24s; }
 }

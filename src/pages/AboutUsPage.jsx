@@ -75,7 +75,7 @@ const AboutUsPage = () => {
             <div className="text-xs font-semibold text-foreground mb-1">
               {s.label}
             </div>
-            <p className="text-[11px] text-foreground-muted leading-relaxed">
+            <p className="text-[13px] text-foreground-muted leading-relaxed">
               {s.desc}
             </p>
           </Card>

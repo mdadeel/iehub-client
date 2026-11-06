@@ -122,7 +122,7 @@ const LatestTradesPage = () => {
                 </div>
 
                 <div className="md:col-span-2 text-left md:text-right">
-                  <div className="text-[10px] text-foreground-muted uppercase font-mono">
+                  <div className="text-[11px] text-foreground-muted uppercase font-mono">
                     Settlement
                   </div>
                   <div className="font-mono text-sm font-bold text-foreground">

@@ -17,7 +17,7 @@ const PageHeader = ({ eyebrow, title, description, image, children }) => {
           {eyebrow && <div className="eyebrow eyebrow-light mb-5">{eyebrow}</div>}
           <h1 className="display text-[2rem] leading-[1.05] sm:text-5xl">{title}</h1>
           {description && (
-            <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white/65 sm:text-sm">
+            <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-white/65 sm:text-sm">
               {description}
             </p>
           )}

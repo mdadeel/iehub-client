@@ -54,12 +54,12 @@ const Footer = () => {
               </span>
             </Link>
 
-            <p className="mt-5 max-w-sm text-[13px] leading-relaxed text-white/55">
+            <p className="mt-5 max-w-sm text-[14px] leading-relaxed text-white/55">
               Verified commodity sourcing, escrow-protected settlement and maritime logistics
               telemetry — run from one desk.
             </p>
 
-            <div className="mt-6 space-y-2.5 text-[12.5px] text-white/55">
+            <div className="mt-6 space-y-2.5 text-[14px] text-white/55">
               <a
                 href="tel:+880312345678"
                 className="flex items-center gap-2.5 transition-colors hover:text-white"
@@ -80,7 +80,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="mt-6 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-status-success">
+            <div className="mt-6 flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.14em] text-status-success">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-status-success" />
               All systems operational
             </div>
@@ -88,7 +88,7 @@ const Footer = () => {
 
           {columns.map((col) => (
             <div key={col.title} className="lg:col-span-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
                 {col.title}
               </div>
               <ul className="mt-4 space-y-2.5">
@@ -96,7 +96,7 @@ const Footer = () => {
                   <li key={link.to + link.label}>
                     <Link
                       to={link.to}
-                      className="text-[13px] text-white/70 transition-colors hover:text-white"
+                      className="text-[14px] text-white/70 transition-colors hover:text-white"
                     >
                       {link.label}
                     </Link>
@@ -107,10 +107,10 @@ const Footer = () => {
           ))}
 
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
               Trade brief
             </div>
-            <p className="mt-4 text-[12.5px] leading-relaxed text-white/55">
+            <p className="mt-4 text-[14px] leading-relaxed text-white/55">
               Weekly freight rates and commodity positions. No noise.
             </p>
             <form
@@ -122,7 +122,7 @@ const Footer = () => {
                 required
                 placeholder="you@company.com"
                 aria-label="Email address"
-                className="min-w-0 flex-1 bg-transparent px-3 py-2 text-[12.5px] text-white placeholder:text-white/35 focus:outline-none"
+                className="min-w-0 flex-1 bg-transparent px-3 py-2 text-[14px] text-white placeholder:text-white/35 focus:outline-none"
               />
               <button
                 type="submit"
@@ -148,7 +148,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col items-start justify-between gap-4 py-6 text-[11px] text-white/40 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start justify-between gap-4 py-6 text-[13px] text-white/40 sm:flex-row sm:items-center">
           <div>
             &copy; {new Date().getFullYear()} IEHUB Inc. · ICC Incoterms 2020 compliant
           </div>

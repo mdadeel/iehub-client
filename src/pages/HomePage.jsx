@@ -320,8 +320,8 @@ const HomePage = () => {
       <Hero />
 
       {/* Accreditation strip */}
-      <section className="border-b border-border-default bg-surface">
-        <div className="container flex flex-wrap items-center justify-center gap-x-8 gap-y-3 py-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground-subtle sm:justify-between">
+      <section className="border-b border-border-subtle bg-surface">
+        <div className="container flex flex-wrap items-center justify-center gap-x-8 gap-y-3 py-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground-subtle sm:justify-between">
           {TRUST_MARKS.map((mark) => (
             <span key={mark} className="whitespace-nowrap">
               {mark}
@@ -336,7 +336,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-6 sm:mb-14 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">What we do</div>
-              <h2 className="display text-[2rem] sm:text-[2.35rem] lg:text-[2.9rem]">
+              <h2 className="t-h2 reveal">
                 From the origin floor to the port gate.
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-foreground-secondary">
@@ -353,26 +353,26 @@ const HomePage = () => {
             {CAPABILITIES.map((cap, i) => (
               <article
                 key={cap.title}
-                className="group relative flex flex-col border border-border-default bg-surface transition-colors hover:border-border-hover"
+                className="panel panel-lift group relative flex flex-col"
               >
                 <span className="absolute inset-x-0 -top-px z-10 h-[2px] scale-x-0 bg-accent-primary transition-transform duration-300 group-hover:scale-x-100" />
                 <div className="media aspect-[4/3]">
                   <img src={cap.image} alt={cap.alt} loading="lazy" />
-                  <span className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center bg-accent-primary font-mono text-[11px] font-bold text-white">
+                  <span className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center bg-accent-primary font-mono text-[13px] font-bold text-white">
                     0{i + 1}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground-subtle">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground-subtle">
                     {cap.tag}
                   </div>
-                  <h3 className="mt-2 text-lg font-bold text-foreground">{cap.title}</h3>
-                  <p className="mt-2 flex-1 text-[13px] leading-relaxed text-foreground-secondary">
+                  <h3 className="t-h3 mt-2">{cap.title}</h3>
+                  <p className="mt-2 flex-1 text-[14px] leading-relaxed text-foreground-secondary">
                     {cap.copy}
                   </p>
                   <Link
                     to="/products"
-                    className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-accent-primary"
+                    className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent-primary"
                   >
                     Learn more <HiArrowRight className="h-3.5 w-3.5" />
                   </Link>
@@ -396,10 +396,10 @@ const HomePage = () => {
               <div className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
                 {stat.value}
               </div>
-              <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
+              <div className="mt-2 text-[13px] font-semibold uppercase tracking-[0.16em] text-white">
                 {stat.label}
               </div>
-              <div className="mt-1 text-[11px] text-white/45">{stat.note}</div>
+              <div className="mt-1 text-[13px] text-white/45">{stat.note}</div>
             </div>
           ))}
         </div>
@@ -409,27 +409,27 @@ const HomePage = () => {
       <section className="section bg-surface">
         <div className="container grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="relative">
-            <div className="media aspect-[4/5] w-full border border-border-default">
+            <div className="media aspect-[4/5] w-full">
               <img
                 src="/images/why-inspection.jpg"
                 alt="Inspection officer checking export pallets against a loading plan"
                 loading="lazy"
               />
             </div>
-            <div className="absolute -bottom-6 -right-2 hidden w-44 border border-border-default bg-surface p-4 shadow-[0_20px_50px_-30px_rgba(16,20,23,0.6)] sm:block lg:-right-8 lg:w-52">
+            <div className="panel absolute -bottom-6 -right-2 hidden w-44 p-4 shadow-float sm:block lg:-right-8 lg:w-52">
               <div className="font-mono text-2xl font-bold text-accent-primary">98.4%</div>
-              <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground-secondary">
+              <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground-secondary">
                 First-pass document approval
               </div>
             </div>
-            <div className="absolute left-4 top-4 bg-[#101417]/90 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white backdrop-blur">
+            <div className="absolute left-4 top-4 bg-[#101417]/90 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-white backdrop-blur">
               Chattogram · loading bay 04
             </div>
           </div>
 
           <div>
             <div className="eyebrow mb-4">Why IEHUB</div>
-            <h2 className="display text-[2rem] sm:text-[2.35rem] lg:text-[2.9rem]">
+            <h2 className="t-h2 reveal">
               Built for buyers who cannot afford surprises.
             </h2>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-foreground-secondary">
@@ -443,12 +443,12 @@ const HomePage = () => {
                 const Icon = point.icon;
                 return (
                   <div key={point.title} className="flex gap-4">
-                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-border-default bg-surface-subtle text-accent-primary">
+                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center bg-accent-subtle text-accent-primary">
                       <Icon className="h-[18px] w-[18px]" />
                     </span>
                     <div>
-                      <h3 className="text-[15px] font-bold text-foreground">{point.title}</h3>
-                      <p className="mt-1 text-[13px] leading-relaxed text-foreground-secondary">
+                      <h3 className="t-h3">{point.title}</h3>
+                      <p className="mt-1 text-[14px] leading-relaxed text-foreground-secondary">
                         {point.copy}
                       </p>
                     </div>
@@ -459,7 +459,7 @@ const HomePage = () => {
 
             <Link
               to="/about"
-              className="mt-9 inline-flex items-center gap-2 border border-foreground px-6 py-3 text-[13px] font-semibold text-foreground transition-colors hover:bg-foreground hover:text-canvas"
+              className="mt-9 inline-flex items-center gap-2 border border-foreground px-6 py-3 text-[14px] font-semibold text-foreground transition-colors hover:bg-foreground hover:text-canvas"
             >
               How the platform works <HiArrowRight className="h-4 w-4" />
             </Link>
@@ -468,12 +468,12 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────  Market board  ───────────────────────── */}
-      <section className="section border-t border-border-default bg-canvas">
+      <section className="section border-t border-border-subtle bg-canvas">
         <div className="container">
           <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Live trade board</div>
-              <h2 className="display text-[2rem] sm:text-[2.6rem]">Open export positions.</h2>
+              <h2 className="t-h2 reveal">Open export positions.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Active supply with assayed specs, named-port pricing and allocation available this
                 month.
@@ -493,7 +493,7 @@ const HomePage = () => {
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`relative whitespace-nowrap pb-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                  className={`relative whitespace-nowrap pb-3 text-[13px] font-semibold uppercase tracking-[0.12em] transition-colors ${
                     active
                       ? 'text-foreground'
                       : 'text-foreground-subtle hover:text-foreground-secondary'
@@ -508,11 +508,11 @@ const HomePage = () => {
             })}
           </div>
 
-          <div className="overflow-hidden border border-border-default bg-surface">
+          <div className="overflow-hidden bg-surface shadow-card">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
-                  <tr className="border-b border-border-default bg-surface-subtle text-[10px] uppercase tracking-[0.14em] text-foreground-muted">
+                  <tr className="border-b border-border-default bg-surface-subtle text-[11px] uppercase tracking-[0.14em] text-foreground-muted">
                     <th className="px-4 py-3 font-semibold">Commodity &amp; spec</th>
                     <th className="hidden sm:table-cell px-4 py-3 font-semibold">Origin &amp; port</th>
                     <th className="hidden lg:table-cell px-4 py-3 font-semibold">Available</th>
@@ -554,18 +554,18 @@ const HomePage = () => {
                                   loading="lazy"
                                 />
                               ) : (
-                                <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-border-subtle bg-surface-subtle font-mono text-[10px] text-foreground-muted">
+                                <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-border-subtle bg-surface-subtle font-mono text-[11px] text-foreground-muted">
                                   LOT
                                 </div>
                               )}
                               <div className="min-w-0">
                                 <Link
                                   to={`/products/${id}`}
-                                  className="block truncate text-[13px] font-semibold text-foreground group-hover:text-accent-primary"
+                                  className="block truncate text-[14px] font-semibold text-foreground group-hover:text-accent-primary"
                                 >
                                   {p.name}
                                 </Link>
-                                <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-foreground-muted">
+                                <div className="mt-0.5 flex items-center gap-1.5 text-[13px] text-foreground-muted">
                                   <span>{p.category}</span>
                                   {p.hsCode && (
                                     <>
@@ -589,38 +589,38 @@ const HomePage = () => {
                             <div className="font-semibold text-foreground">
                               {(p.quantity || 0).toLocaleString()} {unit}
                             </div>
-                            <div className="text-[11px] text-foreground-muted">
+                            <div className="text-[13px] text-foreground-muted">
                               MOQ {moq.toLocaleString()} {unit}
                             </div>
                           </td>
 
                           <td className="px-4 py-3">
-                            <div className="font-mono text-[13px] font-bold text-foreground">
+                            <div className="font-mono text-[14px] font-bold text-foreground">
                               ${(p.price || 0).toLocaleString()}
-                              <span className="ml-0.5 text-[11px] font-normal text-foreground-muted">
+                              <span className="ml-0.5 text-[13px] font-normal text-foreground-muted">
                                 /{unit}
                               </span>
                             </div>
-                            <div className="text-[10px] font-semibold uppercase tracking-[0.1em] text-accent-primary">
+                            <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-primary">
                               {incoterm} named port
                             </div>
                           </td>
 
                           <td className="hidden px-4 py-3 md:table-cell">
                             {isVerified ? (
-                              <span className="inline-flex items-center gap-1 border border-status-success/25 bg-status-success-bg px-2 py-1 text-[10px] font-semibold text-status-success">
+                              <span className="inline-flex items-center gap-1 border border-status-success/25 bg-status-success-bg px-2 py-1 text-[11px] font-semibold text-status-success">
                                 <HiShieldCheck className="h-3.5 w-3.5 shrink-0" />
                                 Lab verified
                               </span>
                             ) : (
-                              <span className="text-[11px] text-foreground-muted">In review</span>
+                              <span className="text-[13px] text-foreground-muted">In review</span>
                             )}
                           </td>
 
                           <td className="px-4 py-3 text-right">
                             <Link
                               to={`/products/${id}`}
-                              className="inline-flex items-center gap-1 text-[12px] font-semibold text-accent-primary hover:underline"
+                              className="inline-flex items-center gap-1 text-[13px] font-semibold text-accent-primary hover:underline"
                             >
                               Inspect <HiArrowRight className="h-3 w-3" />
                             </Link>
@@ -633,7 +633,7 @@ const HomePage = () => {
               </table>
             </div>
 
-            <div className="flex flex-col gap-2 border-t border-border-default bg-surface-subtle px-4 py-3 text-[11px] text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 border-t border-border-default bg-surface-subtle px-4 py-3 text-[13px] text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
               <span className="flex items-center gap-2 font-mono">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${
@@ -656,7 +656,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Terminal network</div>
-              <h2 className="display text-[2rem] sm:text-[2.6rem]">Lanes we are moving this week.</h2>
+              <h2 className="t-h2 reveal">Lanes we are moving this week.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Direct liner routing from origin facility to primary discharge port — with the
                 carrier and the rate visible before you book.
@@ -672,29 +672,29 @@ const HomePage = () => {
               <Link
                 key={c.corridor}
                 to="/shipping"
-                className="group flex flex-col border border-border-default bg-surface transition-colors hover:border-border-hover"
+                className="panel panel-lift group flex flex-col"
               >
                 <div className="media aspect-[16/9]">
                   <img src={c.image} alt="" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0D10]/70 to-transparent" />
-                  <span className="absolute left-3 top-3 bg-white/95 px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[#14181B]">
+                  <span className="absolute left-3 top-3 bg-white/95 px-2 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-[#14181B]">
                     {c.lane}
                   </span>
                   <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-white/80">
+                    <span className="font-mono text-[13px] uppercase tracking-[0.1em] text-white/80">
                       Transit
                     </span>
                     <span className="font-mono text-sm font-bold">{c.transit}</span>
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <h3 className="text-[15px] font-bold leading-snug text-foreground">
+                  <h3 className="t-h3 leading-snug">
                     {c.corridor}
                   </h3>
-                  <p className="mt-1.5 text-[12px] text-foreground-secondary">{c.commodity}</p>
+                  <p className="mt-1.5 text-[13px] text-foreground-secondary">{c.commodity}</p>
                   <div className="mt-auto flex items-center justify-between border-t border-border-subtle pt-3">
-                    <span className="text-[11px] text-foreground-muted">{c.carriers}</span>
-                    <span className="font-mono text-[12px] font-bold text-foreground">
+                    <span className="text-[13px] text-foreground-muted">{c.carriers}</span>
+                    <span className="font-mono text-[13px] font-bold text-foreground">
                       {c.rate}
                     </span>
                   </div>
@@ -706,16 +706,16 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────  Buyer quotes  ───────────────────────── */}
-      <section className="section border-t border-border-default bg-canvas">
+      <section className="section border-t border-border-subtle bg-canvas">
         <div className="container">
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Trade desk in practice</div>
-              <h2 className="display text-[2rem] sm:text-[2.6rem]">What buyers say after month one.</h2>
+              <h2 className="t-h2 reveal">What buyers say after month one.</h2>
             </div>
             <div className="flex items-center gap-3">
               <div className="font-display text-2xl font-bold text-foreground">4.9</div>
-              <div className="text-[10px] font-semibold uppercase leading-relaxed tracking-[0.14em] text-foreground-muted">
+              <div className="text-[11px] font-semibold uppercase leading-relaxed tracking-[0.14em] text-foreground-muted">
                 Average buyer rating
                 <br />
                 over 1,240 settlements
@@ -727,18 +727,18 @@ const HomePage = () => {
             {TESTIMONIALS.map((t) => (
               <figure key={t.name} className="flex flex-col bg-surface p-6">
                 <div className="font-display text-3xl leading-none text-accent-primary">“</div>
-                <blockquote className="mt-3 flex-1 text-[13.5px] leading-relaxed text-foreground-secondary">
+                <blockquote className="mt-3 flex-1 text-[14px] leading-relaxed text-foreground-secondary">
                   {t.quote}
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-border-subtle pt-4">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center bg-[#101417] font-mono text-[11px] font-bold text-white">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center bg-[#101417] font-mono text-[13px] font-bold text-white">
                     {t.initials}
                   </span>
                   <span className="min-w-0">
-                    <span className="block truncate text-[12.5px] font-semibold text-foreground">
+                    <span className="block truncate text-[14px] font-semibold text-foreground">
                       {t.name}
                     </span>
-                    <span className="block truncate text-[11px] text-foreground-muted">
+                    <span className="block truncate text-[13px] text-foreground-muted">
                       {t.role} · {t.company}
                     </span>
                   </span>
@@ -755,7 +755,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Industries we serve</div>
-              <h2 className="display text-[2rem] sm:text-[2.6rem]">Sectors we know by name.</h2>
+              <h2 className="t-h2 reveal">Sectors we know by name.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Category-specific paperwork, inspection norms and packaging rules — not a generic
                 freight template.
@@ -782,10 +782,10 @@ const HomePage = () => {
                 <div className="photo-scrim absolute inset-0" />
                 <div className="relative flex h-full flex-col justify-end p-5">
                   <h3 className="text-base font-bold text-white">{ind.name}</h3>
-                  <p className="mt-1 max-w-xs text-[12px] leading-relaxed text-white/70">
+                  <p className="mt-1 max-w-xs text-[13px] leading-relaxed text-white/70">
                     {ind.copy}
                   </p>
-                  <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-white">
                     Explore <HiArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
@@ -797,7 +797,7 @@ const HomePage = () => {
               className="group flex min-h-[200px] flex-col justify-between bg-accent-primary p-6 text-white md:col-span-2"
             >
               <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
                   Off-market allocation
                 </div>
                 <h3 className="mt-2 font-display text-2xl font-bold leading-tight">
@@ -805,7 +805,7 @@ const HomePage = () => {
                 </h3>
               </div>
               <div className="flex items-end justify-between gap-4">
-                <p className="max-w-[18rem] text-[12px] leading-relaxed text-white/80">
+                <p className="max-w-[18rem] text-[13px] leading-relaxed text-white/80">
                   Our desk sources outside the board every week. Send the spec and we will come back
                   with names.
                 </p>
@@ -819,11 +819,11 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────  Governance  ───────────────────────── */}
-      <section className="section border-t border-border-default bg-canvas">
+      <section className="section border-t border-border-subtle bg-canvas">
         <div className="container">
           <div className="mb-10 max-w-2xl">
             <div className="eyebrow mb-4">Regulatory framework</div>
-            <h2 className="display text-[2rem] sm:text-[2.6rem]">The paperwork is our problem.</h2>
+            <h2 className="t-h2 reveal">The paperwork is our problem.</h2>
             <p className="mt-3 text-sm text-foreground-secondary">
               Every contract and settlement on IEHUB follows published international trade rules —
               so your compliance team has something to point at.
@@ -837,18 +837,18 @@ const HomePage = () => {
                   <span className="font-display text-2xl font-bold text-border-hover">
                     0{i + 1}
                   </span>
-                  <span className="border border-border-default px-2 py-0.5 font-mono text-[10px] font-semibold text-foreground-muted">
+                  <span className="border border-border-default px-2 py-0.5 font-mono text-[11px] font-semibold text-foreground-muted">
                     {s.code}
                   </span>
                 </div>
-                <h3 className="mt-4 text-[15px] font-bold text-foreground">{s.title}</h3>
-                <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent-primary">
+                <h3 className="mt-4 text-[14px] font-bold text-foreground">{s.title}</h3>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-primary">
                   {s.subtitle}
                 </div>
-                <p className="mt-3 flex-1 text-[12.5px] leading-relaxed text-foreground-secondary">
+                <p className="mt-3 flex-1 text-[14px] leading-relaxed text-foreground-secondary">
                   {s.desc}
                 </p>
-                <div className="mt-4 flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[11px] font-medium text-status-success">
+                <div className="mt-4 flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[13px] font-medium text-status-success">
                   <HiShieldCheck className="h-3.5 w-3.5" />
                   Enforced on platform
                 </div>
@@ -872,7 +872,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7">
               <div className="eyebrow eyebrow-light mb-5">Start a trade</div>
-              <h2 className="display text-[2rem] sm:text-[2.35rem] lg:text-[2.9rem]">
+              <h2 className="t-h2 reveal">
                 Ready to move your next consignment?
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/70">
@@ -896,7 +896,7 @@ const HomePage = () => {
                   Browse the board
                 </Link>
               </div>
-              <div className="mt-6 space-y-2 text-[12px] text-white/55">
+              <div className="mt-6 space-y-2 text-[13px] text-white/55">
                 <div className="flex items-center gap-2">
                   <HiDocumentText className="h-4 w-4 shrink-0" /> No listing fee · clearance fee on
                   execution

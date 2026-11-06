@@ -32,11 +32,11 @@ const BrowseCategoriesPage = () => {
           <Link
             key={cat.name}
             to={`/products?category=${encodeURIComponent(cat.name)}`}
-            className="group flex flex-col border border-border-default bg-surface transition-colors hover:border-border-hover"
+            className="group flex flex-col panel panel-lift transition-colors"
           >
             <div className="media aspect-[16/10]">
               <img src={cat.image} alt="" loading="lazy" />
-              <span className="absolute left-0 top-0 bg-surface/95 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary backdrop-blur">
+              <span className="absolute left-0 top-0 bg-surface/95 px-2.5 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary backdrop-blur">
                 {cat.count}
               </span>
             </div>
@@ -44,10 +44,10 @@ const BrowseCategoriesPage = () => {
               <h3 className="text-[16px] font-bold text-foreground transition-colors group-hover:text-accent-primary">
                 {cat.name}
               </h3>
-              <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed text-foreground-secondary">
+              <p className="mt-1.5 flex-1 text-[14px] leading-relaxed text-foreground-secondary">
                 {cat.desc}
               </p>
-              <span className="mt-4 inline-flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-accent-primary">
+              <span className="mt-4 inline-flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-accent-primary">
                 View sector <HiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </span>
             </div>

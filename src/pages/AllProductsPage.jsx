@@ -191,7 +191,7 @@ const AllProductsPage = () => {
               {loading ? 'Searching…' : `${products.length} positions`}
             </Badge>
           </div>
-          <p className="text-[13px] text-foreground-secondary max-w-xl leading-relaxed">
+          <p className="text-[14px] text-foreground-secondary max-w-xl leading-relaxed">
             Lab-verified export lots with named-origin ports, live FOB/CIF pricing and inspection paperwork on file.
           </p>
         </div>
@@ -269,7 +269,7 @@ const AllProductsPage = () => {
           <div className="flex flex-wrap items-center gap-2">
             {/* Category Selector */}
             <div className="flex items-center gap-1.5 bg-surface border border-border-default rounded-md px-2.5 h-9 text-xs">
-              <span className="text-foreground-muted text-[11px]">Category:</span>
+              <span className="text-foreground-muted text-[13px]">Category:</span>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -286,7 +286,7 @@ const AllProductsPage = () => {
 
             {/* Incoterm Selector */}
             <div className="flex items-center gap-1.5 bg-surface border border-border-default rounded-md px-2.5 h-9 text-xs">
-              <span className="text-foreground-muted text-[11px]">Incoterm:</span>
+              <span className="text-foreground-muted text-[13px]">Incoterm:</span>
               <select
                 value={incotermFilter}
                 onChange={(e) => setIncotermFilter(e.target.value)}
@@ -303,7 +303,7 @@ const AllProductsPage = () => {
 
             {/* Sort Selector */}
             <div className="flex items-center gap-1.5 bg-surface border border-border-default rounded-md px-2.5 h-9 text-xs">
-              <span className="text-foreground-muted text-[11px]">Sort:</span>
+              <span className="text-foreground-muted text-[13px]">Sort:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -332,21 +332,21 @@ const AllProductsPage = () => {
         {/* Active Filter Chips */}
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
-            <span className="text-foreground-muted text-[11px]">Active:</span>
+            <span className="text-foreground-muted text-[13px]">Active:</span>
             {category !== 'All' && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-subtle border border-border-default text-[11px] text-foreground font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-subtle border border-border-default text-[13px] text-foreground font-medium">
                 Category: {category}
                 <button type="button" onClick={() => setCategory('All')} className="hover:text-status-danger">✕</button>
               </span>
             )}
             {incotermFilter !== 'All' && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-subtle border border-border-default text-[11px] text-foreground font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-subtle border border-border-default text-[13px] text-foreground font-medium">
                 Incoterm: {incotermFilter}
                 <button type="button" onClick={() => setIncotermFilter('All')} className="hover:text-status-danger">✕</button>
               </span>
             )}
             {searchTerm && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-subtle border border-border-default text-[11px] text-foreground font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-subtle border border-border-default text-[13px] text-foreground font-medium">
                 Search: &ldquo;{searchTerm}&rdquo;
                 <button type="button" onClick={() => setSearchTerm('')} className="hover:text-status-danger">✕</button>
               </span>
@@ -354,7 +354,7 @@ const AllProductsPage = () => {
             <button
               type="button"
               onClick={handleClearFilters}
-              className="text-[11px] text-accent-primary hover:underline ml-1 font-medium"
+              className="text-[13px] text-accent-primary hover:underline ml-1 font-medium"
             >
               Clear all
             </button>
@@ -548,7 +548,7 @@ const AllProductsPage = () => {
                       <div>
                         <Badge variant="neutral" size="sm">{p.category}</Badge>
                         <h4 className="font-bold text-sm text-foreground mt-1.5">{p.name}</h4>
-                        <div className="text-[11px] text-foreground-muted">{p.origin || 'Global'}</div>
+                        <div className="text-[13px] text-foreground-muted">{p.origin || 'Global'}</div>
                       </div>
 
                       <div className="space-y-2 pt-2 border-t border-border-subtle text-xs">

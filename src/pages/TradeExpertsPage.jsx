@@ -57,7 +57,7 @@ const TradeExpertsPage = () => {
               <div className="text-xs text-accent-primary font-medium mt-0.5 mb-1">
                 {expert.role}
               </div>
-              <div className="text-[11px] text-foreground-muted font-mono mb-3">
+              <div className="text-[13px] text-foreground-muted font-mono mb-3">
                 {expert.corridor}
               </div>
               <p className="text-xs text-foreground-secondary leading-relaxed">

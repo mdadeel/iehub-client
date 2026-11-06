@@ -91,7 +91,7 @@ const GlobalLogisticsPage = () => {
                     <div className="text-xs font-semibold text-foreground truncate">
                       {prod.name || 'Consignment'}
                     </div>
-                    <div className="text-[11px] text-foreground-muted font-mono flex items-center gap-2 mt-0.5">
+                    <div className="text-[13px] text-foreground-muted font-mono flex items-center gap-2 mt-0.5">
                       <span>{imp.poNumber || `PO-${String(imp._id).slice(-6).toUpperCase()}`}</span>
                       <span>&bull;</span>
                       <span className="truncate">{prod.origin || 'Origin'} → {imp.destinationPort || 'Destination'}</span>
@@ -145,7 +145,7 @@ const GlobalLogisticsPage = () => {
       {/* Customs Clearance Explainer — static education */}
       <section>
         <h2 className="text-sm font-semibold text-foreground mb-1">Customs Clearance, Step by Step</h2>
-        <p className="text-[11px] text-foreground-muted mb-3">What happens between port arrival and cargo release.</p>
+        <p className="text-[13px] text-foreground-muted mb-3">What happens between port arrival and cargo release.</p>
         <div className="grid sm:grid-cols-4 gap-3 text-xs">
           {[
             { step: '01', title: 'Manifest Filed', desc: 'Electronic manifest submitted to port systems' },
@@ -154,9 +154,9 @@ const GlobalLogisticsPage = () => {
             { step: '04', title: 'Bill of Lading Issued', desc: 'Carrier releases cargo against the original B/L' },
           ].map((s) => (
             <div key={s.step} className="p-3 rounded-lg border border-border-subtle bg-surface-subtle">
-              <div className="font-mono text-[10px] text-foreground-muted">{s.step}</div>
+              <div className="font-mono text-[11px] text-foreground-muted">{s.step}</div>
               <div className="font-semibold text-foreground mt-1">{s.title}</div>
-              <div className="text-[11px] text-foreground-muted mt-0.5">{s.desc}</div>
+              <div className="text-[13px] text-foreground-muted mt-0.5">{s.desc}</div>
             </div>
           ))}
         </div>

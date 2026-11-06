@@ -65,21 +65,21 @@ const LegalPage = () => {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           <nav className="lg:col-span-3" aria-label="Policy sections">
             <div className="sticky top-24 space-y-1">
-              <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground-muted">
+              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground-muted">
                 On this page
               </div>
               {SECTIONS.map((s) => (
                 <a
                   key={s.id}
                   href={`#${s.id}`}
-                  className="block border-l-2 border-transparent px-3 py-1.5 text-[13px] text-foreground-secondary transition-colors hover:border-accent-primary hover:text-foreground"
+                  className="block border-l-2 border-transparent px-3 py-1.5 text-[14px] text-foreground-secondary transition-colors hover:border-accent-primary hover:text-foreground"
                 >
                   {s.title}
                 </a>
               ))}
               <Link
                 to="/contact"
-                className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-accent-primary hover:underline"
+                className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent-primary hover:underline"
               >
                 Ask a question
               </Link>
@@ -91,7 +91,7 @@ const LegalPage = () => {
               <section key={s.id} id={s.id} className="scroll-mt-28">
                 <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border-default pb-3">
                   <h2 className="display text-2xl">{s.title}</h2>
-                  <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-foreground-muted">
+                  <span className="font-mono text-[13px] uppercase tracking-[0.12em] text-foreground-muted">
                     {s.updated}
                   </span>
                 </div>

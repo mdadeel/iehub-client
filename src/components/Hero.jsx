@@ -71,7 +71,7 @@ const Hero = () => {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
             {/* Copy column */}
             <div className="lg:col-span-7">
-              <div className="eyebrow eyebrow-light mb-6 whitespace-nowrap text-[10px] sm:text-[11px]">
+              <div className="eyebrow eyebrow-light mb-6 whitespace-nowrap text-[11px] sm:text-[13px]">
                 Global trade network · Chattogram
               </div>
 
@@ -114,7 +114,7 @@ const Hero = () => {
                 ].map((s) => (
                   <div key={s.v}>
                     <dt className="font-mono text-xl font-semibold text-white sm:text-2xl">{s.k}</dt>
-                    <dd className="mt-1 text-[11px] uppercase tracking-[0.14em] text-white/50">
+                    <dd className="mt-1 text-[13px] uppercase tracking-[0.14em] text-white/50">
                       {s.v}
                     </dd>
                   </div>
@@ -129,10 +129,10 @@ const Hero = () => {
                 className="border border-white/15 bg-white p-5 text-[#14181B] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] sm:p-6"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6C7378]">
+                  <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#6C7378]">
                     Sourcing console
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.14em] text-[#0B7A52]">
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#0B7A52]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#0B7A52]" />
                     Live book
                   </span>
@@ -155,7 +155,7 @@ const Hero = () => {
                 </div>
 
                 <div className="mt-3">
-                  <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9AA0A4]">
+                  <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#9AA0A4]">
                     Delivery term
                   </div>
                   <div className="flex flex-wrap gap-1.5">
@@ -164,7 +164,7 @@ const Hero = () => {
                         key={term}
                         type="button"
                         onClick={() => setIncoterm(term)}
-                        className={`border px-2.5 py-1 font-mono text-[11px] font-semibold transition-colors ${
+                        className={`border px-2.5 py-1 font-mono text-[13px] font-semibold transition-colors ${
                           incoterm === term
                             ? 'border-[#14181B] bg-[#14181B] text-white'
                             : 'border-[#E1DBD3] text-[#494F53] hover:border-[#C9C1B7] hover:bg-[#F1EDE8]'
@@ -184,7 +184,7 @@ const Hero = () => {
                   <HiArrowRight className="h-4 w-4" />
                 </button>
 
-                <div className="mt-4 flex items-center justify-between border-t border-[#EDE8E2] pt-3 text-[11px]">
+                <div className="mt-4 flex items-center justify-between border-t border-[#EDE8E2] pt-3 text-[13px]">
                   <Link to="/shipping" className="inline-flex items-center gap-1.5 font-medium text-[#494F53] hover:text-[#C2181F]">
                     <HiOutlineTruck className="h-3.5 w-3.5" /> Track a shipment
                   </Link>
@@ -220,10 +220,10 @@ const Hero = () => {
                   <Icon className="h-[18px] w-[18px]" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-semibold text-foreground">
+                  <span className="block truncate text-[14px] font-semibold text-foreground">
                     {action.label}
                   </span>
-                  <span className="mt-0.5 block truncate text-[11px] text-foreground-muted">
+                  <span className="mt-0.5 block truncate text-[13px] text-foreground-muted">
                     {action.hint}
                   </span>
                 </span>

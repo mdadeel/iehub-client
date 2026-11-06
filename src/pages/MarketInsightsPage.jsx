@@ -49,7 +49,7 @@ const MarketInsightsPage = () => {
         {articles.map((article, i) => (
           <Card key={i} className="border border-border-default bg-surface hover:border-border-hover transition-colors">
             <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-2 text-[11px] text-foreground-muted font-mono">
+              <div className="flex items-center gap-2 mb-2 text-[13px] text-foreground-muted font-mono">
                 <Badge variant="neutral" size="sm">
                   {article.tag}
                 </Badge>

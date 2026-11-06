@@ -273,7 +273,7 @@ const ProductDetailsPage = () => {
                   </Badge>
                 </div>
                 {isVerified && (
-                  <div className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-[#0B7A52] px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white">
+                  <div className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-[#0B7A52] px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white">
                     <HiShieldCheck className="h-3.5 w-3.5" />
                     Lab verified
                   </div>
@@ -289,7 +289,7 @@ const ProductDetailsPage = () => {
                 ) : (
                   <span className="text-foreground-muted">Verification: {product.verificationStatus || 'Pending'}</span>
                 )}
-                <span className="font-mono text-[11px] text-foreground-muted uppercase">
+                <span className="font-mono text-[13px] text-foreground-muted uppercase">
                   SKU-{String(product._id).slice(-8).toUpperCase()}
                 </span>
               </div>
@@ -298,7 +298,7 @@ const ProductDetailsPage = () => {
             {/* Seller / Exporter Card */}
             {product.exporterEmail && (
               <Card className="p-4 border border-border-default bg-surface">
-                <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-2">
+                <div className="text-[13px] uppercase font-mono tracking-wider text-foreground-muted mb-2">
                   Registered Exporter
                 </div>
                 <div className="flex items-center justify-between">
@@ -321,7 +321,7 @@ const ProductDetailsPage = () => {
               <div className="eyebrow mb-3">Lot detail</div>
               <div className="flex items-center gap-2 text-xs font-mono text-foreground-muted mb-2 flex-wrap">
                 <span>{product.category} &bull; {product.origin || 'Global'}</span>
-                <Badge variant="accent" size="sm" className="font-mono text-[10px]">
+                <Badge variant="accent" size="sm" className="font-mono text-[11px]">
                   HS: {product.hsCode || 'Standard Tariff'}
                 </Badge>
               </div>
@@ -339,20 +339,20 @@ const ProductDetailsPage = () => {
             {/* Pricing & Terms */}
             <div className="flex flex-col gap-5 bg-[#101417] p-5 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
                   {product.incoterm || 'FOB'} base price
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="font-display text-3xl font-bold tabular-nums text-white">
                     ${product.price?.toLocaleString()}
                   </span>
-                  <span className="font-mono text-[11px] text-white/50">USD / {product.unit || 'unit'}</span>
+                  <span className="font-mono text-[13px] text-white/50">USD / {product.unit || 'unit'}</span>
                 </div>
               </div>
 
               <div className="flex gap-8 border-t border-white/12 pt-4 sm:border-l sm:border-t-0 sm:pl-8 sm:pt-0 sm:text-right">
                 <div>
-                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                  <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
                     Available
                   </div>
                   <div className="font-mono text-sm font-semibold tabular-nums text-white">
@@ -360,7 +360,7 @@ const ProductDetailsPage = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                  <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
                     MOQ
                   </div>
                   <div className="font-mono text-sm font-semibold tabular-nums text-white">
@@ -376,7 +376,7 @@ const ProductDetailsPage = () => {
                 <HiInformationCircle className="w-4 h-4 text-accent-primary shrink-0" />
                 <span>Commercial Pricing & Landed Cost Disclaimer</span>
               </div>
-              <p className="text-[11px] text-foreground-secondary leading-relaxed">
+              <p className="text-[13px] text-foreground-secondary leading-relaxed">
                 Unit price is quoted Free on Board (FOB) origin loading port. Ocean freight, cargo insurance, import customs tariffs, and discharge port handling are determined during formal Purchase Order issuance or RFQ quotation.
               </p>
             </div>
@@ -409,7 +409,7 @@ const ProductDetailsPage = () => {
                         {certificates.map((c, i) => (
                           <div key={i} className="flex items-center justify-between gap-2 p-2.5 rounded border border-border-subtle bg-surface-subtle text-xs">
                             <span className="font-medium text-foreground truncate">{c.name}</span>
-                            <span className="text-[11px] text-foreground-muted shrink-0">{c.issuer}</span>
+                            <span className="text-[13px] text-foreground-muted shrink-0">{c.issuer}</span>
                           </div>
                         ))}
                       </div>
@@ -473,7 +473,7 @@ const ProductDetailsPage = () => {
             </div>
             <div>
               <div className="text-xs font-semibold text-foreground">Fiduciary Escrow</div>
-              <div className="text-[11px] text-foreground-muted">Capital held in audited custody</div>
+              <div className="text-[13px] text-foreground-muted">Capital held in audited custody</div>
             </div>
           </div>
           <div className="flex items-center gap-3 p-2">
@@ -482,7 +482,7 @@ const ProductDetailsPage = () => {
             </div>
             <div>
               <div className="text-xs font-semibold text-foreground">SGS / Port Survey</div>
-              <div className="text-[11px] text-foreground-muted">Pre-shipment quantity & purity</div>
+              <div className="text-[13px] text-foreground-muted">Pre-shipment quantity & purity</div>
             </div>
           </div>
           <div className="flex items-center gap-3 p-2">
@@ -491,7 +491,7 @@ const ProductDetailsPage = () => {
             </div>
             <div>
               <div className="text-xs font-semibold text-foreground">ICC 2020 Contract</div>
-              <div className="text-[11px] text-foreground-muted">Bilateral binding sales orders</div>
+              <div className="text-[13px] text-foreground-muted">Bilateral binding sales orders</div>
             </div>
           </div>
           <div className="flex items-center gap-3 p-2">
@@ -500,7 +500,7 @@ const ProductDetailsPage = () => {
             </div>
             <div>
               <div className="text-xs font-semibold text-foreground">UN/LOCODE Tracking</div>
-              <div className="text-[11px] text-foreground-muted">Milestone freight updates</div>
+              <div className="text-[13px] text-foreground-muted">Milestone freight updates</div>
             </div>
           </div>
         </div>
@@ -543,7 +543,7 @@ const ProductDetailsPage = () => {
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Harmonized Tariff (HS Code)</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Harmonized Tariff (HS Code)</div>
                   <div className="text-xs font-semibold font-mono text-foreground">
                     {(() => {
                       const isSpiceOrAgri = ['Spices', 'Food', 'Beverages'].includes(product.category);
@@ -558,33 +558,33 @@ const ProductDetailsPage = () => {
                   </div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Trade Sector / Category</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Trade Sector / Category</div>
                   <div className="text-xs font-semibold text-foreground">{product.category}</div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Named Origin / POL</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Named Origin / POL</div>
                   <div className="text-xs font-semibold text-foreground">{product.origin || 'International Ocean Port'}</div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Minimum Order (MOQ)</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Minimum Order (MOQ)</div>
                   <div className="text-xs font-semibold text-foreground tabular-nums">{moq.toLocaleString()} {product.unit || 'Unit'}</div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Total Available Capacity</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Total Available Capacity</div>
                   <div className="text-xs font-semibold text-foreground tabular-nums">{product.quantity?.toLocaleString()} {product.unit || 'Unit'}</div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Standard Incoterms</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Standard Incoterms</div>
                   <div className="text-xs font-semibold text-foreground">{product.incoterm || 'FOB, CIF, EXW, DDP'}</div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30 sm:col-span-2">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Export Packaging & Stowage Standard</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Export Packaging & Stowage Standard</div>
                   <div className="text-xs text-foreground leading-relaxed">
                     Export-grade seaworthy containerized stowage, certified palletized with moisture-barrier liners.
                   </div>
                 </div>
                 <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/30">
-                  <div className="text-[10px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Survey & Inspection Standard</div>
+                  <div className="text-[11px] uppercase font-mono tracking-wider text-foreground-muted mb-1">Survey & Inspection Standard</div>
                   <div className="text-xs font-semibold text-foreground">SGS / Bureau Veritas PSI Survey</div>
                 </div>
               </div>
@@ -620,7 +620,7 @@ const ProductDetailsPage = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="text-[11px] font-mono uppercase tracking-wider text-foreground-muted">Primary Maritime Trade Corridors</div>
+                  <div className="text-[13px] font-mono uppercase tracking-wider text-foreground-muted">Primary Maritime Trade Corridors</div>
                   <div className="space-y-2 text-xs">
                     <div className="p-2.5 rounded border border-border-subtle bg-surface-subtle flex items-center justify-between">
                       <span>Santos (BR) &rarr; Rotterdam (NL)</span>
@@ -649,30 +649,30 @@ const ProductDetailsPage = () => {
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
-                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 01</span>
+                  <span className="inline-block px-2 py-0.5 rounded text-[11px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 01</span>
                   <div className="text-xs font-semibold text-foreground">PO Issuance</div>
-                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                  <p className="text-[13px] text-foreground-muted leading-relaxed">
                     Binding purchase order issued with mutually agreed payment terms, Incoterm, and POD.
                   </p>
                 </div>
                 <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
-                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 02</span>
+                  <span className="inline-block px-2 py-0.5 rounded text-[11px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 02</span>
                   <div className="text-xs font-semibold text-foreground">Escrow Custody</div>
-                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                  <p className="text-[13px] text-foreground-muted leading-relaxed">
                     Buyer funds locked into fiduciary commercial escrow. Capital is protected from seller default.
                   </p>
                 </div>
                 <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
-                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 03</span>
+                  <span className="inline-block px-2 py-0.5 rounded text-[11px] font-mono bg-accent-subtle text-accent-primary font-bold">STAGE 03</span>
                   <div className="text-xs font-semibold text-foreground">Port Inspection</div>
-                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                  <p className="text-[13px] text-foreground-muted leading-relaxed">
                     Accredited surveyor certifies weight, moisture, and export quality before loading aboard vessel.
                   </p>
                 </div>
                 <div className="p-4 rounded-lg border border-border-subtle bg-surface-subtle/40 space-y-2">
-                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono bg-status-success-bg text-status-success font-bold">STAGE 04</span>
+                  <span className="inline-block px-2 py-0.5 rounded text-[11px] font-mono bg-status-success-bg text-status-success font-bold">STAGE 04</span>
                   <div className="text-xs font-semibold text-foreground">Title & Settlement</div>
-                  <p className="text-[11px] text-foreground-muted leading-relaxed">
+                  <p className="text-[13px] text-foreground-muted leading-relaxed">
                     Clean Ocean Bill of Lading endorsed; escrow disbursed to exporter once cargo arrives at POD.
                   </p>
                 </div>
@@ -685,7 +685,7 @@ const ProductDetailsPage = () => {
         <div className="mt-14 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-default pb-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-accent-subtle text-accent-primary border border-accent-primary/20 mb-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[13px] font-medium bg-accent-subtle text-accent-primary border border-accent-primary/20 mb-2">
                 <HiSparkles className="w-3.5 h-3.5" />
                 <span>Trade Recommendations</span>
               </div>
@@ -741,10 +741,10 @@ const ProductDetailsPage = () => {
             <div className="p-3 bg-surface-subtle rounded-lg border border-border-default flex items-center justify-between">
               <div>
                 <div className="text-xs font-semibold text-foreground line-clamp-1">{product.name}</div>
-                <div className="text-[11px] text-foreground-muted">SKU-{String(product._id).slice(-6).toUpperCase()}</div>
+                <div className="text-[13px] text-foreground-muted">SKU-{String(product._id).slice(-6).toUpperCase()}</div>
               </div>
               <div className="text-right font-mono text-xs font-semibold text-foreground">
-                ${product.price?.toLocaleString()} <span className="text-[10px] text-foreground-muted font-normal">/{product.unit || 'unit'}</span>
+                ${product.price?.toLocaleString()} <span className="text-[11px] text-foreground-muted font-normal">/{product.unit || 'unit'}</span>
               </div>
             </div>
 
@@ -754,7 +754,7 @@ const ProductDetailsPage = () => {
                 <label className="text-xs font-medium text-foreground">
                   Order Quantity ({product.unit || 'Units'})
                 </label>
-                <span className="text-[11px] text-foreground-muted tabular-nums">
+                <span className="text-[13px] text-foreground-muted tabular-nums">
                   MOQ {moq.toLocaleString()} &bull; Max {product.quantity?.toLocaleString()}
                 </span>
               </div>
@@ -859,7 +859,7 @@ const ProductDetailsPage = () => {
               </div>
             </div>
 
-            <p className="text-[11px] text-foreground-muted leading-relaxed">
+            <p className="text-[13px] text-foreground-muted leading-relaxed">
               Upon authorization, stock is reserved from the seller's inventory and a purchase order reference is issued to your dashboard.
             </p>
           </form>
@@ -898,7 +898,7 @@ const ProductDetailsPage = () => {
           <form id="rfq-form" onSubmit={handleCreateRFQ} className="space-y-4">
             <div className="p-3 bg-surface-subtle rounded-lg border border-border-default">
               <div className="text-xs font-semibold text-foreground line-clamp-1">{product.name}</div>
-              <div className="text-[11px] text-foreground-muted font-mono">
+              <div className="text-[13px] text-foreground-muted font-mono">
                 Catalog Listed Price: ${product.price?.toLocaleString()} USD / {product.unit || 'unit'}
               </div>
             </div>
@@ -960,7 +960,7 @@ const ProductDetailsPage = () => {
               />
             </div>
 
-            <p className="text-[11px] text-foreground-muted leading-relaxed">
+            <p className="text-[13px] text-foreground-muted leading-relaxed">
               Upon transmission, the seller will receive an alert in their Exporter Cockpit to either affirm your terms or submit a counter-offer.
             </p>
           </form>

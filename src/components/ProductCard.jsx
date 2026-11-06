@@ -47,13 +47,13 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
         />
 
         {/* Category chip */}
-        <span className="absolute left-0 top-0 bg-surface/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground-secondary backdrop-blur">
+        <span className="absolute left-0 top-0 bg-surface/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground-secondary backdrop-blur">
           {product.category}
         </span>
 
         {/* Verification stamp */}
         {isVerified && (
-          <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 bg-[#0B7A52] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white">
+          <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 bg-[#0B7A52] px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white">
             <HiShieldCheck className="h-3 w-3" />
             Lab verified
           </span>
@@ -68,7 +68,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
                 onToggleCompare(product);
               }}
               className={cn(
-                'flex select-none items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] transition-all',
+                'flex select-none items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] transition-all',
                 isCompared
                   ? 'bg-accent-primary text-white'
                   : 'bg-surface/92 text-foreground-secondary hover:bg-surface hover:text-foreground'
@@ -84,7 +84,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
 
         {isOutOfStock && !onToggleCompare && (
           <div className="absolute right-2 top-2">
-            <Badge variant="danger" size="sm" hasDot className="bg-surface/95 text-[10px] backdrop-blur">
+            <Badge variant="danger" size="sm" hasDot className="bg-surface/95 text-[11px] backdrop-blur">
               Allocated
             </Badge>
           </div>
@@ -93,7 +93,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
 
       {/* Body */}
       <div className="flex flex-1 flex-col p-4">
-        <div className="mb-2 flex items-center gap-1.5 text-[11px] text-foreground-muted">
+        <div className="mb-2 flex items-center gap-1.5 text-[13px] text-foreground-muted">
           <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-foreground-subtle" />
           <span className="truncate">{origin}</span>
         </div>
@@ -102,9 +102,9 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           {product.name}
         </h3>
 
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-foreground-muted">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-[13px] text-foreground-muted">
           {product.hsCode && (
-            <span className="border border-border-subtle bg-surface-subtle px-1.5 py-0.5 font-mono text-[10px] text-foreground-secondary">
+            <span className="border border-border-subtle bg-surface-subtle px-1.5 py-0.5 font-mono text-[11px] text-foreground-secondary">
               HS {product.hsCode}
             </span>
           )}
@@ -124,17 +124,17 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
               </div>
               <div className="mt-0.5 font-display text-[17px] font-bold tabular-nums text-foreground">
                 ${product.price?.toLocaleString()}
-                <span className="ml-0.5 text-[11px] font-medium text-foreground-muted">
+                <span className="ml-0.5 text-[13px] font-medium text-foreground-muted">
                   /{unit}
                 </span>
               </div>
             </div>
 
             <div className="text-right">
-              <div className="font-mono text-[10px] text-foreground-muted">
+              <div className="font-mono text-[11px] text-foreground-muted">
                 {availableQty.toLocaleString()} {unit} avail.
               </div>
-              <div className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-accent-primary">
+              <div className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold text-accent-primary">
                 View lot <HiArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
               </div>
             </div>

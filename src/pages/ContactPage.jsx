@@ -103,7 +103,7 @@ const ContactPage = () => {
             />
             <div className="photo-scrim absolute inset-0" />
             <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/60">
                 Chattogram · head desk
               </div>
               <div className="mt-1 text-sm font-semibold">A named officer on every file</div>
@@ -118,7 +118,7 @@ const ContactPage = () => {
               <div>
                 <div className="text-xs font-semibold text-foreground">Central Trade Desk</div>
                 <div className="text-xs text-foreground-secondary font-mono mt-0.5">desk@iehub.global</div>
-                <div className="text-[11px] text-foreground-muted mt-0.5">Automated ticketing & SLA response &lt; 4h</div>
+                <div className="text-[13px] text-foreground-muted mt-0.5">Automated ticketing & SLA response &lt; 4h</div>
               </div>
             </div>
           </Card>
@@ -131,7 +131,7 @@ const ContactPage = () => {
               <div>
                 <div className="text-xs font-semibold text-foreground">Commercial Telephony</div>
                 <div className="text-xs text-foreground-secondary font-mono mt-0.5">+1 (888) 434-8221</div>
-                <div className="text-[11px] text-foreground-muted mt-0.5">Direct broker hotline for urgent consignments</div>
+                <div className="text-[13px] text-foreground-muted mt-0.5">Direct broker hotline for urgent consignments</div>
               </div>
             </div>
           </Card>
@@ -144,7 +144,7 @@ const ContactPage = () => {
               <div>
                 <div className="text-xs font-semibold text-foreground">Regional Corridors</div>
                 <div className="text-xs text-foreground-secondary mt-0.5">Singapore Hub &bull; London Financial &bull; New York</div>
-                <div className="text-[11px] text-foreground-muted mt-0.5">Physical customs representations</div>
+                <div className="text-[13px] text-foreground-muted mt-0.5">Physical customs representations</div>
               </div>
             </div>
           </Card>
