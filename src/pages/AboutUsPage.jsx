@@ -3,6 +3,7 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 
 import PageHeader from '../components/PageHeader';
+import SEOHead from '../components/SEOHead';
 const AboutUsPage = () => {
   const stats = [
     { label: "Trading Jurisdictions", value: "120+", icon: <HiGlobeAlt />, desc: "Regulatory compliance across 120+ ports." },
@@ -13,6 +14,12 @@ const AboutUsPage = () => {
 
   return (
         <>
+      <SEOHead
+        title="About IEHUB | Trade Infrastructure Built by Operators"
+        description="Why IEHUB exists: assayed lots, escrow tied to the bill of lading, and one accountable desk from origin to discharge port."
+        canonicalUrl="https://iehub-client.vercel.app/about"
+      />
+
       <PageHeader
         eyebrow="Company"
         title="Trade infrastructure built by operators."

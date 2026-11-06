@@ -3,6 +3,7 @@ import { Badge } from '../components/ui/Badge';
 import { HiMail, HiOutlineGlobeAlt } from 'react-icons/hi';
 
 import PageHeader from '../components/PageHeader';
+import SEOHead from '../components/SEOHead';
 const TradeExpertsPage = () => {
   const experts = [
     {
@@ -30,6 +31,12 @@ const TradeExpertsPage = () => {
 
   return (
         <>
+      <SEOHead
+        title="Trade Desk Specialists | IEHUB"
+        description="Customs brokers, freight forwarders and trade-finance specialists on high-value cross-border files."
+        canonicalUrl="https://iehub-client.vercel.app/careers"
+      />
+
       <PageHeader
         eyebrow="Advisory team"
         title="People who answer the phone."

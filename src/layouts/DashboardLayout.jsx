@@ -46,9 +46,36 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-canvas flex flex-col">
       <Navbar />
-      <div className="flex flex-1 mt-14">
+      {/* Mobile workspace switcher — the sidebar is desktop-only */}
+      <div className="sticky top-16 z-30 border-b border-border-default bg-surface/95 backdrop-blur-md md:hidden">
+        <nav className="flex gap-1 overflow-x-auto no-scrollbar px-3 py-2" aria-label="Workspace">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.end}
+                className={({ isActive }) =>
+                  cn(
+                    'flex shrink-0 items-center gap-1.5 whitespace-nowrap border px-2.5 py-1.5 text-[11px] font-semibold transition-colors',
+                    isActive
+                      ? 'border-foreground bg-foreground text-canvas'
+                      : 'border-border-default bg-surface text-foreground-secondary'
+                  )
+                }
+              >
+                <Icon className="h-3.5 w-3.5" />
+                <span>{item.title}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="flex flex-1">
       {/* Enterprise Left Sidebar */}
-      <aside className="w-56 lg:w-60 bg-surface border-r border-border-default hidden md:flex flex-col p-4 sticky top-14 h-[calc(100vh-56px)] shrink-0 select-none">
+      <aside className="w-56 lg:w-60 bg-surface border-r border-border-default hidden md:flex flex-col p-4 overflow-y-auto sticky top-16 h-[calc(100vh-64px)] shrink-0 select-none">
         {/* Workspace Identity */}
         <div className="mb-5 px-2">
           <div className="flex items-center justify-between">

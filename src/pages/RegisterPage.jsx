@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import AuthShell from '../components/AuthShell';
 
+import SEOHead from '../components/SEOHead';
 const RegisterPage = () => {
   const { registerUser } = useAuth();
   const [formData, setFormData] = useState({
@@ -52,6 +53,12 @@ const RegisterPage = () => {
       asideCopy="KYB-checked exporters, assayed lots and escrow that releases on the bill of lading — not on a promise."
       image="/images/desk-operations.jpg"
     >
+            <SEOHead
+        title="Open a trade account | IEHUB"
+        description="Register your company to source verified commodities under escrow protection."
+        noIndex
+      />
+
       <form onSubmit={handleRegister} className="space-y-4">
         <div className="space-y-1.5">
           <label htmlFor="reg-name" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">

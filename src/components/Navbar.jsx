@@ -21,7 +21,7 @@ const NAV_ITEMS = [
     { to: '/products', label: 'Source', icon: HiOutlineShoppingBag, activeIcon: HiShoppingBag },
     { to: '/shipping', label: 'Shipments', icon: HiOutlineTruck, activeIcon: HiTruck },
     { to: '/trades', label: 'Trades', icon: HiOutlineDocumentText, activeIcon: HiDocumentText },
-    { to: '/about', label: 'Why IEHUB', icon: HiOutlineShieldCheck, activeIcon: HiShieldCheck },
+    { to: '/about', label: 'Why us', icon: HiOutlineShieldCheck, activeIcon: HiShieldCheck },
     { to: '/contact', label: 'Trade desk', icon: HiOutlineSupport, activeIcon: HiSupport },
 ];
 
@@ -46,15 +46,36 @@ const Navbar = () => {
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
                 setCommandOpen((prev) => !prev);
+                return;
             }
+            // "/" opens the palette, unless the user is typing in a field
+            const el = e.target;
+            const typing = el instanceof HTMLElement && (
+                el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable
+            );
+            if (e.key === '/' && !typing) {
+                e.preventDefault();
+                setCommandOpen(true);
+            }
+            if (e.key === 'Escape') setMobileOpen(false);
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 10);
-        window.addEventListener('scroll', handleScroll);
+        // Throttle with requestAnimationFrame — scroll fires every frame on trackpads.
+        let ticking = false;
+        const handleScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                setScrolled(window.scrollY > 10);
+                ticking = false;
+            });
+        };
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -91,7 +112,7 @@ const Navbar = () => {
                         </Link>
 
                         {/* Search Bar on the Left */}
-                        <div className="hidden lg:flex items-center">
+                        <div className="hidden xl:flex items-center">
                             <button
                                 type="button"
                                 onClick={() => setCommandOpen(true)}
@@ -111,13 +132,13 @@ const Navbar = () => {
                         </div>
 
                         {/* Desktop nav links */}
-                        <div className="hidden md:flex items-center gap-1 text-xs overflow-x-auto no-scrollbar">
+                        <div className="hidden lg:flex items-center gap-0.5 xl:gap-1 text-xs">
                             {NAV_ITEMS.map((item) => (
                                 <NavLink
                                     key={item.to}
                                     to={item.to}
                                     className={({ isActive }) => cn(
-                                        "relative flex items-center px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors select-none",
+                                        "relative flex shrink-0 items-center whitespace-nowrap px-2.5 xl:px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] transition-colors select-none",
                                         isActive
                                             ? overHero ? "text-white" : "text-foreground"
                                             : overHero
@@ -282,7 +303,7 @@ const Navbar = () => {
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="inline-flex items-center gap-1.5 bg-accent-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-accent-hover"
+                                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap bg-accent-primary px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-accent-hover"
                                 >
                                     Request quote
                                 </Link>
@@ -293,7 +314,7 @@ const Navbar = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className={cn("md:hidden h-9 w-9", overHero && "text-white hover:bg-white/10 hover:text-white")}
+                            className={cn("lg:hidden h-9 w-9", overHero && "text-white hover:bg-white/10 hover:text-white")}
                             onClick={() => setMobileOpen(!mobileOpen)}
                             aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
                             aria-expanded={mobileOpen}
@@ -315,7 +336,7 @@ const Navbar = () => {
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                            className="md:hidden bg-surface border-b border-border-default overflow-hidden"
+                            className="lg:hidden bg-surface border-b border-border-default overflow-hidden"
                         >
                             <div className="px-4 py-4 space-y-3">
                                 <button

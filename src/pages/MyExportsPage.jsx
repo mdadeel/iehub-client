@@ -137,17 +137,21 @@ const MyExportsPage = () => {
 
   const handleConfirmDelete = async () => {
     if (!itemToDelete) return;
+    // Optimistic: drop the row immediately, roll back if the API rejects it.
+    const snapshot = exports;
+    const target = itemToDelete;
     setDeleting(true);
+    setDeleteModalOpen(false);
+    setItemToDelete(null);
+    setExports((prev) => prev.filter((item) => item._id !== target.id));
+    toast.success('Listing removed from marketplace.');
     try {
-      await api.delete(`/products/${itemToDelete.id}`);
-      setExports((prev) => prev.filter((item) => item._id !== itemToDelete.id));
-      toast.success('Listing removed from marketplace.');
-      setDeleteModalOpen(false);
+      await api.delete(`/products/${target.id}`);
     } catch {
-      toast.error('Failed to remove listing.');
+      setExports(snapshot);
+      toast.error('Removal failed — listing restored. Please retry.');
     } finally {
       setDeleting(false);
-      setItemToDelete(null);
     }
   };
 

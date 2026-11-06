@@ -5,8 +5,9 @@ export default function SEOHead({
   description = 'Source verified international commodity suppliers, issue commercial purchase orders, and track ocean shipments to port arrival.',
   canonicalUrl,
   ogType = 'website',
-  ogImage = 'https://iehub-client.vercel.app/logo.png',
+  ogImage = 'https://iehub-client.vercel.app/images/hero-port.jpg',
   schemaData = null,
+  noIndex = false,
 }) {
   useEffect(() => {
     // 1. Update Title
@@ -53,6 +54,8 @@ export default function SEOHead({
     setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', description);
     setMeta('name', 'twitter:image', ogImage);
+    setMeta('property', 'og:site_name', 'IEHUB Trade Network');
+    setMeta('name', 'robots', noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large');
 
     // 5. Inject JSON-LD Schema
     let scriptSchema = document.querySelector('#jsonld-schema');
@@ -67,7 +70,7 @@ export default function SEOHead({
     } else if (scriptSchema) {
       scriptSchema.remove();
     }
-  }, [title, description, canonicalUrl, ogType, ogImage, schemaData]);
+  }, [title, description, canonicalUrl, ogType, ogImage, schemaData, noIndex]);
 
   return null;
 }

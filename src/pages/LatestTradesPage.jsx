@@ -3,6 +3,7 @@ import { Badge } from '../components/ui/Badge';
 import { HiGlobeAlt } from 'react-icons/hi';
 
 import PageHeader from '../components/PageHeader';
+import SEOHead from '../components/SEOHead';
 const LatestTradesPage = () => {
   const trades = [
     {
@@ -57,6 +58,12 @@ const LatestTradesPage = () => {
 
   return (
         <>
+      <SEOHead
+        title="Recent Executed Trades | IEHUB"
+        description="Sample contracts showing how purchase orders, bills of lading and settlement values are structured on IEHUB."
+        canonicalUrl="https://iehub-client.vercel.app/trades"
+      />
+
       <PageHeader
         eyebrow="Executed trades"
         title="Recent movement on the network."

@@ -71,8 +71,8 @@ const Hero = () => {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end">
             {/* Copy column */}
             <div className="lg:col-span-7">
-              <div className="eyebrow eyebrow-light mb-6">
-                Global trade infrastructure · Chattogram to 120 ports
+              <div className="eyebrow eyebrow-light mb-6 whitespace-nowrap text-[10px] sm:text-[11px]">
+                Global trade network · Chattogram
               </div>
 
               <h1 className="display text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-[4.4rem]">
@@ -93,14 +93,14 @@ const Hero = () => {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
                   to="/products"
-                  className="group inline-flex items-center justify-center gap-2 bg-[#C2181F] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#9C1016]"
+                  className="group inline-flex items-center justify-center gap-2 whitespace-nowrap bg-[#C2181F] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#9C1016]"
                 >
                   Source verified lots
                   <HiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 border border-white/25 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/5"
+                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap border border-white/25 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/5"
                 >
                   Talk to the trade desk
                 </Link>

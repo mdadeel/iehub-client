@@ -4,6 +4,7 @@ import { HiArrowRight } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 
 import PageHeader from '../components/PageHeader';
+import SEOHead from '../components/SEOHead';
 const MarketInsightsPage = () => {
   const articles = [
     {
@@ -31,6 +32,12 @@ const MarketInsightsPage = () => {
 
   return (
         <>
+      <SEOHead
+        title="Global Trade Insights & Market Research | IEHUB"
+        description="Macro research, regulatory updates and supply chain telemetry from the IEHUB trade desk."
+        canonicalUrl="https://iehub-client.vercel.app/news"
+      />
+
       <PageHeader
         eyebrow="Intelligence"
         title="Global trade insights."

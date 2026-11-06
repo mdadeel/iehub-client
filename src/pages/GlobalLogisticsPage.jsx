@@ -9,6 +9,7 @@ import { HiDocumentText, HiClock, HiArrowRight } from 'react-icons/hi';
 import { FaShip } from 'react-icons/fa';
 
 import PageHeader from '../components/PageHeader';
+import SEOHead from '../components/SEOHead';
 // Reference transit times for common corridors — static reference data, not live telemetry.
 const CORRIDORS = [
   { name: 'Trans-Pacific Eastbound', route: 'Shanghai / Ningbo → Los Angeles / Long Beach', transitTime: '14–18 days' },
@@ -46,6 +47,12 @@ const GlobalLogisticsPage = () => {
 
   return (
         <>
+      <SEOHead
+        title="Track Shipments & Corridor Transit | IEHUB"
+        description="Live shipment status, corridor transit times and customs clearance reference pulled from your purchase orders."
+        canonicalUrl="https://iehub-client.vercel.app/shipping"
+      />
+
       <PageHeader
         eyebrow="Logistics"
         title="Where your cargo is, right now."

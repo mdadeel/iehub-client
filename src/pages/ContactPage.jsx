@@ -6,6 +6,7 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 
 import PageHeader from '../components/PageHeader';
+import SEOHead from '../components/SEOHead';
 const ContactPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,6 +16,12 @@ const ContactPage = () => {
 
   return (
         <>
+      <SEOHead
+        title="Contact the Trade Desk | IEHUB"
+        description="Send commodity, volume and discharge port. A desk officer replies within four working hours, Dhaka time."
+        canonicalUrl="https://iehub-client.vercel.app/contact"
+      />
+
       <PageHeader
         eyebrow="Trade desk"
         title="Tell us what needs to move."

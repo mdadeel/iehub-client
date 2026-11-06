@@ -38,8 +38,8 @@ const Footer = () => {
     <footer className="bg-[#0B0F12] text-white">
       <div className="container">
         {/* Top */}
-        <div className="grid grid-cols-1 gap-12 border-b border-white/10 py-14 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-4">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/10 py-14 sm:grid-cols-3 lg:grid-cols-12 lg:gap-8">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-4">
             <Link to="/" className="inline-flex items-center gap-3" aria-label="IEHUB Home">
               <span className="flex h-9 w-9 items-center justify-center bg-accent-primary font-display text-sm font-extrabold leading-none text-white">
                 IE
@@ -87,7 +87,7 @@ const Footer = () => {
           </div>
 
           {columns.map((col) => (
-            <div key={col.title} className="lg:col-span-2 lg:col-start-auto">
+            <div key={col.title} className="lg:col-span-2">
               <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
                 {col.title}
               </div>
@@ -106,7 +106,7 @@ const Footer = () => {
             </div>
           ))}
 
-          <div className="lg:col-span-2">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-2">
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
               Trade brief
             </div>
@@ -153,10 +153,10 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} IEHUB Inc. · ICC Incoterms 2020 compliant
           </div>
           <div className="flex flex-wrap items-center gap-5">
-            <a href="#" className="transition-colors hover:text-white/80">Privacy</a>
-            <a href="#" className="transition-colors hover:text-white/80">Terms of trade</a>
-            <a href="#" className="transition-colors hover:text-white/80">Security</a>
-            <a href="#" className="transition-colors hover:text-white/80">Escrow disclosures</a>
+            <Link to="/legal#privacy" className="transition-colors hover:text-white/80">Privacy</Link>
+            <Link to="/legal#terms" className="transition-colors hover:text-white/80">Terms of trade</Link>
+            <Link to="/legal#security" className="transition-colors hover:text-white/80">Security</Link>
+            <Link to="/legal#escrow" className="transition-colors hover:text-white/80">Escrow disclosures</Link>
           </div>
         </div>
       </div>

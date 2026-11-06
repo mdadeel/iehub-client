@@ -31,6 +31,8 @@ import MarketInsightsPage from './pages/MarketInsightsPage';
 import CreateOrganizationPage from './pages/CreateOrganizationPage';
 import InviteAcceptPage from './pages/InviteAcceptPage';
 import DocumentVaultPage from './pages/DocumentVaultPage';
+import NotFoundPage from './pages/NotFoundPage';
+import LegalPage from './pages/LegalPage';
 
 // Routes
 import PrivateRoute from './routes/PrivateRoute';
@@ -65,6 +67,8 @@ function App() {
           <Route path="/shipping" element={<GlobalLogisticsPage />} />
           <Route path="/careers" element={<TradeExpertsPage />} />
           <Route path="/news" element={<MarketInsightsPage />} />
+          <Route path="/legal" element={<LegalPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
 
         {/* Organization routes */}

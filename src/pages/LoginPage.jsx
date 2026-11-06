@@ -7,6 +7,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import AuthShell from '../components/AuthShell';
 
+import SEOHead from '../components/SEOHead';
 const LoginPage = () => {
   const { loginUser, loginWithGoogle, loginAsGuest } = useAuth();
   const [email, setEmail] = useState('');
@@ -57,6 +58,12 @@ const LoginPage = () => {
       asideTitle="Every consignment, one accountable desk."
       asideCopy="From origin inspection to the discharge port, IEHUB keeps the paperwork, the cargo and the money in the same ledger."
     >
+            <SEOHead
+        title="Sign in to the IEHUB trade desk"
+        description="Access verified lots, purchase orders and escrow timelines."
+        noIndex
+      />
+
       <form onSubmit={handleLogin} className="space-y-4">
         <div className="space-y-1.5">
           <label htmlFor="login-email" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">

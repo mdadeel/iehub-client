@@ -150,35 +150,35 @@ const INDUSTRIES = [
     name: 'Agriculture & agro-processing',
     copy: 'Rice, pulses, spices and oilseeds from audited cooperatives.',
     image: '/images/ind-agriculture.jpg',
-    span: 'sm:col-span-2 sm:row-span-2',
+    span: 'md:col-span-2 md:row-span-2',
     height: 'min-h-[280px] sm:min-h-[420px]',
   },
   {
     name: 'Textiles & apparel',
     copy: 'Cut-and-sew capacity with WRAP and BSCI audit trails.',
     image: '/images/ind-textiles.jpg',
-    span: 'sm:col-span-2',
+    span: 'md:col-span-2',
     height: 'min-h-[200px]',
   },
   {
     name: 'Seafood & frozen',
     copy: 'Cold-chain certified shrimp and frozen lines.',
     image: '/images/ind-seafood.jpg',
-    span: 'sm:col-span-1',
+    span: 'md:col-span-1',
     height: 'min-h-[200px]',
   },
   {
     name: 'Metals & minerals',
     copy: 'Cathodes, billets and scrap with assay on file.',
     image: '/images/com-copper.jpg',
-    span: 'sm:col-span-1',
+    span: 'md:col-span-1',
     height: 'min-h-[200px]',
   },
   {
     name: 'Warehousing & ICDs',
     copy: 'Bonded sheds and inland container depots.',
     image: '/images/svc-warehouse.jpg',
-    span: 'sm:col-span-2',
+    span: 'md:col-span-2',
     height: 'min-h-[200px]',
   },
 ];
@@ -336,7 +336,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-6 sm:mb-14 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">What we do</div>
-              <h2 className="display text-3xl sm:text-4xl lg:text-[2.9rem]">
+              <h2 className="display text-[2rem] sm:text-[2.35rem] lg:text-[2.9rem]">
                 From the origin floor to the port gate.
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-foreground-secondary">
@@ -429,7 +429,7 @@ const HomePage = () => {
 
           <div>
             <div className="eyebrow mb-4">Why IEHUB</div>
-            <h2 className="display text-3xl sm:text-4xl lg:text-[2.9rem]">
+            <h2 className="display text-[2rem] sm:text-[2.35rem] lg:text-[2.9rem]">
               Built for buyers who cannot afford surprises.
             </h2>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-foreground-secondary">
@@ -473,7 +473,7 @@ const HomePage = () => {
           <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Live trade board</div>
-              <h2 className="display text-3xl sm:text-4xl">Open export positions.</h2>
+              <h2 className="display text-[2rem] sm:text-[2.6rem]">Open export positions.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Active supply with assayed specs, named-port pricing and allocation available this
                 month.
@@ -514,8 +514,8 @@ const HomePage = () => {
                 <thead>
                   <tr className="border-b border-border-default bg-surface-subtle text-[10px] uppercase tracking-[0.14em] text-foreground-muted">
                     <th className="px-4 py-3 font-semibold">Commodity &amp; spec</th>
-                    <th className="px-4 py-3 font-semibold">Origin &amp; port</th>
-                    <th className="px-4 py-3 font-semibold">Available</th>
+                    <th className="hidden sm:table-cell px-4 py-3 font-semibold">Origin &amp; port</th>
+                    <th className="hidden lg:table-cell px-4 py-3 font-semibold">Available</th>
                     <th className="px-4 py-3 font-semibold">Incoterm price</th>
                     <th className="hidden px-4 py-3 font-semibold md:table-cell">Inspection</th>
                     <th className="px-4 py-3 text-right font-semibold">Action</th>
@@ -578,14 +578,14 @@ const HomePage = () => {
                             </div>
                           </td>
 
-                          <td className="px-4 py-3 text-foreground-secondary">
+                          <td className="hidden sm:table-cell px-4 py-3 text-foreground-secondary">
                             <div className="flex items-center gap-1.5">
                               <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-foreground-subtle" />
                               <span className="truncate">{origin}</span>
                             </div>
                           </td>
 
-                          <td className="px-4 py-3 font-mono">
+                          <td className="hidden lg:table-cell px-4 py-3 font-mono">
                             <div className="font-semibold text-foreground">
                               {(p.quantity || 0).toLocaleString()} {unit}
                             </div>
@@ -656,7 +656,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Terminal network</div>
-              <h2 className="display text-3xl sm:text-4xl">Lanes we are moving this week.</h2>
+              <h2 className="display text-[2rem] sm:text-[2.6rem]">Lanes we are moving this week.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Direct liner routing from origin facility to primary discharge port — with the
                 carrier and the rate visible before you book.
@@ -711,7 +711,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Trade desk in practice</div>
-              <h2 className="display text-3xl sm:text-4xl">What buyers say after month one.</h2>
+              <h2 className="display text-[2rem] sm:text-[2.6rem]">What buyers say after month one.</h2>
             </div>
             <div className="flex items-center gap-3">
               <div className="font-display text-2xl font-bold text-foreground">4.9</div>
@@ -755,7 +755,7 @@ const HomePage = () => {
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <div className="eyebrow mb-4">Industries we serve</div>
-              <h2 className="display text-3xl sm:text-4xl">Sectors we know by name.</h2>
+              <h2 className="display text-[2rem] sm:text-[2.6rem]">Sectors we know by name.</h2>
               <p className="mt-3 max-w-xl text-sm text-foreground-secondary">
                 Category-specific paperwork, inspection norms and packaging rules — not a generic
                 freight template.
@@ -766,7 +766,7 @@ const HomePage = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {INDUSTRIES.map((ind) => (
               <Link
                 key={ind.name}
@@ -794,7 +794,7 @@ const HomePage = () => {
 
             <Link
               to="/contact"
-              className="group flex min-h-[200px] flex-col justify-between bg-accent-primary p-6 text-white sm:col-span-2"
+              className="group flex min-h-[200px] flex-col justify-between bg-accent-primary p-6 text-white md:col-span-2"
             >
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">
@@ -823,7 +823,7 @@ const HomePage = () => {
         <div className="container">
           <div className="mb-10 max-w-2xl">
             <div className="eyebrow mb-4">Regulatory framework</div>
-            <h2 className="display text-3xl sm:text-4xl">The paperwork is our problem.</h2>
+            <h2 className="display text-[2rem] sm:text-[2.6rem]">The paperwork is our problem.</h2>
             <p className="mt-3 text-sm text-foreground-secondary">
               Every contract and settlement on IEHUB follows published international trade rules —
               so your compliance team has something to point at.
@@ -872,7 +872,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7">
               <div className="eyebrow eyebrow-light mb-5">Start a trade</div>
-              <h2 className="display text-3xl sm:text-4xl lg:text-[2.9rem]">
+              <h2 className="display text-[2rem] sm:text-[2.35rem] lg:text-[2.9rem]">
                 Ready to move your next consignment?
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/70">
