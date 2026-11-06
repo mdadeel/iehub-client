@@ -127,18 +127,33 @@ export default function DocumentVaultPage() {
   const handleBulkDelete = async () => {
     if (bulkDeleteIds.length === 0) return;
     setIsBulkDeleting(true);
-    const results = await Promise.allSettled(
-      bulkDeleteIds.map((id) => api.delete(`/documents/${id}`))
-    );
-    const failed = results.filter((r) => r.status === 'rejected').length;
-    if (failed > 0) {
-      toast.error(`${failed} of ${bulkDeleteIds.length} documents could not be removed.`);
-    } else {
-      toast.success(`${bulkDeleteIds.length} documents removed from the registry.`);
+    try {
+      const res = await api.delete('/documents/bulk', {
+        data: { ids: bulkDeleteIds },
+      });
+      const { deleted = [], failed = [] } = res.data || {};
+      if (failed.length > 0) {
+        const firstReason = failed[0]?.reason || 'Some documents could not be removed.';
+        toast.error(`${failed.length} of ${bulkDeleteIds.length} failed: ${firstReason}`);
+      }
+      if (deleted.length > 0) {
+        toast.success(`${deleted.length} document${deleted.length === 1 ? '' : 's'} removed from vault.`);
+      }
+    } catch {
+      const results = await Promise.allSettled(
+        bulkDeleteIds.map((id) => api.delete(`/documents/${id}`))
+      );
+      const failed = results.filter((r) => r.status === 'rejected').length;
+      if (failed > 0) {
+        toast.error(`${failed} of ${bulkDeleteIds.length} documents could not be removed.`);
+      } else {
+        toast.success(`${bulkDeleteIds.length} documents removed from the registry.`);
+      }
+    } finally {
+      setBulkDeleteIds([]);
+      setIsBulkDeleting(false);
+      fetchDocuments();
     }
-    setBulkDeleteIds([]);
-    setIsBulkDeleting(false);
-    fetchDocuments();
   };
 
   const handleDeleteConfirm = async () => {
