@@ -490,7 +490,7 @@ const HomePage = () => {
                     <th className="px-4 py-3 font-semibold">Origin &amp; port</th>
                     <th className="px-4 py-3 font-semibold">Available</th>
                     <th className="px-4 py-3 font-semibold">Incoterm price</th>
-                    <th className="px-4 py-3 font-semibold">Inspection</th>
+                    <th className="hidden px-4 py-3 font-semibold md:table-cell">Inspection</th>
                     <th className="px-4 py-3 text-right font-semibold">Action</th>
                   </tr>
                 </thead>
@@ -579,7 +579,7 @@ const HomePage = () => {
                             </div>
                           </td>
 
-                          <td className="px-4 py-3">
+                          <td className="hidden px-4 py-3 md:table-cell">
                             {isVerified ? (
                               <span className="inline-flex items-center gap-1 border border-status-success/25 bg-status-success-bg px-2 py-1 text-[10px] font-semibold text-status-success">
                                 <HiShieldCheck className="h-3.5 w-3.5 shrink-0" />

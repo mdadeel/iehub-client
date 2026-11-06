@@ -106,7 +106,7 @@ const Hero = () => {
                 </Link>
               </div>
 
-              <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-6">
+              <dl className="mt-10 hidden max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-6 sm:grid">
                 {[
                   { k: '120+', v: 'Discharge ports' },
                   { k: '2,840', v: 'Vetted exporters' },
