@@ -354,7 +354,7 @@ const AllProductsPage = () => {
             <button
               type="button"
               onClick={handleClearFilters}
-              className="text-[13px] text-accent-primary hover:underline ml-1 font-medium"
+              className="text-[13px] text-foreground hover:text-accent-primary hover:underline ml-1 font-medium"
             >
               Clear all
             </button>
@@ -419,16 +419,16 @@ const AllProductsPage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="rounded-lg border border-border-default bg-surface overflow-x-auto shadow-2xs"
+              className="rounded-lg border border-border-default bg-surface shadow-2xs"
             >
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8 text-center">Cmp</TableHead>
+                    <TableHead className="hidden w-8 text-center sm:table-cell">Cmp</TableHead>
                     <TableHead className="w-12"></TableHead>
                     <TableHead>Commodity / SKU</TableHead>
-                    <TableHead>Origin / Sector</TableHead>
-                    <TableHead className="text-right">Available Volume</TableHead>
+                    <TableHead className="hidden md:table-cell">Origin / Sector</TableHead>
+                    <TableHead className="hidden text-right sm:table-cell">Available Volume</TableHead>
                     <TableHead className="text-right">Unit Price</TableHead>
                     <TableHead className="text-right w-24">Action</TableHead>
                   </TableRow>
@@ -481,7 +481,7 @@ const AllProductsPage = () => {
             className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-surface/95 backdrop-blur-md border border-border-default rounded-lg shadow-xl px-4 py-3 flex items-center gap-4 text-xs"
           >
             <div className="flex items-center gap-2 font-medium text-foreground">
-              <HiScale className="w-4 h-4 text-accent-primary" />
+              <HiScale className="w-4 h-4 text-foreground-muted" />
               <span>
                 Comparing <strong className="font-mono">{comparedProducts.length}</strong> of 3 items
               </span>
@@ -521,7 +521,7 @@ const AllProductsPage = () => {
             >
               <div className="flex items-center justify-between pb-4 border-b border-border-subtle mb-6">
                 <div className="flex items-center gap-2 text-base font-bold">
-                  <HiScale className="w-5 h-5 text-accent-primary" />
+                  <HiScale className="w-5 h-5 text-foreground-muted" />
                   <span>Commodity Comparison Specification</span>
                 </div>
                 <button

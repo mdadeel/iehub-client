@@ -207,7 +207,7 @@ const DashboardPage = () => {
             </div>
             <Link
               to="/dashboard/my-imports"
-              className="text-xs font-semibold text-accent-primary hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-foreground hover:text-accent-primary flex items-center gap-1"
             >
               <span>View All</span>
               <HiChevronRight className="w-3.5 h-3.5" />
@@ -308,7 +308,7 @@ const DashboardPage = () => {
                       </div>
                       <div className="text-[11px] text-foreground-secondary flex items-center gap-1.5 font-mono">
                         <span className="truncate">{prod.origin || 'Origin port'}</span>
-                        <HiArrowRight className="w-3 h-3 text-accent-primary shrink-0" />
+                        <HiArrowRight className="w-3 h-3 text-foreground-subtle shrink-0" />
                         <span className="truncate">{imp.destinationPort || 'Destination'}</span>
                       </div>
                       <div className="text-[10px] text-foreground-muted flex items-center gap-1">
@@ -334,7 +334,7 @@ const DashboardPage = () => {
               <div className="pt-2 border-t border-border-subtle">
                 <Link
                   to="/dashboard/my-imports"
-                  className="text-xs font-semibold text-accent-primary hover:underline flex items-center justify-between"
+                  className="text-xs font-semibold text-foreground hover:text-accent-primary flex items-center justify-between"
                 >
                   <span>Track All Shipments</span>
                   <HiArrowRight className="w-3 h-3" />

@@ -70,6 +70,15 @@ const DashboardLayout = () => {
               </NavLink>
             );
           })}
+          {/* Sign Out is desktop-only in the sidebar — keep it reachable on mobile */}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex shrink-0 items-center gap-1.5 whitespace-nowrap border border-border-default bg-surface px-2.5 py-1.5 text-[11px] font-semibold text-foreground-secondary transition-colors hover:border-status-danger hover:text-status-danger"
+          >
+            <HiLogout className="h-3.5 w-3.5" />
+            <span>Sign Out</span>
+          </button>
         </nav>
       </div>
 

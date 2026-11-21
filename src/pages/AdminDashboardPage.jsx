@@ -186,7 +186,7 @@ const AdminDashboardPage = () => {
       {/* Top Header */}
       <header className="h-14 bg-surface border-b border-border-default flex items-center justify-between px-6 sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded bg-accent-primary text-accent-contrast flex items-center justify-center font-black text-xs">
+          <div className="w-7 h-7 rounded bg-ink text-white flex items-center justify-center font-black text-xs">
             IE
           </div>
           <div>
@@ -194,7 +194,7 @@ const AdminDashboardPage = () => {
               <span className="font-bold text-xs tracking-tight text-foreground">
                 Super Admin Mission Control
               </span>
-              <Badge variant="accent" size="sm" className="h-4 text-[10px] px-1.5 py-0 font-mono">
+              <Badge variant="neutral" size="sm" className="h-4 text-[10px] px-1.5 py-0 font-mono">
                 RBAC Level 0
               </Badge>
             </div>
@@ -278,7 +278,7 @@ const AdminDashboardPage = () => {
               <Card className="p-4 border border-border-default bg-surface shadow-2xs">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[11px] text-foreground-muted font-medium">Total GMV</span>
-                  <HiCurrencyDollar className="w-4 h-4 text-accent-primary" />
+                  <HiCurrencyDollar className="w-4 h-4 text-foreground-muted" />
                 </div>
                 <div className="text-xl font-bold text-foreground tabular-nums">
                   ${(metrics.totalGMV || 28400000).toLocaleString()}
@@ -370,7 +370,7 @@ const AdminDashboardPage = () => {
             <Card className="border border-border-default bg-surface shadow-2xs">
               <div className="px-5 py-3 border-b border-border-subtle flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <HiDocumentReport className="w-4 h-4 text-accent-primary" />
+                  <HiDocumentReport className="w-4 h-4 text-foreground-muted" />
                   <h3 className="text-xs font-semibold uppercase tracking-wider font-mono text-foreground">
                     Live Security & Compliance Stream
                   </h3>
@@ -434,7 +434,7 @@ const AdminDashboardPage = () => {
                         </TableCell>
                         <TableCell>
                           <div className="text-xs text-foreground">{p.origin}</div>
-                          <div className="text-[11px] font-mono text-accent-primary">HS: {p.hsCode || 'Standard'}</div>
+                          <div className="text-[11px] font-mono text-foreground-muted">HS: {p.hsCode || 'Standard'}</div>
                         </TableCell>
                         <TableCell>
                           <div className="text-xs font-semibold tabular-nums text-foreground">${p.price?.toLocaleString()}</div>
@@ -801,7 +801,7 @@ const AdminDashboardPage = () => {
                             key={doc._id || idx}
                             type="button"
                             onClick={() => handleDownloadDoc(doc)}
-                            className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface border border-border-default text-[11px] font-mono hover:bg-surface-subtle transition-colors text-accent-primary"
+                            className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface border border-border-default text-[11px] font-mono hover:bg-surface-subtle transition-colors text-foreground-secondary hover:text-foreground"
                           >
                             <HiPaperClip className="w-3 h-3 shrink-0" />
                             <span className="max-w-[140px] truncate">{doc.fileName || `Evidence #${idx + 1}`}</span>
@@ -837,7 +837,7 @@ const AdminDashboardPage = () => {
                             key={doc._id || idx}
                             type="button"
                             onClick={() => handleDownloadDoc(doc)}
-                            className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface border border-border-default text-[11px] font-mono hover:bg-surface-subtle transition-colors text-accent-primary"
+                            className="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface border border-border-default text-[11px] font-mono hover:bg-surface-subtle transition-colors text-foreground-secondary hover:text-foreground"
                           >
                             <HiPaperClip className="w-3 h-3 shrink-0" />
                             <span className="max-w-[140px] truncate">{doc.fileName || `Counter-Doc #${idx + 1}`}</span>

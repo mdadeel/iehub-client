@@ -277,7 +277,7 @@ const ProductDetailsPage = () => {
                   </Badge>
                 </div>
                 {isVerified && (
-                  <div className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-[#0B7A52] px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white">
+                  <div className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-surface/95 px-2.5 py-1.5 text-[11px] font-semibold tracking-[0.06em] text-status-success backdrop-blur">
                     <HiShieldCheck className="h-3.5 w-3.5" />
                     Lab verified
                   </div>
@@ -341,7 +341,7 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Pricing & Terms */}
-            <div className="flex flex-col gap-5 bg-[#101417] p-5 text-white sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-5 bg-ink p-5 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
                   {product.incoterm || 'FOB'} base price
@@ -377,7 +377,7 @@ const ProductDetailsPage = () => {
             {/* Commercial Pricing & Landed Cost Notice */}
             <div className="p-3.5 rounded-lg border border-border-subtle bg-surface-subtle/70 text-xs space-y-1">
               <div className="font-semibold text-foreground flex items-center gap-1.5">
-                <HiInformationCircle className="w-4 h-4 text-accent-primary shrink-0" />
+                <HiInformationCircle className="w-4 h-4 text-foreground-muted shrink-0" />
                 <span>Commercial Pricing & Landed Cost Disclaimer</span>
               </div>
               <p className="text-[13px] text-foreground-secondary leading-relaxed">
@@ -599,7 +599,7 @@ const ProductDetailsPage = () => {
           {activeTab === 'logistics' && (
             <div className="p-6">
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <HiTruck className="w-4 h-4 text-accent-primary" />
+                <HiTruck className="w-4 h-4 text-foreground-muted" />
                 Maritime Shipping, Transit Corridors & Port Delivery
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -702,7 +702,7 @@ const ProductDetailsPage = () => {
             </div>
             <Link
               to="/products"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-accent-primary hover:text-accent-hover transition-colors shrink-0"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-foreground hover:text-accent-primary transition-colors shrink-0"
             >
               <span>Explore full marketplace</span>
               <HiArrowRight className="w-3.5 h-3.5" />
@@ -859,7 +859,7 @@ const ProductDetailsPage = () => {
               </div>
               <div className="border-t border-border-subtle pt-2 flex justify-between font-semibold text-foreground">
                 <span>Total Commitment</span>
-                <span className="font-mono text-accent-primary tabular-nums">${totalValue.toLocaleString()} USD</span>
+                <span className="font-mono text-foreground tabular-nums">${totalValue.toLocaleString()} USD</span>
               </div>
             </div>
 
@@ -907,7 +907,7 @@ const ProductDetailsPage = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-foreground">Requested Quantity ({product.unit || 'units'}) *</label>
                 <Input

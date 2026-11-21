@@ -488,7 +488,7 @@ const MyImportsPage = () => {
                           <div className="mt-0.5 flex items-center gap-1.5 font-mono text-[12px] text-foreground-muted">
                             <span className="text-foreground-secondary">{poNumber}</span>
                             <span>·</span>
-                            <span className="font-bold text-accent-primary">
+                            <span className="font-bold text-foreground">
                               {item.incoterm || prod.incoterm || 'FOB'}
                             </span>
                             <span>·</span>
@@ -674,11 +674,11 @@ const MyImportsPage = () => {
                 2
               </div>
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-accent-primary">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-status-warning">
                   <span>Exporter Countered</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-warning" />
                 </div>
-                <div className="text-[11px] font-medium text-accent-primary">
+                <div className="text-[11px] font-medium text-status-warning">
                   {myRFQs.filter((r) => r.status === 'Quoted').length} Needs Decision
                 </div>
               </div>
@@ -697,7 +697,7 @@ const MyImportsPage = () => {
             </div>
 
             <div className="p-3.5 rounded-lg border border-border-default bg-surface flex items-center gap-3">
-              <div className="w-6 h-6 rounded-md bg-[#DCFCE7] text-[#15803D] flex items-center justify-center font-bold text-xs">
+              <div className="w-6 h-6 rounded-md bg-status-success-bg text-status-success flex items-center justify-center font-bold text-xs">
                 ✓
               </div>
               <div>
@@ -740,11 +740,11 @@ const MyImportsPage = () => {
                       <TableCell>
                         {rfq.counterOfferPrice ? (
                           <div>
-                            <div className="text-xs font-bold text-accent-primary tabular-nums">
+                            <div className="text-xs font-bold text-foreground tabular-nums">
                               ${rfq.counterOfferPrice?.toLocaleString()} FOB
                             </div>
                             <div className="flex items-center gap-1.5 text-[10px] text-foreground-muted">
-                              <span className={rfq.counterOfferPrice > rfq.targetPrice ? 'text-[#D97706] font-semibold' : 'text-[#059669] font-semibold'}>
+                              <span className={rfq.counterOfferPrice > rfq.targetPrice ? 'text-status-warning font-semibold' : 'text-status-success font-semibold'}>
                                 {rfq.counterOfferPrice > rfq.targetPrice ? `+$${(rfq.counterOfferPrice - rfq.targetPrice).toLocaleString()}` : `-$${(rfq.targetPrice - rfq.counterOfferPrice).toLocaleString()}`}
                               </span>
                               <span>·</span>
@@ -803,7 +803,7 @@ const MyImportsPage = () => {
               <div className="p-4 rounded-lg border border-accent-primary/20 bg-accent-subtle/30 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                    <HiShieldCheck className="w-4 h-4 text-accent-primary" />
+                    <HiShieldCheck className="w-4 h-4 text-status-success" />
                     B2B Platform Escrow Protection
                   </span>
                   <Badge variant={activePO.escrowStatus === 'Funded' ? 'accent' : activePO.escrowStatus === 'Released' ? 'success' : 'neutral'} size="sm">
@@ -814,7 +814,7 @@ const MyImportsPage = () => {
                   Funds are secured in fiduciary vault and released only when bill of lading and discharge manifest are confirmed.
                 </p>
                 <div className="text-[10px] text-foreground-muted/90 bg-surface/60 border border-border-default/60 rounded p-2 flex items-center gap-1.5">
-                  <HiInformationCircle className="w-3.5 h-3.5 text-accent-primary shrink-0" />
+                  <HiInformationCircle className="w-3.5 h-3.5 text-foreground-muted shrink-0" />
                   <span>Internal Fiduciary Ledger · Custody tracking under platform bilateral rules. Third-party licensed banking partner integration in progress.</span>
                 </div>
 
@@ -887,7 +887,7 @@ const MyImportsPage = () => {
                   <div className="flex justify-between py-1 border-b border-border-subtle">
                     <span className="text-foreground-muted">Bill of Lading</span>
                     {activePO.billOfLadingUrl ? (
-                      <a href={activePO.billOfLadingUrl} target="_blank" rel="noreferrer" className="text-accent-primary font-medium inline-flex items-center gap-1 hover:underline">
+                      <a href={activePO.billOfLadingUrl} target="_blank" rel="noreferrer" className="text-foreground font-medium inline-flex items-center gap-1 hover:text-accent-primary hover:underline">
                         View B/L Manifest <HiExternalLink className="w-3 h-3" />
                       </a>
                     ) : (
@@ -901,10 +901,10 @@ const MyImportsPage = () => {
               <div className="p-4 rounded-lg border border-border-default bg-surface space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                    <HiDocumentText className="w-4 h-4 text-accent-primary" />
+                    <HiDocumentText className="w-4 h-4 text-foreground-muted" />
                     Attached Trade Documents ({attachedDocs.length})
                   </div>
-                  <Link to="/dashboard/documents" className="text-[11px] text-accent-primary hover:underline inline-flex items-center gap-1">
+                  <Link to="/dashboard/documents" className="text-[11px] text-foreground hover:text-accent-primary hover:underline inline-flex items-center gap-1">
                     Document Vault <HiExternalLink className="w-3 h-3" />
                   </Link>
                 </div>
@@ -1010,7 +1010,7 @@ const MyImportsPage = () => {
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between py-1 border-b border-border-subtle">
                     <span className="text-foreground-muted">Incoterm (ICC 2020)</span>
-                    <span className="font-mono font-bold text-accent-primary">
+                    <span className="font-mono font-bold text-foreground">
                       {activePO.incoterm || 'FOB'}
                     </span>
                   </div>

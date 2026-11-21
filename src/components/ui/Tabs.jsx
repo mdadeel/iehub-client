@@ -20,7 +20,7 @@ const TabsList = ({ className, children, ...props }) => {
   return (
     <div
       className={cn(
-        "inline-flex h-9 items-center justify-center rounded-lg bg-surface-subtle p-1 text-foreground-muted border border-border-default",
+        "flex max-w-full min-h-9 items-center justify-start overflow-x-auto no-scrollbar rounded-lg bg-surface-subtle p-1 text-foreground-muted border border-border-default",
         className
       )}
       {...props}

@@ -484,7 +484,7 @@ const MyExportsPage = () => {
                       )}
                       <div className="min-w-0">
                         <div className="max-w-[13rem] truncate font-semibold text-foreground">{item.name}</div>
-                        <div className="font-mono text-[12px] text-accent-primary">
+                        <div className="font-mono text-[12px] text-foreground-muted">
                           HS {item.hsCode || 'standard'}
                         </div>
                       </div>
@@ -598,7 +598,7 @@ const MyExportsPage = () => {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="truncate font-semibold text-foreground">{item.name}</div>
-                      <div className="font-mono text-[12px] text-accent-primary">
+                      <div className="font-mono text-[12px] text-foreground-muted">
                         HS {item.hsCode || 'standard'} · {item.origin || 'Global'}
                       </div>
                     </div>
@@ -726,7 +726,7 @@ const MyExportsPage = () => {
                             className="h-7 text-xs gap-1"
                             title="Open Bilateral Messages"
                           >
-                            <HiChatAlt2 className="w-3.5 h-3.5 text-accent-primary" />
+                            <HiChatAlt2 className="w-3.5 h-3.5 text-foreground-muted" />
                             Thread
                           </Button>
                         </div>
@@ -807,7 +807,7 @@ const MyExportsPage = () => {
                           </div>
                         )}
                         {rfq.status === 'Quoted' && (
-                          <span className="text-[11px] font-mono text-accent-primary font-semibold">
+                          <span className="text-[11px] font-mono text-foreground font-semibold">
                             Quoted: ${rfq.counterOfferPrice}
                           </span>
                         )}
@@ -853,7 +853,7 @@ const MyExportsPage = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-foreground">FOB Price ($)</label>
                 <Input
@@ -878,7 +878,7 @@ const MyExportsPage = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-foreground">Origin</label>
                 <Input
@@ -962,7 +962,7 @@ const MyExportsPage = () => {
           />
           <form onSubmit={handleSaveShipping}>
             <ModalContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-foreground mb-1">Vessel Name</label>
                   <Input
@@ -984,7 +984,7 @@ const MyExportsPage = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-foreground mb-1">Container Number (BIC)</label>
                   <Input
@@ -1050,7 +1050,7 @@ const MyExportsPage = () => {
           />
           <form onSubmit={handleSubmitCounter}>
             <ModalContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-foreground mb-1">Offered Unit Price ($ FOB)</label>
                   <Input
