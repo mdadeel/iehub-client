@@ -32,6 +32,9 @@
   --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-symmetric: cubic-bezier(0.65, 0, 0.35, 1);
 
+  /* Constant-dark band color — identical in both themes (hero, footer, dark sections) */
+  --color-ink: #0C0F13;
+
   /* Surface & Canvas Tokens */
   --color-canvas: var(--bg-app);
   --color-surface: var(--bg-surface);
@@ -91,33 +94,33 @@
 }
 
 :root {
-  /* LIGHT MODE — Signal Crimson on warm paper & ink */
-  --bg-app: #F3EFE9; /* Warm paper canvas */
+  /* LIGHT MODE — Signal Crimson on cool institutional neutrals & ink */
+  --bg-app: #F5F6F8; /* Cool near-white canvas */
   --bg-surface: #FFFFFF; /* Primary surface */
-  --bg-surface-subtle: #EAE4DC; /* Sunken / secondary surface */
-  --bg-surface-hover: #E1DAD0; /* Tactile hover — must sit a step below sunken */
-  --bg-surface-inverse: #101417; /* Ink surface */
+  --bg-surface-subtle: #EEF0F3; /* Sunken / secondary surface */
+  --bg-surface-hover: #E4E8EC; /* Tactile hover — must sit a step below sunken */
+  --bg-surface-inverse: #10161C; /* Ink surface */
 
-  --text-primary: #14181B; /* Ink */
-  --text-secondary: #494F53;
-  --text-muted: #565D62;
-  --text-subtle: #747B80;
-  --text-inverse: #F8F6F3;
+  --text-primary: #10161C; /* Cool ink */
+  --text-secondary: #434E58;
+  --text-muted: #59636C;
+  --text-subtle: #767F88;
+  --text-inverse: #F6F7F8;
 
-  --border-subtle: #EDE8E2;
-  --border-default: #E1DBD3; /* Decorative border */
-  --border-hover: #C9C1B7;
+  --border-subtle: #EDF0F3;
+  --border-default: #E4E8EC; /* Decorative border */
+  --border-hover: #C7CED5;
 
   /* Elevation — hierarchy comes from tone + light, not from borders */
-  --shadow-card: 0 1px 2px rgba(20, 24, 27, 0.04), 0 10px 24px -18px rgba(20, 24, 27, 0.35);
-  --shadow-card-hover: 0 1px 2px rgba(20, 24, 27, 0.05), 0 22px 44px -20px rgba(20, 24, 27, 0.42);
-  --shadow-float: 0 2px 6px rgba(20, 24, 27, 0.06), 0 32px 60px -28px rgba(20, 24, 27, 0.45);
+  --shadow-card: 0 1px 2px rgba(16, 22, 28, 0.04), 0 10px 24px -18px rgba(16, 22, 28, 0.35);
+  --shadow-card-hover: 0 1px 2px rgba(16, 22, 28, 0.05), 0 22px 44px -20px rgba(16, 22, 28, 0.42);
+  --shadow-float: 0 2px 6px rgba(16, 22, 28, 0.06), 0 32px 60px -28px rgba(16, 22, 28, 0.45);
 
-  --accent-primary: #C2181F; /* Signal crimson */
+  --accent-primary: #C2181F; /* Signal crimson — CTAs & active states only */
   --accent-hover: #9C1016;
   --accent-subtle: rgba(194, 24, 31, 0.07);
   --accent-contrast: #FFFFFF;
-  --color-link: #A81218;
+  --color-link: #10161C; /* Links are ink; crimson stays on CTAs */
 
   /* Status text tiers: AA contrast */
   --status-success: #0B7A52;
@@ -131,18 +134,18 @@
 }
 
 .dark {
-  /* DARK MODE — Ink surfaces, warm greys, brighter crimson */
-  --bg-app: #0B0F11;
+  /* DARK MODE — Ink surfaces, cool greys, brighter crimson */
+  --bg-app: #0C0F12;
   --bg-surface: #141A1E;
   --bg-surface-subtle: #1A2024;
   --bg-surface-hover: #232B30;
-  --bg-surface-inverse: #F6F4F1;
+  --bg-surface-inverse: #F6F7F8;
 
   --text-primary: #F6F3EF;
   --text-secondary: #C2C8CB;
   --text-muted: #A6ADB1;
   --text-subtle: #838B90;
-  --text-inverse: #14181B;
+  --text-inverse: #10161C;
 
   --border-subtle: #20272B;
   --border-default: #2B3338;
@@ -308,7 +311,7 @@
 }
 
 .eyebrow-light::before {
-  background: #F0433F;
+  background: #E23A40;
 }
 
 /* Display heading */
@@ -384,14 +387,14 @@
   border-left: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Underlined editorial link */
+/* Underlined editorial link — ink, crimson reserved for CTAs */
 .link-underline {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   font-weight: 600;
-  color: var(--accent-primary);
+  color: var(--color-link);
 }
 
 .link-underline::after {
