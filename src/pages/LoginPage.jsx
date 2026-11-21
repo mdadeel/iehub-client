@@ -85,7 +85,7 @@ const LoginPage = () => {
             <label htmlFor="login-password" className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-secondary">
               Password
             </label>
-            <Link to="#" className="text-[11px] font-medium text-accent-primary hover:underline">
+            <Link to="#" className="text-[11px] font-medium text-foreground-secondary hover:text-foreground hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -138,14 +138,14 @@ const LoginPage = () => {
           className="h-9 gap-1.5 text-[12px]"
           onClick={() => handleDemoLogin('user')}
         >
-          <FaUser className="h-3 w-3 text-accent-primary" />
+          <FaUser className="h-3 w-3 text-foreground-secondary" />
           <span>Demo trader</span>
         </Button>
       </div>
 
       <div className="mt-6 border-t border-border-subtle pt-4 text-[12px] text-foreground-muted">
         Don&apos;t have an account?{' '}
-        <Link to="/register" className="font-semibold text-accent-primary hover:underline">
+        <Link to="/register" className="font-semibold text-foreground-secondary hover:text-foreground hover:underline">
           Open a trade account
         </Link>
       </div>

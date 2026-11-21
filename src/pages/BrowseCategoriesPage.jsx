@@ -47,7 +47,7 @@ const BrowseCategoriesPage = () => {
               <p className="mt-1.5 flex-1 text-[14px] leading-relaxed text-foreground-secondary">
                 {cat.desc}
               </p>
-              <span className="mt-4 inline-flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-accent-primary">
+              <span className="mt-4 inline-flex items-center gap-1.5 border-t border-border-subtle pt-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-foreground">
                 View sector <HiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </span>
             </div>

@@ -54,7 +54,7 @@ const AdminLoginPage = () => {
       <div className="w-full max-w-[400px]">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-surface border border-border-default shadow-2xs mb-3">
-            <HiLockClosed className="w-5 h-5 text-accent-primary" />
+            <HiLockClosed className="w-5 h-5 text-foreground-secondary" />
           </div>
           <div className="flex items-center justify-center gap-2 mb-1">
             <h1 className="text-xl font-bold tracking-tight text-foreground">
@@ -118,7 +118,7 @@ const AdminLoginPage = () => {
                 onClick={handleDemoAdmin}
                 className="w-full h-8 text-xs gap-1.5 text-foreground-secondary hover:text-foreground"
               >
-                <FaUserShield className="w-3 h-3 text-accent-primary" />
+                <FaUserShield className="w-3 h-3 text-foreground-secondary" />
                 <span>Sign in as Demo Administrator</span>
               </Button>
             </div>

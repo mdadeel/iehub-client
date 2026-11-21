@@ -27,9 +27,9 @@ const OfflineBanner = () => {
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-x-0 top-0 z-[80] flex items-center justify-center gap-2 bg-[#101417] px-4 py-1.5 text-center text-[12px] font-medium text-white"
+      className="fixed inset-x-0 top-0 z-[80] flex items-center justify-center gap-2 bg-ink px-4 py-1.5 text-center text-[12px] font-medium text-white"
     >
-      <HiWifi className="h-3.5 w-3.5 rotate-45 text-accent-primary" />
+      <HiWifi className="h-3.5 w-3.5 rotate-45 text-white" />
       You are offline. Changes are not being saved — reconnect to continue.
     </div>
   );

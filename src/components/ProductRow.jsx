@@ -29,7 +29,7 @@ const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
   return (
     <TableRow className="cursor-pointer group" onClick={handleViewDetails}>
       {onToggleCompare && (
-        <TableCell className="w-8 py-2 text-center" onClick={(e) => e.stopPropagation()}>
+        <TableCell className="hidden w-8 py-2 text-center sm:table-cell" onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             checked={isCompared}
@@ -53,7 +53,7 @@ const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
       </TableCell>
 
       <TableCell className="py-2 font-medium">
-        <div className="font-semibold text-xs text-foreground group-hover:text-accent-primary transition-colors line-clamp-1">
+        <div className="font-semibold text-xs text-foreground transition-colors line-clamp-1">
           {product.name}
         </div>
         <div className="text-[10px] text-foreground-muted flex items-center gap-1.5">
@@ -67,7 +67,7 @@ const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
         </div>
       </TableCell>
 
-      <TableCell className="py-2 text-xs text-foreground-secondary">
+      <TableCell className="hidden py-2 text-xs text-foreground-secondary md:table-cell">
         <div className="flex items-center gap-1">
           <HiLocationMarker className="w-3.5 h-3.5 text-foreground-subtle" />
           <span>{product.origin || 'Global'}</span>
@@ -75,7 +75,7 @@ const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
         <div className="text-[10px] text-foreground-muted mt-0.5">{product.category} · MOQ {moq.toLocaleString()} {unit}</div>
       </TableCell>
 
-      <TableCell className="py-2 text-right">
+      <TableCell className="hidden py-2 text-right sm:table-cell">
         <Badge
           variant={isLowStock ? "warning" : "success"}
           hasDot
@@ -100,7 +100,7 @@ const ProductRow = ({ product, isCompared = false, onToggleCompare }) => {
           }}
           variant="outline"
           size="sm"
-          className="h-7 px-2.5 text-[11px] gap-1 group-hover:border-accent-primary group-hover:text-accent-primary"
+          className="h-7 px-2.5 text-[11px] gap-1 group-hover:border-foreground group-hover:text-foreground"
         >
           Spec <HiArrowRight className="w-3 h-3" />
         </Button>

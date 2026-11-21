@@ -173,7 +173,7 @@ export default function DocumentUploadModal({ open, onClose, onUploadComplete })
               <div className="flex flex-col items-center justify-center gap-2">
                 {file ? (
                   <>
-                    <HiDocumentText className="w-8 h-8 text-accent-primary" />
+                    <HiDocumentText className="w-8 h-8 text-foreground-muted" />
                     <div className="text-xs font-semibold text-foreground truncate max-w-xs">{file.name}</div>
                     <div className="text-[11px] text-foreground-muted">
                       {(file.size / (1024 * 1024)).toFixed(2)} MB

@@ -21,7 +21,7 @@ const AuthShell = ({
       <div className="container py-10 lg:py-14">
         <div className="grid grid-cols-1 overflow-hidden border border-border-default bg-surface lg:grid-cols-2">
           {/* Photographic panel */}
-          <div className="relative hidden min-h-[620px] overflow-hidden bg-[#0A0D10] lg:block">
+          <div className="relative hidden min-h-[620px] overflow-hidden bg-ink lg:block">
             <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#07090B] via-[#07090B]/70 to-[#07090B]/25" />
 

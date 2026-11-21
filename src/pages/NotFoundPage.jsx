@@ -31,7 +31,7 @@ const NotFoundPage = () => {
         description="That page has moved or no longer exists. Jump back to the marketplace, shipments or the trade desk."
       />
 
-      <section className="relative isolate overflow-hidden bg-[#0A0D10] text-white">
+      <section className="relative isolate overflow-hidden bg-ink text-white">
         <img
           src="/images/cta-port-night.jpg"
           alt=""

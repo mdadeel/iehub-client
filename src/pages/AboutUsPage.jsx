@@ -66,7 +66,7 @@ const AboutUsPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s, i) => (
           <Card key={i} className="p-5 border border-border-default bg-surface hover:border-border-hover transition-colors">
-            <div className="text-accent-primary mb-3 text-xl">
+            <div className="text-foreground-secondary mb-3 text-xl">
               {s.icon}
             </div>
             <div className="text-2xl font-bold text-foreground font-mono tabular-nums mb-0.5">

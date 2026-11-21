@@ -141,7 +141,7 @@ const RegisterPage = () => {
 
       <div className="mt-6 border-t border-border-subtle pt-4 text-[12px] text-foreground-muted">
         Already registered?{' '}
-        <Link to="/login" className="font-semibold text-accent-primary hover:underline">
+        <Link to="/login" className="font-semibold text-foreground-secondary hover:text-foreground hover:underline">
           Sign in to your desk
         </Link>
       </div>

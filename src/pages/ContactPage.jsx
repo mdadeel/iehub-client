@@ -216,7 +216,7 @@ const ContactPage = () => {
                     </p>
                     <a
                       href={mailtoHref()}
-                      className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-accent-primary hover:underline"
+                      className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-foreground hover:text-accent-primary hover:underline"
                     >
                       Email {DESK_EMAIL} <HiArrowRight className="h-3 w-3" />
                     </a>
@@ -286,7 +286,7 @@ const ContactPage = () => {
 
           <Card className="p-4 border border-border-default bg-surface-subtle/50">
             <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-foreground">
-              <HiClock className="w-4 h-4 text-accent-primary" />
+              <HiClock className="w-4 h-4 text-foreground-muted" />
               <span>Market Trading Windows</span>
             </div>
             <div className="space-y-1.5 text-xs">

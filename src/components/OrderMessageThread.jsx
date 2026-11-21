@@ -110,7 +110,7 @@ export default function OrderMessageThread({ orderId, poNumber, className = '' }
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border-default bg-surface-subtle/50">
         <div className="flex items-center gap-2">
-          <HiChatAlt2 className="w-4 h-4 text-accent-primary" />
+          <HiChatAlt2 className="w-4 h-4 text-foreground-muted" />
           <span className="text-xs font-semibold text-foreground">
             Bilateral Trade Thread
           </span>

@@ -54,7 +54,7 @@ const TradeExpertsPage = () => {
               <h2 className="text-sm font-semibold text-foreground">
                 {expert.name}
               </h2>
-              <div className="text-xs text-accent-primary font-medium mt-0.5 mb-1">
+              <div className="text-xs text-foreground-muted font-medium mt-0.5 mb-1">
                 {expert.role}
               </div>
               <div className="text-[13px] text-foreground-muted font-mono mb-3">

@@ -79,7 +79,7 @@ const LegalPage = () => {
               ))}
               <Link
                 to="/contact"
-                className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent-primary hover:underline"
+                className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-foreground hover:text-accent-primary hover:underline"
               >
                 Ask a question
               </Link>

@@ -457,7 +457,7 @@ export default function DocumentVaultPage() {
                     onClick={() => setInspectedDoc(doc)}
                     title="Inspect audit trail"
                   >
-                    <HiEye className="h-3.5 w-3.5 text-accent-primary" />
+                    <HiEye className="h-3.5 w-3.5 text-foreground-muted" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -479,7 +479,7 @@ export default function DocumentVaultPage() {
                         setReviewNotes('');
                       }}
                     >
-                      <HiShieldCheck className="h-3.5 w-3.5 text-accent-primary" />
+                      <HiShieldCheck className="h-3.5 w-3.5 text-status-success" />
                     </Button>
                   )}
                   <Button
@@ -712,7 +712,7 @@ export default function DocumentVaultPage() {
           <div className="p-3 rounded-lg border border-border-default bg-surface space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold text-foreground flex items-center gap-1.5">
-                <HiShieldCheck className="w-4 h-4 text-accent-primary" />
+                <HiShieldCheck className="w-4 h-4 text-status-success" />
                 SHA-256 Cryptographic Digest (FIPS 180-4)
               </span>
               <button
@@ -722,7 +722,7 @@ export default function DocumentVaultPage() {
                   navigator.clipboard?.writeText(hash);
                   toast.success('SHA-256 Checksum copied to clipboard');
                 }}
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-accent-primary hover:underline"
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-foreground hover:text-accent-primary hover:underline"
               >
                 <HiClipboardCopy className="w-3.5 h-3.5" />
                 Copy Hash
@@ -761,7 +761,7 @@ export default function DocumentVaultPage() {
               <div className="p-2.5 rounded-lg border border-border-default bg-surface">
                 <div className="text-[10px] text-foreground-muted">Export Grading</div>
                 <div className="text-sm font-bold text-foreground mt-0.5">Grade 1</div>
-                <div className="text-[10px] text-accent-primary font-medium">Screen 18</div>
+                <div className="text-[10px] text-foreground-muted font-medium">Screen 18</div>
               </div>
             </div>
           </div>

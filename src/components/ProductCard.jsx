@@ -39,7 +39,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           handleViewDetails();
         }
       }}
-      className="group flex h-full cursor-pointer flex-col overflow-hidden border border-border-default bg-surface transition-all duration-200 hover:border-foreground/25 hover:shadow-[0_18px_40px_-32px_rgba(16,20,23,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+      className="group flex h-full cursor-pointer flex-col overflow-hidden border border-border-default bg-surface transition-all duration-200 hover:border-border-hover hover:shadow-[0_18px_40px_-32px_rgba(16,22,28,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
     >
       {/* Visual asset */}
       <div className="media aspect-[4/3]">
@@ -56,9 +56,9 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           {product.category}
         </span>
 
-        {/* Verification stamp */}
+        {/* Verification stamp — tonal chip, not a solid badge */}
         {isVerified && (
-          <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 bg-[#0B7A52] px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white">
+          <span className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-surface/95 px-2 py-1 text-[11px] font-semibold tracking-[0.06em] text-status-success backdrop-blur">
             <HiShieldCheck className="h-3 w-3" />
             Lab verified
           </span>
@@ -103,7 +103,7 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
           <span className="truncate">{origin}</span>
         </div>
 
-        <h3 className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground transition-colors group-hover:text-accent-primary">
+        <h3 className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground">
           {product.name}
         </h3>
 
@@ -139,8 +139,8 @@ const ProductCard = ({ product, isCompared = false, onToggleCompare }) => {
               <div className="font-mono text-[11px] text-foreground-muted">
                 {availableQty.toLocaleString()} {unit} avail.
               </div>
-              <div className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold text-accent-primary">
-                View lot <HiArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              <div className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold text-foreground">
+                View lot <HiArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:text-accent-primary" />
               </div>
             </div>
           </div>

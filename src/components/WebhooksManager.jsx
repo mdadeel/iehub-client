@@ -131,7 +131,7 @@ export const WebhooksManager = () => {
       <div className="flex items-center justify-between gap-3 p-3.5 rounded-lg border border-border-default bg-surface">
         <div>
           <h3 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-            <HiGlobeAlt className="w-4 h-4 text-accent-primary" />
+            <HiGlobeAlt className="w-4 h-4 text-foreground-muted" />
             Outbound Webhook Subscriptions
           </h3>
           <p className="text-[11px] text-foreground-muted mt-0.5">
@@ -204,7 +204,7 @@ export const WebhooksManager = () => {
                       disabled={isTesting}
                       className="h-7 text-xs"
                     >
-                      <HiPlay className="w-3 h-3 mr-1 text-accent-primary" />
+                      <HiPlay className="w-3 h-3 mr-1 text-foreground-muted" />
                       {isTesting ? 'Pinging...' : 'Test Ping'}
                     </Button>
                     <Button
@@ -236,7 +236,7 @@ export const WebhooksManager = () => {
                 {/* Secret Key Display */}
                 <div className="flex items-center justify-between p-2 rounded bg-surface-subtle border border-border-subtle text-xs">
                   <div className="flex items-center gap-2 font-mono text-[11px] text-foreground-muted">
-                    <HiKey className="w-3.5 h-3.5 text-accent-primary shrink-0" />
+                    <HiKey className="w-3.5 h-3.5 text-foreground-muted shrink-0" />
                     <span>Signing Secret:</span>
                     <span className="text-foreground font-semibold">
                       {isRevealed ? sub.secret : `${sub.secret.slice(0, 8)}••••••••••••••••••••`}
@@ -282,11 +282,11 @@ export const WebhooksManager = () => {
       {/* Developer Security Guidance Card */}
       <div className="p-3.5 rounded-lg border border-border-default bg-surface-subtle/40 space-y-2">
         <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
-          <HiInformationCircle className="w-4 h-4 text-accent-primary" />
+          <HiInformationCircle className="w-4 h-4 text-foreground-muted" />
           Enterprise HMAC-SHA256 Signature Verification
         </div>
         <p className="text-[11px] text-foreground-muted leading-relaxed">
-          Every HTTP POST from IEHUB contains an <code className="text-accent-primary font-mono font-semibold">X-IEHUB-Signature</code> header.
+          Every HTTP POST from IEHUB contains an <code className="text-foreground font-mono font-semibold">X-IEHUB-Signature</code> header.
           Compute the HMAC-SHA256 of <code className="font-mono text-foreground">{'{timestamp}.{raw_body}'}</code> using your endpoint secret and compare in constant time to prevent replay attacks and forgery.
         </p>
       </div>

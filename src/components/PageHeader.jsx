@@ -1,6 +1,6 @@
 const PageHeader = ({ eyebrow, title, description, image, children }) => {
   return (
-    <section className="relative isolate overflow-hidden bg-[#0A0D10] text-white">
+    <section className="relative isolate overflow-hidden bg-ink text-white">
       {image && (
         <img
           src={image}

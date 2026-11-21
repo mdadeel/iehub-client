@@ -64,7 +64,7 @@ const GlobalLogisticsPage = () => {
       <section className="mb-10">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-foreground">My Shipments in Motion</h2>
-          <Link to="/dashboard/my-imports" className="text-xs font-semibold text-accent-primary hover:underline flex items-center gap-1">
+          <Link to="/dashboard/my-imports" className="text-xs font-semibold text-foreground hover:text-accent-primary hover:underline flex items-center gap-1">
             <span>All Purchase Orders</span>
             <HiArrowRight className="w-3.5 h-3.5" />
           </Link>

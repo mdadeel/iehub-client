@@ -67,7 +67,7 @@ const MarketInsightsPage = () => {
                 {article.summary}
               </p>
 
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-accent-primary hover:underline cursor-pointer">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground hover:text-accent-primary hover:underline cursor-pointer">
                 <span>Read Full Research Note</span>
                 <HiArrowRight className="w-3.5 h-3.5" />
               </div>
