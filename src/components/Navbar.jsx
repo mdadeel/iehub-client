@@ -12,7 +12,7 @@ import OrganizationSwitcher from './OrganizationSwitcher';
 import Logo from './Logo';
 import {
     HiMenu, HiX, HiMoon, HiSun, HiLogout,
-    HiChevronDown, HiChevronRight, HiUser, HiSearch,
+    HiChevronDown, HiUser, HiSearch,
     HiViewGrid, HiGlobeAlt, HiArrowUp, HiArrowDown,
     HiShoppingBag, HiTruck, HiDocumentText, HiShieldCheck, HiSupport,
     HiOutlineShoppingBag, HiOutlineTruck, HiOutlineDocumentText, HiOutlineShieldCheck, HiOutlineSupport
@@ -104,21 +104,21 @@ const Navbar = () => {
                         {/* Institutional Brand Logo & Trade Mark */}
                         <Logo overHero={overHero} size="md" />
 
-                        {/* Search Bar on the Left */}
+                        {/* Search Bar on the Left — ghost pill, no border */}
                         <div className="hidden xl:flex items-center">
                             <button
                                 type="button"
                                 onClick={() => setCommandOpen(true)}
                                 className={cn(
-                                    "flex items-center gap-2 w-44 xl:w-56 px-2.5 py-1.5 text-[11px] border transition-colors",
+                                    "flex items-center gap-2 w-44 xl:w-56 h-9 px-3 text-[12px] rounded-md transition-colors",
                                     overHero
-                                        ? "text-white/65 bg-white/10 border-white/20 hover:border-white/40 backdrop-blur-sm"
-                                        : "text-foreground-muted bg-surface-subtle border-border-default hover:border-border-hover"
+                                        ? "text-white/70 bg-white/10 hover:bg-white/15 hover:text-white/90"
+                                        : "text-foreground-muted bg-surface-subtle/70 hover:bg-surface-subtle hover:text-foreground-secondary"
                                 )}
                             >
                                 <HiSearch className="w-3.5 h-3.5 shrink-0 opacity-70" />
                                 <span className="flex-1 text-left truncate">Search…</span>
-                                <kbd className={cn("px-1.5 py-0.5 text-[10px] font-mono shrink-0 border", overHero ? "bg-white/10 border-white/15 text-white/60" : "bg-surface border-border-default text-foreground-subtle")}>
+                                <kbd className={cn("px-1.5 py-0.5 text-[10px] font-mono shrink-0 rounded-sm", overHero ? "bg-white/10 text-white/60" : "bg-surface text-foreground-subtle border border-border-subtle")}>
                                     ⌘K
                                 </kbd>
                             </button>
@@ -156,28 +156,26 @@ const Navbar = () => {
                     </div>
 
                     {/* Right: Status, Theme & User Actions */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-1.5">
                         {user && !user.isGuest && (
                             <div className="hidden sm:flex items-center">
                                 <OrganizationSwitcher compact />
                             </div>
                         )}
-                        {/* Theme Toggle Button */}
+                        {/* Theme Toggle — ghost icon button */}
                         <button
                             type="button"
                             onClick={toggleTheme}
                             className={cn(
-                                "h-8 w-8 border flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
+                                "h-9 w-9 flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
                                 overHero
-                                    ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
-                                    : "border-border-default bg-surface hover:bg-surface-subtle text-foreground-secondary hover:text-foreground"
+                                    ? "text-white/80 hover:text-white hover:bg-white/10"
+                                    : "text-foreground-secondary hover:text-foreground hover:bg-surface-subtle"
                             )}
                             aria-label="Toggle theme"
                         >
-                            {theme === 'light' ? <HiMoon className="w-4 h-4" /> : <HiSun className="w-4 h-4 text-status-warning" />}
+                            {theme === 'light' ? <HiMoon className="w-[18px] h-[18px]" /> : <HiSun className="w-[18px] h-[18px] text-status-warning" />}
                         </button>
-
-                        <div className={cn("h-4 w-px mx-0.5 hidden sm:block", overHero ? "bg-white/25" : "bg-border-default")} />
 
                         {user ? (
                             <div className="relative" ref={dropdownRef}>
@@ -185,26 +183,25 @@ const Navbar = () => {
                                     type="button"
                                     onClick={() => setProfileOpen(!profileOpen)}
                                     className={cn(
-                                        "flex items-center gap-2 px-2.5 py-1.5 border text-xs transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
+                                        "flex items-center gap-2 pl-1 pr-1.5 sm:pr-2 py-1 rounded-md text-xs transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
                                         overHero
-                                            ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
-                                            : "border-border-default bg-surface hover:bg-surface-subtle"
+                                            ? "text-white hover:bg-white/10"
+                                            : "text-foreground hover:bg-surface-subtle"
                                     )}
                                     aria-label="User account menu"
                                     aria-expanded={profileOpen}
                                 >
-                                    <div className="w-6 h-6 rounded-full bg-accent-subtle text-accent-primary border border-accent-primary/25 flex items-center justify-center font-bold text-[11px] shrink-0">
+                                    <div className="w-7 h-7 rounded-full bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-[11px] shrink-0 overflow-hidden">
                                         {user.photoURL ? (
                                             <img src={user.photoURL} alt="" className="w-full h-full rounded-full object-cover" />
                                         ) : (
                                             user.displayName?.charAt(0) || "U"
                                         )}
                                     </div>
-                                    <span className={cn("hidden sm:inline font-semibold max-w-[90px] truncate text-left", overHero ? "text-white" : "text-foreground")}>
+                                    <span className={cn("hidden md:inline font-semibold max-w-[90px] truncate text-left", overHero ? "text-white" : "text-foreground")}>
                                         {user.displayName?.split(' ')[0] || 'Account'}
                                     </span>
-                                    <span className="hidden lg:inline-block w-1.5 h-1.5 rounded-full bg-status-success shrink-0" title="Active Trader" />
-                                    <HiChevronDown className={cn("w-3.5 h-3.5 transition-transform shrink-0", overHero ? "text-white/60 group-hover:text-white" : "text-foreground-muted group-hover:text-foreground", profileOpen && "rotate-180")} />
+                                    <HiChevronDown className={cn("hidden sm:inline-block w-3.5 h-3.5 transition-transform shrink-0", overHero ? "text-white/60 group-hover:text-white" : "text-foreground-muted group-hover:text-foreground", profileOpen && "rotate-180")} />
                                 </button>
 
                                 <AnimatePresence>
@@ -284,26 +281,28 @@ const Navbar = () => {
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1 sm:gap-1.5">
                                 <Link
                                     to="/login"
                                     className={cn(
-                                        "hidden sm:inline-flex items-center px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors",
-                                        overHero ? "text-white/75 hover:text-white" : "text-foreground-secondary hover:text-foreground"
+                                        "hidden sm:inline-flex items-center h-9 px-3 rounded-md text-[13px] font-medium transition-colors",
+                                        overHero
+                                            ? "text-white/80 hover:text-white hover:bg-white/10"
+                                            : "text-foreground-secondary hover:text-foreground hover:bg-surface-subtle"
                                     )}
                                 >
                                     Sign in
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap bg-accent-primary px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-accent-hover"
+                                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap h-9 bg-accent-primary rounded-md px-4 text-[13px] font-semibold text-white transition-colors hover:bg-accent-hover shadow-xs"
                                 >
                                     Request quote
                                 </Link>
                             </div>
                         )}
 
-                        {/* Mobile Menu Button */}
+                        {/* Mobile Menu Button — ghost */}
                         <Button
                             variant="ghost"
                             size="icon"
@@ -331,20 +330,20 @@ const Navbar = () => {
                             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                             className="lg:hidden bg-surface border-b border-border-default overflow-hidden"
                         >
-                            <div className="px-4 py-4 space-y-3">
+                            <div className="px-4 pt-3 pb-5">
                                 <button
                                     type="button"
                                     onClick={() => {
                                         setMobileOpen(false);
                                         setCommandOpen(true);
                                     }}
-                                    className="flex items-center gap-2 w-full px-3 py-2 text-xs text-foreground-muted bg-surface-subtle border border-border-default rounded-md"
+                                    className="flex items-center gap-2.5 w-full h-10 px-3 text-[13px] text-foreground-muted bg-surface-subtle rounded-md"
                                 >
                                     <HiSearch className="w-4 h-4" />
                                     <span>Search commodities, suppliers, or orders…</span>
                                 </button>
 
-                                <div className="grid gap-1 pt-2">
+                                <nav className="grid gap-0.5 pt-3" aria-label="Primary">
                                     {NAV_ITEMS.map((item) => {
                                         const Icon = item.icon;
                                         return (
@@ -353,32 +352,80 @@ const Navbar = () => {
                                                 to={item.to}
                                                 onClick={() => setMobileOpen(false)}
                                                 className={({ isActive }) => cn(
-                                                    "flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium transition-colors select-none",
+                                                    "flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] transition-colors select-none",
                                                     isActive
-                                                        ? "bg-accent-subtle text-accent-primary font-semibold border border-accent-primary/20"
-                                                        : "text-foreground hover:bg-surface-subtle"
+                                                        ? "bg-accent-subtle text-accent-primary font-semibold"
+                                                        : "text-foreground-secondary font-medium hover:bg-surface-subtle hover:text-foreground"
                                                 )}
                                             >
-                                                <div className="flex items-center gap-2.5">
-                                                    <Icon className="w-4 h-4 shrink-0 opacity-80" aria-hidden="true" />
-                                                    <span>{item.label}</span>
-                                                </div>
-                                                <HiChevronRight className="w-4 h-4 text-foreground-muted opacity-60" aria-hidden="true" />
+                                                <Icon className="w-[18px] h-[18px] shrink-0 opacity-80" aria-hidden="true" />
+                                                <span>{item.label}</span>
                                             </NavLink>
                                         );
                                     })}
                                     {user && (
-                                        <Link
+                                        <NavLink
                                             to="/dashboard"
                                             onClick={() => setMobileOpen(false)}
-                                            className="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium text-accent-primary bg-accent-subtle/50 hover:bg-accent-subtle border border-accent-primary/15 mt-1 transition-colors"
+                                            className={({ isActive }) => cn(
+                                                "flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] transition-colors select-none",
+                                                isActive
+                                                    ? "bg-accent-subtle text-accent-primary font-semibold"
+                                                    : "text-foreground-secondary font-medium hover:bg-surface-subtle hover:text-foreground"
+                                            )}
                                         >
-                                            <div className="flex items-center gap-2.5">
-                                                <HiViewGrid className="w-4 h-4" aria-hidden="true" />
-                                                <span>Go to Workspace</span>
+                                            <HiViewGrid className="w-[18px] h-[18px] shrink-0 opacity-80" aria-hidden="true" />
+                                            <span>Workspace</span>
+                                        </NavLink>
+                                    )}
+                                </nav>
+
+                                {/* Drawer footer — identity / auth */}
+                                <div className="mt-4 pt-4 border-t border-border-subtle">
+                                    {user ? (
+                                        <div className="flex items-center justify-between gap-3">
+                                            <div className="flex min-w-0 items-center gap-2.5">
+                                                <div className="w-8 h-8 rounded-full bg-accent-subtle text-accent-primary border border-accent-primary/20 flex items-center justify-center font-bold text-[11px] shrink-0 overflow-hidden">
+                                                    {user.photoURL ? (
+                                                        <img src={user.photoURL} alt="" className="w-full h-full rounded-full object-cover" />
+                                                    ) : (
+                                                        user.displayName?.charAt(0) || "U"
+                                                    )}
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <div className="truncate text-[13px] font-semibold text-foreground">{user.displayName || 'Account'}</div>
+                                                    <div className="truncate text-[11px] text-foreground-muted">{user.isGuest ? 'Demo sandbox' : user.email}</div>
+                                                </div>
                                             </div>
-                                            <HiChevronRight className="w-4 h-4" aria-hidden="true" />
-                                        </Link>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setMobileOpen(false);
+                                                    logout();
+                                                }}
+                                                className="flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-2 text-[12px] font-semibold text-foreground-secondary transition-colors hover:bg-status-danger-bg hover:text-status-danger"
+                                            >
+                                                <HiLogout className="w-4 h-4" />
+                                                Sign out
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Link
+                                                to="/login"
+                                                onClick={() => setMobileOpen(false)}
+                                                className="flex h-10 items-center justify-center rounded-md border border-border-default text-[13px] font-semibold text-foreground transition-colors hover:bg-surface-subtle"
+                                            >
+                                                Sign in
+                                            </Link>
+                                            <Link
+                                                to="/register"
+                                                onClick={() => setMobileOpen(false)}
+                                                className="flex h-10 items-center justify-center rounded-md bg-accent-primary text-[13px] font-semibold text-white transition-colors hover:bg-accent-hover"
+                                            >
+                                                Request quote
+                                            </Link>
+                                        </div>
                                     )}
                                 </div>
                             </div>
